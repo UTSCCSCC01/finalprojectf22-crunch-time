@@ -13,5 +13,5 @@ try:
 except OSError:
     pass
 
-from . import db, api
+from . import db, routes
 db.init_app(app)
