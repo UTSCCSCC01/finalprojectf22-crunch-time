@@ -1,1 +1,18 @@
+### 1. As a user, I want to be able to view the home page without needing to sign up and login, so that I can navigate through the site and determine if the site offers the services I need 
+* The home page should have a navigation bar with clickable links that allow users to visit other pages like contacts, about, and FAQ
+* Should contain a visible button for login/sign up
+* Should contain visuals and descriptions that give the user a clear description of the services on the site 
 
+### 2. As a user, I want to be able to access Frequently Asked Questions page on the website without needing to sign up and login so that I can potentially answer any questions I have about the services offered quickly
+* Should be a static FAQ page in nav bar 
+
+### 3. As a user, I wish to be able to learn more about the company, its values and goals through a page with this information
+* Have a “About Us” static page in the nav bar that any user can view without needing to be signed in
+
+### 4. As a user, I want to be able to access a page where I can contact directly for help so that I can directly reach out to a support team regarding any issues or questions
+* Should have a static “Contact Us” page in the nav bar that any users can view without needing to be signed in
+
+### 5. As a new user, I want to be able to create a unique account so that I can safely access my personalized data and main features of the website when I log in
+* The “sign up” page will have the user enter mandatory information such as first name, last name, email address, password, and address
+* Email address must be unique and password must meet standard requirements
+* Have appropriate error messages for when fields aren’t filled correctly, or when email address is not unique
