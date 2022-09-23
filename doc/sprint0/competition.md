@@ -1,3 +1,26 @@
+# Competition:
+### Find a Player (https://www.findaplayer.com)
+* A platform to find other players, games/events, build your sports network, etc.
+* Our product is different because we offer our users the option to find players outside of sports (e.g. gaming)
+* Our product is better for…
+  * Non-athletes: those who are looking for other players but not necessarily in a sports context
+  * Our competitor likely didn’t focus on these users/scenarios because they wanted to focus on sports alone instead of a variety of activities. By focusing on other activities, it would take away from their offering as a niche product that is specifically made for people who play sports 
+
+### GameTree (https://gametree.me)
+* A platform to find other gamers
+* Our product is different because our users can find other people for different activities besides gaming
+* Our product is better for…
+  * Users who don’t game and/or are looking for other people to join them in other hobbies
+  * Our competitor likely didn’t expand their offerings outside of gaming because that would take away from their main target audience, which are gamers
+
+### UNBLND (https://unblnd.com)
+* A social networking platform that helps you join “interest groups” (e.g. online gaming, online cooking, travel friends) based on your location and preferred activities
+* Our product is different because we emphasize less on the social networking aspect of finding other people through shared interests. Rather than matching our users up based on the information they provide through an initially anonymous profile, we focus more on our users finding like-minded people themselves
+* Our product is better for…
+  * Users who are looking to quickly fill up empty space on their team
+  * Our competitor likely didn’t focus on the type of user mentioned above because they wanted the relationships built between users to be their main selling point
+
+
 ### RANKD (https://rankd.ca/)
 * A platform to connect you with other tennis players
 * Our product is different because not only is our product for sports other than tennis, it reaches beyond even sports to cater to any particular “activity”
