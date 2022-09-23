@@ -57,6 +57,24 @@
 ### 17. As a logged in user, I want to be able to friend other users and add them to my friend’s list, so that I have a list of users that I can contact more easily 
 * Friend list should be a button or link that you can click and it’ll show your list of friends
 
+### 18. As a logged in user, I want to be able to remove a friend from my friend list so that people that I no longer interact with can be removed as a way to ensure my friend list is only consisting of people I regularly play with
+* This will remove them from your friend list but you may add them back at any time. 
 
+### 19. As a logged in user and member of a group, I want to be able to invite other users on my friend list to join a group that I am currently part of so that people on my friends list can easily join the same group as me
 
+### 20. As a logged in user and the owner of a group, I want to be able to remove (“kick”) users in my group so that anyone exhibiting inappropriate behaviour can be removed
 
+### 21.  As a logged in user and member of a group, I want to be able to chat with the other members of the group using a chat message feature so that I can effectively communicate with the other members of the group
+* Chat feature should include capability for images and GIFs
+
+### 22. As a logged in user and member of a group, I want to be able to leave that group at any time so that I am only in groups that I want to be in
+* Leaving a group permanently removes you from the group but there is nothing stopping you from joining back either via invitation or regular search
+
+### 23. As a logged in user, I want to be able to view the profile of other users on the system so that I can see information about them and whether or not they’d be someone I’d be interested in playing with and/or friending
+* This page will show their location, number of friends, interests, as well as mutual friends
+
+### 24. As a logged in user, I want to be able to view the group page of any group that I’ve joined so that I can easily determine if the group is a good fit for me
+* This page will contain information such as sport, number of members, a list of a few of the members (with the ability to view all), as well as actions including opening the chat and leaving the group
+
+### 25. As a logged in user and the owner of a group, I want to be able to set a group picture for the group so that when others are viewing the group page they can see a visual that captures what the group is about
+* The group picture will be seen when someone is viewing the group page mentioned above. 
