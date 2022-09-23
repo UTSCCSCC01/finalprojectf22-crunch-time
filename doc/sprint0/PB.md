@@ -16,3 +16,31 @@
 * The “sign up” page will have the user enter mandatory information such as first name, last name, email address, password, and address
 * Email address must be unique and password must meet standard requirements
 * Have appropriate error messages for when fields aren’t filled correctly, or when email address is not unique
+
+### 6. As a registered user, I wish to be able to log into my personal account with my email address and password so that the system can verify me and take me to a homepage for logged in users
+* The website for a logged in user should be personalized
+* Have appropriate error messages for login such as invalid password/email or missing fields
+
+### 7. As a logged in user, I want to be able to logout by clicking a "logout" button on any of the pages and be sent to the homepage for all users so that I can keep my account information secure
+* The redirected homepage should be the general one, where users don’t have to be logged in to access
+* "logout" button should be in the navigation bar and always accesible for logged in users
+
+### 8. As a logged in user, I want to be able to access personal account information page by clicking a “account information” button so that I can update or view any personal information
+* Should require additional verification, like password input, to access the personal information for extra security
+
+### 9. As a logged in user, I want to be able to delete my account along with any personal information permanently from the website in case the user has security concerns or doesn’t wish to continue using the website
+* There should be a button in the account information page that allows the user to delete the account. 
+* Should require additional verification, like password input, to access the personal information for extra security
+
+### 10. As a User, I want to be able to see the navigation bar at the top of every page, so that I can access various features on the website quickly
+* Navigation bar should be accessible to all users, but will contain additional personalized information for logged in users
+* Should contain buttons various pages such as “about us”, “contact us”, “FAQ”, “Log/signup” (non-logged in users), “account information” (logged in users), and “logout” (logged in users) and should be accesible even while scrolling
+
+### 11. As a logged in user, I want to be able to search for my desired sports (physical and e-sports) so that I can find a group of individuals with similar preferences to play the sport with.
+* Users should be able to search for their desired sport through a search bar
+* Users will then have the option to create/join group for their searched sport
+
+
+
+
+
