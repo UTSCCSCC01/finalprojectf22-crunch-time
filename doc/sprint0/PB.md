@@ -40,6 +40,22 @@
 * Users should be able to search for their desired sport through a search bar
 * Users will then have the option to create/join group for their searched sport
 
+### 12. As a logged  in user, I want to be able to input my preferred location and set a preferred distance radius when creating a group or joining a group for a sport so that I can play the desired sport with people located close to me
+* User will input there location, or use their current location and set a distance radius which will find people within that distance who play the same sport and are of a similar skill level
+* Distance apart my not be a factor for e-sports
+
+### 13. As a logged in user, I want to be able to input my skill level for an activity when creating a group or joining group, so I can participate with people that are around my skill level
+
+### 14. As a logged in user, I want to be able to create a group for my desired activity so that I can form a group with other individuals with similar preferences
+* Aims to get other users with similar preferences to join this group
+
+### 15. As a logged in user, I want to be able to set a group size limit when creating a group, so that I can get the ideal number of people for my group
+* Once a group has reached its capacity it will no longer be available to join
+
+### 16. As a logged in user, I want to be able to join a group for my desired activity, so that I can find a group that have similar preferences to me
+
+### 17. As a logged in user, I want to be able to friend other users and add them to my friend’s list, so that I have a list of users that I can contact more easily 
+* Friend list should be a button or link that you can click and it’ll show your list of friends
 
 
 
