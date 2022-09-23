@@ -1,7 +1,7 @@
 # Process
 ### Q:  How did you organize the team? Which tools did you use, if any?  
 The team was organized using the “find a team member” thread on piazza. Further communication was done through email, and group members were invited to the group discord server for this project. Discord will be the main form of communication. In terms of tasks, we tried to ensure that each person had roughly two tasks, and accounted for other factors like size of tasks and preferences .
-<img width="384" alt="Capture" src="https://user-images.githubusercontent.com/56009508/192012032-79b59d7e-b67a-46d9-851f-5d7d5b4e4cc9.PNG">
+![Screenshot 2022-09-23 182131](https://user-images.githubusercontent.com/56009508/192064365-156c8a1a-c9f3-4c35-b2b0-70c63a3a4cb4.png)
 
 ### Q: How did you make decisions?  
 Decisions were made based on majority agreement (since we are 6, we re-vote if the votes were even), preference and convenience.  This included decisions regarding product idea, task assignment, and meeting times
