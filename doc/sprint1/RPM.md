@@ -12,9 +12,9 @@ USX = User story number X
 
 ## Project Scope
 * Users must be able register for an account, log in and log out of the account, and delete the accout
-* Uses should be able to add friends
-* Users should be able to search for their desired activities and set their parameters such as skill level and prefered distance for that activity. 
-* Users should be able to create groups based on their desired activities and preferences and as the group owner they should have the ability to set group size, add a group profile picture and kick groupmates
-* Users should be able to join groups based on their desired activities and preferences, and leave groups
+* Users should be able to add friends and search for their desired activities and set their parameters such as skill level and prefered distance for that activity. 
+* Users should be able to create groups or join groups based on their desired activities and preferences and as the group owner they should have the ability to set group size, add a group profile picture and kick groupmates
+* Users should be able to  based on their desired activities and preferences, and leave groups
 * Users that are a part of group or friends should be able to communicate through chat message, and view each others profile
-* Users must be able to see static pages containing information: About Us, Contact Us , and FAQs (STAC-42).
+* Users must be able to access pages containing information: About Us, Contact Us , and FAQs
+* Users must be able to navigate to other pages and access other features efficiently through a navigation bar.
