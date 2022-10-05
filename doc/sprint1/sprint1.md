@@ -13,3 +13,5 @@ Justin, Denis, Shaahid, Sharon, Iangona, Jesse
 * CRUN-26 Search Groups (13 points)
 ## Task Breakdown
 <img width="420" alt="Capture" src="https://user-images.githubusercontent.com/56009508/194128809-1011d848-f681-4e48-84d1-56a09f46ae05.PNG">
+
+## Team Capacity
