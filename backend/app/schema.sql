@@ -4,3 +4,12 @@ CREATE TABLE Example (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   contents TEXT NOT NULL
 );
+
+CREATE TABLE usersExample (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  firstName TEXT NOT NULL,
+  lastName TEXT NOT NULL,
+  email TEXT NOT NULL,
+  password TEXT NOT NULL,
+  address TEXT NOT NULL
+);
