@@ -1,0 +1,14 @@
+DROP TABLE IF EXISTS Example;
+
+CREATE TABLE Example (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  contents TEXT NOT NULL
+);
+
+-- CREATE TABLE Groups 
+-- (
+--   id INTEGER PRIMARY KEY AUTOINCREMENT, 
+--   Size INTEGER, 
+--   Username TEXT, 
+--   User_id TEXT
+-- );
