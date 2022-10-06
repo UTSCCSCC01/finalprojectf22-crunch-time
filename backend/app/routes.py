@@ -12,3 +12,4 @@ def example():
         db.commit()
     messages = db.execute('SELECT * FROM Example').fetchall()
     return {'messages': list(map(dict, messages))}
+d
