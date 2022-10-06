@@ -23,14 +23,13 @@ def example():
 @app.route('/Create_Group', methods=['POST', 'GET'])
 def Create_Group():
     db = get_db()
-    mycursor = db.cursor()
     if request.method == 'POST':
         try:
-            db.execute("CREATE TABLE Groups (id INTEGER PRIMARY KEY AUTOINCREMENT, Size INTEGER, Username TEXT, User_id TEXT)")
-            mycursor.execute('''
+        #db.execute("CREATE TABLE Groups (id INTEGER PRIMARY KEY AUTOINCREMENT, Size INTEGER, Username TEXT, User_id TEXT)")
+            db.execute('''
                 INSERT INTO Groups ( Size, Username, User_id )
                 VALUES
-                ( 1, "dingjust", "2")
+                ( 1, "ding", "2")
                 ''')
             db.commit()
         except Exception:

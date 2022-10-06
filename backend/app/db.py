@@ -5,11 +5,14 @@ from flask import current_app, g
 
 #Changed up slightly as the other version was not working
 def get_db():
-    db = getattr(g, '_database', None)
-    #creates database
-    if db is None:
-        db = g._database = sqlite3.connect("database.db")
-    return db
+    """Get a connection to the SQLite database."""
+    if 'db' not in g:
+        g.db = sqlite3.connect(
+            current_app.config['DATABASE'],
+            detect_types=sqlite3.PARSE_DECLTYPES
+        )
+        g.db.row_factory = sqlite3.Row
+    return g.db
 
 def close_db(e=None):
     """Close the connection to the database."""
