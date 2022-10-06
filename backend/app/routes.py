@@ -25,7 +25,7 @@ def Create_Group():
     db = get_db()
     if request.method == 'POST':
         try:
-        #db.execute("CREATE TABLE Groups (id INTEGER PRIMARY KEY AUTOINCREMENT, Size INTEGER, Username TEXT, User_id TEXT)")
+            db.execute("CREATE TABLE Groups (id INTEGER PRIMARY KEY AUTOINCREMENT, Size INTEGER, Username TEXT, User_id TEXT)")
             db.execute('''
                 INSERT INTO Groups ( Size, Username, User_id )
                 VALUES
