@@ -3,7 +3,6 @@ import sqlite3
 import click
 from flask import current_app, g
 
-#Changed up slightly as the other version was not working
 def get_db():
     """Get a connection to the SQLite database."""
     if 'db' not in g:
