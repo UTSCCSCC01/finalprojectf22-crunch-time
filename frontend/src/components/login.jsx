@@ -49,7 +49,7 @@ class Login extends Component {
                 <br/>
 
                 <button type="login" class = "login-bttn">Login</button>
-                <h5>Don't have an account yet? <a href = "{{ url_for('register') }}"><u>Register</u></a></h5>
+                <h5>Don't have an account yet? <Link to="/register">Register</Link></h5>
             </form></center>
         </div>
     );
