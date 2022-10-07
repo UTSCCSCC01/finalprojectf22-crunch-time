@@ -1,10 +1,10 @@
-
-from flask import request
+from flask import request, redirect
 from app import app
 from app.db import get_db
 import sqlite3 
 import sqlite3 as sql
 from flask import g
+from app.user import User
 
 @app.route('/')
 def route():
@@ -18,6 +18,33 @@ def example():
         db.commit()
     messages = db.execute('SELECT * FROM Example').fetchall()
     return {'messages': list(map(dict, messages))}
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    db = get_db()
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+    User.loginUser(email, password, db)
+    return redirect('/')
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    db = get_db()
+    User.logoutUser(db)
+    return redirect('/')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    db = get_db()
+    if request.method == 'POST':
+        email = request.form['email']
+        firstName = request.form['firstName']
+        lastName = request.form['lastName']
+        password = request.form['password']
+        address = request.form['address']
+    User.registerUser(firstName, lastName, email, password, address, db)
+    return redirect('/register')
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
@@ -46,3 +73,4 @@ def Create_Group():
 if __name__ == '__main__':
     app.debug = True
     app.run()
+
