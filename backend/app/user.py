@@ -45,3 +45,18 @@ class User:
         db.execute("DELETE FROM loggedInUsers")
         print('Successfully logged-out')
         return 
+
+    def registerUser(firstName, lastName, email, password, address, db):
+        if len(password) < 8:
+            print('Password must be at least 8 characters long')
+            return
+        similar = db.execute("SELECT * FROM users WHERE email = \'" + email+"\'").fetchall()
+        if len(similar)!=0:
+            print('An account already exists with that email')
+            return 
+        new_usr = User(firstName, lastName, email, password, address)
+        db.execute('INSERT INTO users (firstName, lastName, email, password, address) VALUES(?,?,?,?,?)',
+        (firstName, lastName, email, password, address))
+        db.commit()
+        print('Registered user with email ' + email)
+        return new_usr
