@@ -48,7 +48,7 @@ class Login extends Component {
                 <input type="text" id="password" name="Password" class="loginLabel"></input>
                 <br/>
 
-                <button type="login" class = "login-bttn">Login</button>
+                <button type="login" class = "login-bttn"><Link to="/home">Login</Link></button>
                 <h5>Don't have an account yet? <Link to="/register">Register</Link></h5>
             </form></center>
         </div>

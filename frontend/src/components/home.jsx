@@ -6,6 +6,7 @@ export default function Home() {
     <h1>Home Page</h1>
     <p>This is a test page.</p>
     <Link to="/example">Link to example route</Link><br/>
-    <Link to="/search">Link to group search</Link>
+    <Link to="/search">Link to group search</Link><br/>
+    <Link to="/Create_Group">Link to Create_Group</Link>
   </div>;
 }
