@@ -16,8 +16,7 @@ def example():
 def search():
     db = get_db()
     if request.method == 'POST':
-        messages = db.execute("SELECT * FROM Example WHERE contents like '%?%'",(request.form['message'],)).fetchall()
-        #return {'message': 'SELECT * FROM Example WHERE contents like \'%?%\''.format((request.form['message'],))}
+        messages = db.execute("SELECT * FROM Example WHERE contents like ?", ["%" + request.form['message'] + "%"] ).fetchall()
     else:
         messages = db.execute('SELECT * FROM Example').fetchall()
     return {'messages': list(map(dict, messages))}
