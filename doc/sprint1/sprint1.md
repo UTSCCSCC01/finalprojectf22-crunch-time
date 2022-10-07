@@ -35,3 +35,8 @@ Justin, Denis, Shaahid, Sharon, Iangona, Jesse
 
 ## Team Capacity
 <img width="284" alt="Capture" src="https://user-images.githubusercontent.com/56009508/194593295-efcc8583-b75c-4d30-a944-24ef44eb69c4.PNG">
+
+## Spikes
+* Larger than expected learning curve required for Git for some group memembers, which lead to some disorganized commits
+* Issues with connecting Python flask with the SQL database 
+* Language learning curve for React, flask, SQL bigger than expected
