@@ -1,24 +1,25 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
-=======
 import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/home';
 import Example from './components/example';
 import Search from './components/search';
+import Login from './components/login';
+import Register from './components/register';
 
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
-=======
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Login />} />
+        <Route path='/home' element={<Home />} />
         <Route path='/example' element={<Example />} />
         <Route path='/search' element={<Search />} />
+        <Route path='/register' element={<Register />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
