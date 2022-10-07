@@ -20,7 +20,7 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-    User.loginUser(email, password, db, db)
+    User.loginUser(email, password, db)
     return redirect('/')
 
 @app.route('/logout', methods=['GET', 'POST'])
