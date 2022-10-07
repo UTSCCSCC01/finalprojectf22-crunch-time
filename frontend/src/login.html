@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>  
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content = "width=device-width, initial-scale=1">
+        <title>DropIN - Log In</title>
+    
+        <link rel="stylesheet" href="index.css"/>
+    </head>
+
+    <body>
+        <div class = "content"><center>
+            <h1>Welcome back!</h1>
+            <form action="http://127.0.0.1:5000/login" method = "post" id="login-form">
+                <label for="username">Username</label>
+                <input type="text" id="Utorid" name="Utorid" class="loginLabel">
+                <br>
+                        
+                <label for="Password">Password</label>
+                <input type="text" id="password" name="Password" class="loginLabel">
+                <br>
+
+                <button type="login" class = "login-bttn">Login</button>
+                <h5>Don't have an account yet? <a href = "{{ url_for('register') }}"><u>Register</u></a></h5>
+            </form></center>
+        </div>
+    </body>
+</html>
