@@ -7,13 +7,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/home';
 import Example from './components/example';
 import Search from './components/search';
+import Login from './components/login';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Login />} />
+        <Route path='/home' element={<Home />} />
         <Route path='/example' element={<Example />} />
         <Route path='/search' element={<Search />} />
       </Routes>
