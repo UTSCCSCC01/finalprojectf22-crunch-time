@@ -6,14 +6,20 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/home';
 import Example from './components/example';
+import Search from './components/search';
+import Login from './components/login';
+import Register from './components/register';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Login />} />
+        <Route path='/home' element={<Home />} />
         <Route path='/example' element={<Example />} />
+        <Route path='/search' element={<Search />} />
+        <Route path='/register' element={<Register />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
