@@ -19,6 +19,21 @@ def example():
     messages = db.execute('SELECT * FROM Example').fetchall()
     return {'messages': list(map(dict, messages))}
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    db = get_db()
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+    User.loginUser(email, password, db)
+    return redirect('/')
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    db = get_db()
+    User.logoutUser(db)
+    return redirect('/')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     db = get_db()
@@ -58,3 +73,4 @@ def Create_Group():
 if __name__ == '__main__':
     app.debug = True
     app.run()
+
