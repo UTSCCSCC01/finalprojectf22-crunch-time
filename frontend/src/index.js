@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/home';
 import Example from './components/example';
 import Search from './components/search';
+import Register from './components/register';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,6 +17,7 @@ root.render(
         <Route path='/' element={<Home />} />
         <Route path='/example' element={<Example />} />
         <Route path='/search' element={<Search />} />
+        <Route path='/register' element={<Register />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
