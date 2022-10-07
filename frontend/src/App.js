@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/home';
 import Example from './components/example';
 import Create_Group from './components/Create_Group';
+import Search from './components/search';
+
 function App() {
  
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/example' element={<Example />} />
         <Route path='/Create_Group' element={<Create_Group />} />
+        <Route path='/search' element={<Search />} />
+
       </Routes>
     </BrowserRouter>
   );
