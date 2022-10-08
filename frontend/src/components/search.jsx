@@ -61,8 +61,8 @@ class Search extends Component {
         <h2>List of found groups:</h2>
         <ul className="list-group">
           {this.state.messages.map((msg) => (
-            <li className="list-group-item" key={msg.id}>
-              {"id " + msg.id + ": " + msg.contents}
+            <li className="list-group-item" key={msg.group_id}>
+              {msg.group_name}
             </li>
           ))}
         </ul>

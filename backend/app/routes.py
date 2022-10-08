@@ -6,9 +6,9 @@ import sqlite3 as sql
 from flask import g
 from app.user import User
 
-@app.route('/')
+"""@app.route('/')
 def route():
-    return 'Hi!'
+    return 'Hi!'"""
 
 @app.route('/example', methods=['GET', 'POST'])
 def example():
