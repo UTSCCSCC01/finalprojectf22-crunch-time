@@ -40,7 +40,7 @@ class Search extends Component {
       <div className="container mt-3 mb-3">
         <h1>Search page</h1>
         <p>
-          <Link to="/home">Return to home</Link>
+          <Link to="/">Return to home</Link>
         </p>
         <form onSubmit={this.sendMsg} className="mb-3">
           <div className="form-group mb-3">

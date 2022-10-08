@@ -41,11 +41,11 @@ class Login extends Component {
             <h1>Welcome back!</h1>
             <form action="http://localhost:3000/login" method = "POST" id="login-form">
                 <label for="email">Email</label>
-                <input type="text" id="email" name="email" class="loginLabel"></input>
+                <input type="text" id="email" name="email" class="loginLabel"/>
                 <br/>
                         
                 <label for="Password">Password</label>
-                <input type="text" id="password" name="password" class="loginLabel"></input>
+                <input type="text" id="password" name="password" class="loginLabel"/>
                 <br/>
 
                 <button type="login" class = "login-bttn"><Link to="/home">Login</Link></button>

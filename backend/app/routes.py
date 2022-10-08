@@ -50,9 +50,9 @@ def register():
 def search():
     db = get_db()
     if request.method == 'POST':
-        messages = db.execute("SELECT * FROM Example WHERE contents like ?", ["%" + request.form['message'] + "%"] ).fetchall()
+        messages = db.execute("SELECT * FROM Groups WHERE group_name like ?", ["%" + request.form['message'] + "%"] ).fetchall()
     else:
-        messages = db.execute('SELECT * FROM Example').fetchall()
+        messages = db.execute('SELECT * FROM Groups').fetchall()
     return {'messages': list(map(dict, messages))}
     
     
@@ -60,16 +60,13 @@ def search():
 def Create_Group():
     db = get_db()
     if request.method == 'POST':
-        db.execute("CREATE TABLE Groups (id INTEGER PRIMARY KEY AUTOINCREMENT, Size INTEGER, Username TEXT, User_id TEXT)")
-        db.execute('''
-            INSERT INTO Groups ( Size, Username, User_id )
-            VALUES
-            ( 1, "ding", "2")
-            ''')
+        db.execute('INSERT INTO Groups ( group_id, group_name) VALUES (1, "Best group")')
+        db.execute('INSERT INTO User_in_group ( user_id, group_id) VALUES (1, 1)')
         db.commit()
     
         
     return {'messages': [request.method]}
+
 if __name__ == '__main__':
     app.debug = True
     app.run()
