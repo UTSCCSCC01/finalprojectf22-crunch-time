@@ -39,13 +39,13 @@ class Login extends Component {
     return (
         <div class = "content"><center>
             <h1>Welcome back!</h1>
-            <form action="http://127.0.0.1:5000/login" method = "post" id="login-form">
-                <label for="username">Username</label>
-                <input type="text" id="Utorid" name="Utorid" class="loginLabel"></input>
+            <form action="http://localhost:3000/login" method = "POST" id="login-form">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" class="loginLabel"></input>
                 <br/>
                         
                 <label for="Password">Password</label>
-                <input type="text" id="password" name="Password" class="loginLabel"></input>
+                <input type="text" id="password" name="password" class="loginLabel"></input>
                 <br/>
 
                 <button type="login" class = "login-bttn"><Link to="/home">Login</Link></button>
