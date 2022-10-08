@@ -40,35 +40,36 @@ class Register extends Component {
         <div class = "content"> <center>
             <h1>Register</h1>
             <h5>Glad you’re joining DropIN! Please enter your information below.</h5><br/>
+            <form action="http://localhost:3000/register" method = "POST" id="register-form">
             
-            <label for="First Name">First Name</label> 
-            <input type="text" id="First Name" name="First Name" class="loginLabel"></input>
-            <br/>
-            <br/>
+              <label for="firstName">First Name</label> 
+              <input type="text" id="firstName" name="firstName" class="loginLabel"></input>
+              <br/>
+              <br/>
 
-            <label for="Last Name">Last Name</label>
-            <input type="text" id="Last Name" name="Last Name" class="loginLabel"></input>
-            <br/>
-            <br/>
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" name="lastName" class="loginLabel"></input>
+              <br/>
+              <br/>
 
-            <label for="Email">Email</label>
-            <input type="text" id="Email" name="Email" class="loginLabel"></input>
-            <br/>
-            <br/>
-            
-            <label for="Password">Password</label>
-            <input type="text" id="password" name="Password" class="loginLabel"></input>
-            <br/>
-            <br/>
+              <label for="email">Email</label>
+              <input type="text" id="email" name="email" class="loginLabel"></input>
+              <br/>
+              <br/>
+              
+              <label for="password">Password</label>
+              <input type="text" id="password" name="password" class="loginLabel"></input>
+              <br/>
+              <br/>
 
-            <label for="Address">Address</label>
-            <input type="text" id="Address" name="Address" class="loginLabel"></input>
-            <br/>
-            <br/>
+              <label for="address">Address</label>
+              <input type="text" id="address" name="address" class="loginLabel"></input>
+              <br/>
+              <br/>
 
-            <button type="register" class="login-bttn">Register</button>
-            <h6>Already have an account? <Link to="/">Login</Link></h6>
-            </center>
+              <button type="register" class="login-bttn"><Link to="/home">Register</Link></button>
+              <h6>Already have an account? <Link to="/">Login</Link></h6>
+            </form></center>
         </div>
       
     );
