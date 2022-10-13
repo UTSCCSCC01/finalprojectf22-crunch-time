@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-class Example extends Component {
+class Search extends Component {
   state = { message: "", messages: [] };
 
   fetchMsgs() {
     console.log('fetch');
-    fetch("/example")
+    fetch("/search")
       .then((res) => res.json())
       .then((data) => {
         this.setState({ ...data });
@@ -17,7 +17,7 @@ class Example extends Component {
     event.preventDefault();
     const formData = new FormData();
     formData.set("message", this.state.message);
-    fetch("/example", {
+    fetch("/search", {
       method: "POST",
       body: formData,
     })
@@ -38,13 +38,13 @@ class Example extends Component {
   render() {
     return (
       <div className="container mt-3 mb-3">
-        <h1>Example page</h1>
+        <h1>Search page</h1>
         <p>
-          <Link to="/home">Return to home</Link>
+          <Link to="/">Return to home</Link>
         </p>
         <form onSubmit={this.sendMsg} className="mb-3">
           <div className="form-group mb-3">
-            <label htmlFor="msg">Message:</label>
+            <label htmlFor="msg">Group:</label>
             <input
               type="text"
               id="msg"
@@ -55,14 +55,14 @@ class Example extends Component {
             />
           </div>
           <button className="btn btn-primary" type="submit">
-            Send
+            Find
           </button>
         </form>
-        <h2>List of messages so far:</h2>
+        <h2>List of found groups:</h2>
         <ul className="list-group">
           {this.state.messages.map((msg) => (
-            <li className="list-group-item" key={msg.id}>
-              {"id " + msg.id + ": " + msg.contents}
+            <li className="list-group-item" key={msg.group_id}>
+              {msg.group_name}
             </li>
           ))}
         </ul>
@@ -71,4 +71,4 @@ class Example extends Component {
   }
 }
 
-export default Example;
+export default Search;
