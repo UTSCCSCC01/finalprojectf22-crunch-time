@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 class Search extends Component {
-  state = { message: "", messages: [] };
+  state = { message: "", messages: [], lat: 0.0, long: 0.0, dist: 0.0 };
 
   fetchMsgs() {
     console.log('fetch');
@@ -17,6 +17,9 @@ class Search extends Component {
     event.preventDefault();
     const formData = new FormData();
     formData.set("message", this.state.message);
+    formData.set("lat", this.state.lat);
+    formData.set("long", this.state.long);
+    formData.set("dist", this.state.dist);
     fetch("/search", {
       method: "POST",
       body: formData,
@@ -32,7 +35,13 @@ class Search extends Component {
   }
 
   handleChange = (event) => {
-    this.setState({ message: event.target.value });
+    const { name, value } = event.target;
+    setFormValue((prevState) => {
+      return {
+        ...prevState,
+        [name]: value,
+      };
+    });
   };
 
   render() {
@@ -51,6 +60,42 @@ class Search extends Component {
               className="form-control"
               name="message"
               value={this.state.message}
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className="form-group mb-3">
+            <label htmlFor="lat">Latitude:</label>
+            <input
+              type="text"
+              id="lat"
+              className="form-control"
+              name="lat"
+              defaultValue={0}
+              value={this.state.lat}
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className="form-group mb-3">
+            <label htmlFor="long">Longitude:</label>
+            <input
+              type="text"
+              id="long"
+              className="form-control"
+              name="long"
+              defaultValue={0}
+              value={this.state.long}
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className="form-group mb-3">
+            <label htmlFor="dist">Maximum distance (Km):</label>
+            <input
+              type="text"
+              id="dist"
+              className="form-control"
+              name="dist"
+              defaultValue={0}
+              value={this.state.dist}
               onChange={this.handleChange}
             />
           </div>

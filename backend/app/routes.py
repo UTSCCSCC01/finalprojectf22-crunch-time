@@ -1,7 +1,6 @@
 from flask import request, redirect
 from app import app
 from app.db import get_db
-import sqlite3 
 import sqlite3 as sql
 from flask import g
 from app.user import User

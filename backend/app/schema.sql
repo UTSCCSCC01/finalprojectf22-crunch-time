@@ -12,7 +12,9 @@ CREATE TABLE Example (
 CREATE TABLE Groups (
   group_id INTEGER PRIMARY KEY AUTOINCREMENT, 
   size INTEGER DEFAULT 1000, 
-  group_name Text NOT NULL
+  group_name Text NOT NULL,
+  latitude FLOAT DEFAULT NULL,
+  longitude FLOAT DEFAULT NULL
 );
 
 CREATE TABLE User_in_group (
@@ -39,7 +41,7 @@ CREATE TABLE Users (
 
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (1, "Ken", "Nim", "Ken@mail.com", "securepass", "user1");
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (2, "Phil", "Ivy", "phil@mail.com", "securepass", "user2");
-INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (3, "Jim", "Carry", "jim@mail.com", "securepass", "user3");
+INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (3, "Jim", "Carrie", "jim@mail.com", "securepass", "user3");
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (4, "Ben", "Uncle", "ben@mail.com", "securepass", 'user4');
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (5, "Mike", "Flem", "mike@mail.com", "securepass", "user5");
 
