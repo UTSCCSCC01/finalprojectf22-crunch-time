@@ -9,6 +9,8 @@ import Create_Group from './components/Create_Group';
 import Search from './components/search';
 import Login from './components/login';
 import Register from './components/register';
+import Chat from './components/Chat';
+
 function App() {
  
   return (
@@ -20,6 +22,7 @@ function App() {
         <Route path='/Create_Group' element={<Create_Group />} />
         <Route path='/search' element={<Search />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/Chat' element={<Chat />} />
       </Routes>
     </BrowserRouter>
   );
