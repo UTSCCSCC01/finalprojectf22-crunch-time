@@ -6,7 +6,7 @@ import sqlite3
 import sqlite3 as sql
 from flask import g
 from app.user import User
-from flask_socketio import SocketIO, send
+from flask_socketio import SocketIO, join_room, leave_room, send
 """@app.route('/')
 def route():
     return 'Hi!'"""
@@ -62,10 +62,10 @@ def search():
 def Create_Group():
     db = get_db()
     if request.method == 'POST':
-        db.execute('INSERT INTO Groups ( group_id, group_name) VALUES (1, "Best group")')
-        db.execute('INSERT INTO User_in_group ( user_id, group_id) VALUES (1, 1)')
-        db.commit()
-    
+        # db.execute('INSERT INTO Groups ( group_id, group_name) VALUES (1, "Best group")')
+        # db.execute('INSERT INTO User_in_group ( user_id, group_id) VALUES (1, 1)')
+        # db.commit()
+        return {'messages':1}
         
     return {'messages': [request.method]}
 app.config['SECRET_KEY'] = 'mysecret'
@@ -82,10 +82,22 @@ def handleMessage(msg):
     send(msg, broadcast=True)
     return None
 
+@socketIo.on('join')
+def on_join(data):
+    username = data['username']
+    room = data['room']
+    join_room(room)
+    send(username + ' has entered the room.', to=room)
 
+@socketIo.on('leave')
+def on_leave(data):
+    username = data['username']
+    room = data['room']
+    leave_room(room)
+    send(username + ' has left the room.', to=room)
 if __name__ == '__main__':
     
-    socketio.run(app)
+    socketIo.run(app)
     app.run()
     app.debug = True
 

@@ -12,7 +12,7 @@ import Register from './components/register';
 import Chat from './components/Chat';
 
 function App() {
- 
+  const [selectedMode, setSelectedMode] = useState('open')
   return (
     <BrowserRouter>
       <Routes>
