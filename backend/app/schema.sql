@@ -12,7 +12,8 @@ CREATE TABLE Example (
 CREATE TABLE Groups (
   group_id INTEGER PRIMARY KEY AUTOINCREMENT, 
   size INTEGER DEFAULT 1000, 
-  group_name Text NOT NULL
+  group_name Text NOT NULL,
+  skill_level INTEGER CHECK (skill_level IN (0, 1, 2))
 );
 
 CREATE TABLE User_in_group (
@@ -43,11 +44,11 @@ INSERT into users (user_id, firstName, lastName, email, password, address) VALUE
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (4, "Ben", "Uncle", "ben@mail.com", "securepass", 'user4');
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (5, "Mike", "Flem", "mike@mail.com", "securepass", "user5");
 
-INSERT into Groups (group_id, group_name) VALUES (1, "Best basketball");
-INSERT into Groups (group_id, group_name) VALUES (2, "Noobie chess");
-INSERT into Groups (group_id, group_name) VALUES (3, "Cycling maniacs");
-INSERT into Groups (group_id, group_name) VALUES (4, "Soccer bros");
-INSERT into Groups (group_id, group_name) VALUES (5, "CS:GO Pro team");
+INSERT into Groups (group_id, group_name, skill_level) VALUES (1, "Best basketball", 2);
+INSERT into Groups (group_id, group_name, skill_level) VALUES (2, "Noobie chess", 0);
+INSERT into Groups (group_id, group_name, skill_level) VALUES (3, "Cycling maniacs", 1);
+INSERT into Groups (group_id, group_name, skill_level) VALUES (4, "Soccer bros", 1);
+INSERT into Groups (group_id, group_name, skill_level) VALUES (5, "CS:GO Pro team", 2);
 
 INSERT into User_in_group (user_id, group_id) VALUES (1, 1);
 INSERT into User_in_group (user_id, group_id) VALUES (2, 2);

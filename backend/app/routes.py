@@ -60,8 +60,10 @@ def search():
 def Create_Group():
     db = get_db()
     if request.method == 'POST':
-        db.execute('INSERT INTO Groups ( group_id, group_name) VALUES (1, "Best group")')
-        db.execute('INSERT INTO User_in_group ( user_id, group_id) VALUES (1, 1)')
+        data = request.get_json()
+        db.execute('INSERT INTO Groups (group_name, skill_level) VALUES ("Best group", ?)',
+            (data['skillLevel'],))
+        db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')
         db.commit()
     
         
