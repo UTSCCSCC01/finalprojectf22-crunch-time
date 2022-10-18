@@ -67,6 +67,23 @@ def Create_Group():
         
     return {'messages': [request.method]}
 
+
+@app.route('/account_information', methods=['GET', 'POST'])
+def account_information():
+    db = get_db()
+    if request.method == 'GET':
+        # if 'user' in session:
+        # user_id = session['user']
+        user_id = 1
+        messages = db.execute("SELECT * FROM users WHERE user_id = ?", (user_id,)).fetchall()
+        info = list(map(dict, messages))
+        group_id = db.execute("SELECT group_id FROM User_in_group WHERE user_id = ?", (user_id,)).fetchall()[0][0]
+        groups = db.execute("SELECT group_name FROM Groups WHERE group_id = ?", (group_id,)).fetchall()
+        info[0]['groups']=[]
+        for group in groups:
+            info[0]['groups'].append(group[0])
+    return {'messages': info}
+
 if __name__ == '__main__':
     app.debug = True
     app.run()
