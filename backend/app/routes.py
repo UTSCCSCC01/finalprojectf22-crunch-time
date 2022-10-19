@@ -5,6 +5,7 @@ import sqlite3
 import sqlite3 as sql
 from flask import g
 from app.user import User
+from app.utils import rows_to_dicts
 
 """@app.route('/')
 def route():
@@ -65,9 +66,33 @@ def Create_Group():
             (data['skillLevel'],))
         db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')
         db.commit()
-    
         
     return {'messages': [request.method]}
+
+@app.route('/join_group', methods=['POST', 'GET'])
+def join_group():
+    db = get_db()
+
+    # record user joining the group into the database
+    if request.method == 'POST':
+        data = request.get_json()
+        user_id = data['user_id']
+        group_id = data['group_id']
+        db.execute('INSERT OR IGNORE INTO User_in_group (user_id, group_id) VALUES (?, ?)',
+            (user_id, group_id))
+        db.commit()
+        #print(f'user {user_id} is joining group {group_id}')
+
+    groups = db.execute('SELECT group_id, group_name FROM Groups').fetchall()
+    groups = rows_to_dicts(groups)
+    for group in groups:
+        users = db.execute(
+            'SELECT user_id, email FROM User_in_group NATURAL JOIN Users WHERE group_id = ?',
+            (group['group_id'],)
+        ).fetchall()
+        group['users'] = rows_to_dicts(users)
+    all_users = db.execute('SELECT user_id, email FROM Users').fetchall()
+    return {'groups': groups, 'users': rows_to_dicts(all_users)}
 
 if __name__ == '__main__':
     app.debug = True
