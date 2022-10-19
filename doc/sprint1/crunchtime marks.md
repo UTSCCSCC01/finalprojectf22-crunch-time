@@ -154,7 +154,7 @@ Your Mark: 0
   - 1 mark = at least one team member did not complete any task or did not have any task assigned
   - 0 marks = most of team members have no tasks assigned and/or completed
 
-  Your Mark: \_\_ (wating until demo)
+  Your Mark:  1.5
 
 - Branch Naming (max 2 marks)
 
@@ -176,7 +176,7 @@ Tracking on Jira Total Mark: 13 / 20
 - Started stories that are incomplete will be counted
 - Mark Breakdown: [x = Percentage of story points completed * 20]
 
-Your Mark: \_\_ / 20 (waiting until demo)
+Your Mark: 13.5 / 20 (waiting until demo)
 
 ---
 
@@ -219,28 +219,28 @@ Your Mark: \_\_ / 20 (waiting until demo)
 
 - Attendance (max 2 marks)
 
-  - 2 marks = full team is present
-  - 1 mark = one member is not present
+  - 2 marks = full team is present 2
+  - 1 mark = one member is not present 
   - 0 marks = more than one member is not present
 
 - Working software (max 2 marks)
 
-  - 8 marks = features presented work flawlessly
+  - 8 marks = features presented work flawlessly 5
   - 1 mark removed for each bug/error identified or for missing records on Jira
 
 - Presentation (max 2 marks)
 
-  - 2 marks = UI demonstrated is visually appealing and intuitive for users
+  - 2 marks = UI demonstrated is visually appealing and intuitive for users 1
   - 1 mark = one or more errors identified by the demo TA
   - 0 marks = UI is visually unappealing
 
 - Documentation (max 2 marks)
 
-- 2 marks = documentation has been created for frontend and backend systems with great detail
+- 2 marks = documentation has been created for frontend and backend systems with great detail 2
 - 1 mark = documentation has been created for frontend and backend systems with some errors
 - 0 marks = documentation has not been created
 
-Your Mark: \_\_ / 14
+Your Mark:  10/ 14
 
 ---
 
@@ -248,4 +248,4 @@ Note: This mark will be updated after the demo is presented
 
 ## Total Mark
 
-39.5 / 89
+63 / 89
