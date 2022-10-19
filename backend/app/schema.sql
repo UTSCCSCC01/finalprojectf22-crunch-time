@@ -45,10 +45,10 @@ INSERT into users (user_id, firstName, lastName, email, password, address) VALUE
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (4, "Ben", "Uncle", "ben@mail.com", "securepass", 'user4');
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (5, "Mike", "Flem", "mike@mail.com", "securepass", "user5");
 
-INSERT into Groups (group_id, group_name) VALUES (1, "Best basketball");
-INSERT into Groups (group_id, group_name) VALUES (2, "Noobie chess");
-INSERT into Groups (group_id, group_name) VALUES (3, "Cycling maniacs");
-INSERT into Groups (group_id, group_name) VALUES (4, "Soccer bros");
+INSERT into Groups (group_id, group_name, latitude, longitude) VALUES (1, "Best basketball", 45, -80);
+INSERT into Groups (group_id, group_name, latitude, longitude) VALUES (2, "Noobie chess", 44, -80);
+INSERT into Groups (group_id, group_name, latitude, longitude) VALUES (3, "Cycling maniacs", 43, -79);
+INSERT into Groups (group_id, group_name, latitude, longitude) VALUES (4, "Soccer bros", 10, 45);
 INSERT into Groups (group_id, group_name) VALUES (5, "CS:GO Pro team");
 
 INSERT into User_in_group (user_id, group_id) VALUES (1, 1);

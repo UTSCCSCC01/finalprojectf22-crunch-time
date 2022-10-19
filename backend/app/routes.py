@@ -4,6 +4,7 @@ from app.db import get_db
 import sqlite3 as sql
 from flask import g
 from app.user import User
+from app.groups import search as gsearch
 
 """@app.route('/')
 def route():
@@ -49,7 +50,9 @@ def register():
 def search():
     db = get_db()
     if request.method == 'POST':
-        messages = db.execute("SELECT * FROM Groups WHERE group_name like ?", ["%" + request.form['message'] + "%"] ).fetchall()
+        print( request.form['message'])
+        messages = gsearch(db, request.form['message'], float(request.form['lat']), float(request.form['long']), float(request.form['dist']))
+        
     else:
         messages = db.execute('SELECT * FROM Groups').fetchall()
     return {'messages': list(map(dict, messages))}

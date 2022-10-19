@@ -2,7 +2,15 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 class Search extends Component {
-  state = { message: "", messages: [], lat: 0.0, long: 0.0, dist: 0.0 };
+  //state = { message: "d", messages: [], lat: 0.0, long: 0.0, dist: 0.0 };
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: "", messages: [], lat: 0.0, long: 0.0, dist: 0.0 
+    };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
 
   fetchMsgs() {
     console.log('fetch');
@@ -20,6 +28,7 @@ class Search extends Component {
     formData.set("lat", this.state.lat);
     formData.set("long", this.state.long);
     formData.set("dist", this.state.dist);
+    console.log(this.state.message, this.state.lat, this.state.long, this.state.dist);
     fetch("/search", {
       method: "POST",
       body: formData,
@@ -34,15 +43,15 @@ class Search extends Component {
     this.fetchMsgs();
   }
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormValue((prevState) => {
-      return {
-        ...prevState,
-        [name]: value,
-      };
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
     });
-  };
+  }
 
   render() {
     return (
@@ -56,7 +65,6 @@ class Search extends Component {
             <label htmlFor="msg">Group:</label>
             <input
               type="text"
-              id="msg"
               className="form-control"
               name="message"
               value={this.state.message}
@@ -66,36 +74,33 @@ class Search extends Component {
           <div className="form-group mb-3">
             <label htmlFor="lat">Latitude:</label>
             <input
-              type="text"
-              id="lat"
+              type="number"
               className="form-control"
               name="lat"
-              defaultValue={0}
               value={this.state.lat}
+              defaultValue={0}
               onChange={this.handleChange}
             />
           </div>
           <div className="form-group mb-3">
             <label htmlFor="long">Longitude:</label>
             <input
-              type="text"
-              id="long"
+              type="number"
               className="form-control"
               name="long"
-              defaultValue={0}
-              value={this.state.long}
+              //value={this.state.long}
+              //defaultValue={0}
               onChange={this.handleChange}
             />
           </div>
           <div className="form-group mb-3">
             <label htmlFor="dist">Maximum distance (Km):</label>
             <input
-              type="text"
-              id="dist"
+              type="number"
               className="form-control"
               name="dist"
-              defaultValue={0}
               value={this.state.dist}
+              //defaultValue={0}
               onChange={this.handleChange}
             />
           </div>
