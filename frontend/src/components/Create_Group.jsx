@@ -1,5 +1,6 @@
 import React, {Component, useState, useEffect, useInsertionEffect} from 'react';
 import { Link } from "react-router-dom";
+import Navbar from './navbar/navbar-logged-in.jsx';
 
 class Create_Group extends Component {
     
@@ -25,8 +26,11 @@ class Create_Group extends Component {
         // <div> {this.fetchMsgs()}
         //     data['messages'] 
         // </div>
-        <div class="bg-image position-relative"  Style="background: #E4A11B; height: 100vh" >
-            <button type="button" onClick = {this.fetchMsgs} class="btn btn-primary position-relative top-50 start-50">Create Group</button>
+        <div className = "root">
+            <Navbar/>
+            <div class="bg-image position-relative"  Style="background: #E4A11B; height: 100vh" >
+                <button type="button" onClick = {this.fetchMsgs} class="btn btn-primary position-relative top-50 start-50">Create Group</button>
+            </div>
         </div>
     );
   }
