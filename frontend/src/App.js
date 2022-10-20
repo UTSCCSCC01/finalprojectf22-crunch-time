@@ -9,17 +9,19 @@ import Create_Group from './components/Create_Group';
 import Search from './components/search';
 import Login from './components/login';
 import Register from './components/register';
+import Homepage from './components/homepage/homepage';
 function App() {
  
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Login />} />
+        <Route path='/' element={<Homepage />} />
         <Route path='/home' element={<Home />} />
         <Route path='/example' element={<Example />} />
         <Route path='/Create_Group' element={<Create_Group />} />
         <Route path='/search' element={<Search />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/login' element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
