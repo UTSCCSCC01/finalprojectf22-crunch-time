@@ -16,7 +16,7 @@ export default function Homepage() {
         <br/>
         <h2>Let us know where you are and what you’re <br/>interested in. We’ll take care of the rest.</h2>
         <br/>
-        <button type="search" class = "home-bttn"><Link to="/search">Start your search</Link></button>
+        <button type="search" class = "home-bttn"><Link to="/register">Start your search</Link></button>
       </div>
       <img src = {graphic} className = "magnifier" alt = "magnifier graphic"/>
     </div>

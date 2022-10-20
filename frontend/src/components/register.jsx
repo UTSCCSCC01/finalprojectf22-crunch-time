@@ -68,7 +68,7 @@ class Register extends Component {
               <br/>
 
               <button type="register" class="login-bttn"><Link to="/home">Register</Link></button>
-              <h6>Already have an account? <Link to="/">Login</Link></h6>
+              <h6>Already have an account? <Link to="/login">Login</Link></h6>
             </form></center>
         </div>
       
