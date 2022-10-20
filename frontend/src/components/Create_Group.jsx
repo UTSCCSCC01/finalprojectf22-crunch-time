@@ -1,5 +1,6 @@
 import React, {Component, useState, useEffect, useInsertionEffect} from 'react';
 import { Link } from "react-router-dom";
+import Navbar from './navbar/navbar-logged-in.jsx';
 
 class Create_Group extends Component {
   state = {skillLevel: 0}
@@ -35,14 +36,20 @@ class Create_Group extends Component {
         // <div> {this.fetchMsgs()}
         //     data['messages'] 
         // </div>
-        <div className="bg-image position-relative" Style="background: #E4A11B; height: 100vh" >
-            <label htmlFor="skill-level">Skill level:</label>
-            <select name="skill-level" id="skill-level" onChange={this.handleSkillLevelChange}>
-                <option value="0">Beginner</option>
-                <option value="1">Intermediate</option>
-                <option value="2">Advanced</option>
-            </select>
-            <button type="button" onClick = {this.sendReq} className="btn btn-primary position-relative top-50 start-50">Create Group</button>
+
+        <div className = "root">
+            <Navbar/>
+            <
+
+           <div className="bg-image position-relative" Style="background: #E4A11B; height: 100vh" >
+              <label htmlFor="skill-level">Skill level:</label>
+              <select name="skill-level" id="skill-level" onChange={this.handleSkillLevelChange}>
+                  <option value="0">Beginner</option>
+                  <option value="1">Intermediate</option>
+                  <option value="2">Advanced</option>
+              </select>
+              <button type="button" onClick = {this.sendReq} className="btn btn-primary position-relative top-50 start-50">Create Group</button>
+
         </div>
     );
   }
