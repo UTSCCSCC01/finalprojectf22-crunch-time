@@ -19,7 +19,7 @@ def example():
     messages = db.execute('SELECT * FROM Example').fetchall()
     return {'messages': list(map(dict, messages))}
 
-=======
+#=======
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     db = get_db()
