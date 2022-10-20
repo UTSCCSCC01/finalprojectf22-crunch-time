@@ -1,11 +1,11 @@
 from flask import request, redirect
 from app import app
 from app.db import get_db
-import sqlite3 
 import sqlite3 as sql
 from flask import g
 from app.user import User
 from app.utils import rows_to_dicts
+from app.groups import search as gsearch
 
 """@app.route('/')
 def route():
@@ -51,7 +51,11 @@ def register():
 def search():
     db = get_db()
     if request.method == 'POST':
-        messages = db.execute("SELECT * FROM Groups WHERE group_name like ?", ["%" + request.form['message'] + "%"] ).fetchall()
+        if (request.form['loc'] == "true"):
+            messages = gsearch(db, request.form['groupName'], float(request.form['lat']), float(request.form['long']), float(request.form['dist']))
+        else:
+            messages = db.execute("SELECT * FROM Groups WHERE group_name like ?", ["%" + request.form['groupName'] + "%"] ).fetchall()
+        
     else:
         messages = db.execute('SELECT * FROM Groups').fetchall()
     return {'messages': list(map(dict, messages))}
