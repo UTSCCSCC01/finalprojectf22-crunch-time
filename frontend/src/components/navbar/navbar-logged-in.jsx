@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import './navbar.css';
 
+// Media
+import graphic from "../../media/logo.png";
+
 const Navbar = () => {
     return (<nav className = "nav">
-        <a href = "/home" className = "site-name"> DropIN</a>
+        <a href = "/home">
+            <img alt = "logo" src = {graphic}></img>
+        </a>
 
         <ul>
             <li>
