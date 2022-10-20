@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import './homepage.css';
+import Navbar from '../navbar/navbar-not-logged-in.jsx';
 
 // Media
 import graphic from "../../media/magnifier.png";
@@ -10,6 +11,7 @@ document.body.style = 'background: #F1F3FE;';
 
 export default function Homepage() {
   return <div className = "home-content">
+    <Navbar/>
     <div className = "home-intro">
       <div className = "home-intro-text">
         <h1><b>Find other <span style = {{color: '#0C3ADE'}}>players</span>.<br/>Whenever, wherever.</b></h1>
