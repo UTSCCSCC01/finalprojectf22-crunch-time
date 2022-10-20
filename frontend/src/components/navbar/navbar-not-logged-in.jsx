@@ -21,7 +21,10 @@ const Navbar = () => {
                 <a href = "/faq">FAQs</a>
             </li>
             <li>
-                <a href = "/">Login</a>
+                <a href = "/login">Login</a>
+            </li>
+            <li>
+                <a href = "/register">Register</a>
             </li>
         </ul>
     </nav>)
