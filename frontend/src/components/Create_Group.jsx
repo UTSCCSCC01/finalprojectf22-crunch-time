@@ -39,7 +39,7 @@ class Create_Group extends Component {
 
         <div className = "root">
             <Navbar/>
-            <
+            
 
            <div className="bg-image position-relative" Style="background: #E4A11B; height: 100vh" >
               <label htmlFor="skill-level">Skill level:</label>
@@ -49,6 +49,7 @@ class Create_Group extends Component {
                   <option value="2">Advanced</option>
               </select>
               <button type="button" onClick = {this.sendReq} className="btn btn-primary position-relative top-50 start-50">Create Group</button>
+            </div>  
 
         </div>
     );

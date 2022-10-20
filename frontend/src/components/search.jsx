@@ -151,6 +151,7 @@ class Search extends Component {
             ))}
           </ul>
       </div>
+     </div> 
     );
   }
 }
