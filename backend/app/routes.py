@@ -50,8 +50,10 @@ def register():
 def search():
     db = get_db()
     if request.method == 'POST':
-        print( request.form['message'])
-        messages = gsearch(db, request.form['message'], float(request.form['lat']), float(request.form['long']), float(request.form['dist']))
+        if (request.form['loc'] == "true"):
+            messages = gsearch(db, request.form['groupName'], float(request.form['lat']), float(request.form['long']), float(request.form['dist']))
+        else:
+            messages = db.execute("SELECT * FROM Groups WHERE group_name like ?", ["%" + request.form['groupName'] + "%"] ).fetchall()
         
     else:
         messages = db.execute('SELECT * FROM Groups').fetchall()

@@ -2,14 +2,16 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 class Search extends Component {
-  //state = { message: "d", messages: [], lat: 0.0, long: 0.0, dist: 0.0 };
+  //state = { groupName: "d", messages: [], lat: 0.0, long: 0.0, dist: 0.0 };
   constructor(props) {
     super(props);
     this.state = {
-      message: "", messages: [], lat: 0.0, long: 0.0, dist: 0.0 
+      groupName: "", messages: [], loc: false, lat: 0.0, long: 0.0, dist: 0.0 
     };
 
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.getLocation = this.getLocation.bind(this);
+    this.handleLoc = this.handleLoc.bind(this);
   }
 
   fetchMsgs() {
@@ -24,11 +26,14 @@ class Search extends Component {
   sendMsg = (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.set("message", this.state.message);
+    formData.set("groupName", this.state.groupName);
     formData.set("lat", this.state.lat);
-    formData.set("long", this.state.long);
-    formData.set("dist", this.state.dist);
-    console.log(this.state.message, this.state.lat, this.state.long, this.state.dist);
+    formData.set("loc", this.state.loc);
+    if (this.state.loc) {
+      formData.set("long", this.state.long);
+      formData.set("dist", this.state.dist);
+    }
+    console.log(this.state.groupName, this.state.loc, this.state.lat, this.state.long, this.state.dist);
     fetch("/search", {
       method: "POST",
       body: formData,
@@ -43,7 +48,7 @@ class Search extends Component {
     this.fetchMsgs();
   }
 
-  handleInputChange(event) {
+  handleChange(event) {
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -53,6 +58,21 @@ class Search extends Component {
     });
   }
 
+  handleLoc() {
+    this.setState({
+      loc: !this.state.loc
+    });
+  }
+
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        this.setState({ lat : pos.coords.latitude, long : pos.coords.longitude});
+      });
+    } 
+  }
+
+  
   render() {
     return (
       <div className="container mt-3 mb-3">
@@ -66,44 +86,53 @@ class Search extends Component {
             <input
               type="text"
               className="form-control"
-              name="message"
-              value={this.state.message}
+              name="groupName"
+              value={this.state.groupName}
               onChange={this.handleChange}
             />
           </div>
-          <div className="form-group mb-3">
-            <label htmlFor="lat">Latitude:</label>
-            <input
-              type="number"
-              className="form-control"
-              name="lat"
-              value={this.state.lat}
-              defaultValue={0}
-              onChange={this.handleChange}
-            />
+          <input type="checkbox" name="loc" id="loc" checked={this.state.loc} onChange={this.handleLoc} />
+          <label htmlFor="loc"> Filter By distance</label>
+          
+          { this.state.loc?
+          <div>
+            <div className="form-group mb-3">
+              <label htmlFor="lat">Latitude:</label>
+              <input
+                type="number"
+                className="form-control"
+                name="lat"
+                value={this.state.lat}
+                onChange={this.handleChange}
+              />
+            </div>
+            <div className="form-group mb-3">
+              <label htmlFor="long">Longitude:</label>
+              <input
+                type="number"
+                className="form-control"
+                name="long"
+                value={this.state.long}
+                onChange={this.handleChange}
+              />
+            </div>
+            <div className="form-group mb-3">
+              <label htmlFor="dist">Maximum distance (Km):</label>
+              <input
+                type="number"
+                className="form-control"
+                name="dist"
+                value={this.state.dist}
+                onChange={this.handleChange}
+              />
+            </div>
+          <button type="button" className="btn btn-primary" onClick={this.getLocation}>
+            Use My Location
+          </button>
           </div>
-          <div className="form-group mb-3">
-            <label htmlFor="long">Longitude:</label>
-            <input
-              type="number"
-              className="form-control"
-              name="long"
-              //value={this.state.long}
-              //defaultValue={0}
-              onChange={this.handleChange}
-            />
-          </div>
-          <div className="form-group mb-3">
-            <label htmlFor="dist">Maximum distance (Km):</label>
-            <input
-              type="number"
-              className="form-control"
-              name="dist"
-              value={this.state.dist}
-              //defaultValue={0}
-              onChange={this.handleChange}
-            />
-          </div>
+          :
+          <div></div>
+          }
           <button className="btn btn-primary" type="submit">
             Find
           </button>
