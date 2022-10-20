@@ -14,7 +14,7 @@ CREATE TABLE Groups (
   size INTEGER DEFAULT 1000, 
   group_name Text NOT NULL,
   latitude FLOAT DEFAULT NULL,
-  longitude FLOAT DEFAULT NULL
+  longitude FLOAT DEFAULT NULL,
   skill_level INTEGER CHECK (skill_level IN (0, 1, 2))
 );
 
