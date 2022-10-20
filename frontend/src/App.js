@@ -6,14 +6,20 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/home';
 import Example from './components/example';
 import Create_Group from './components/Create_Group';
+import Search from './components/search';
+import Login from './components/login';
+import Register from './components/register';
 function App() {
  
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Login />} />
+        <Route path='/home' element={<Home />} />
         <Route path='/example' element={<Example />} />
         <Route path='/Create_Group' element={<Create_Group />} />
+        <Route path='/search' element={<Search />} />
+        <Route path='/register' element={<Register />} />
       </Routes>
     </BrowserRouter>
   );
