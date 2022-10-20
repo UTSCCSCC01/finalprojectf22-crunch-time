@@ -6,7 +6,7 @@ import graphic from "../../media/logo.png";
 
 const Navbar = () => {
     return (<nav className = "nav">
-        <a href = "/home">
+        <a href = "/">
             <img alt = "logo" src = {graphic}></img>
         </a>
 
