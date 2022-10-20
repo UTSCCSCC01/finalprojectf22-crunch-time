@@ -33,7 +33,6 @@ const Chat = () => {
   const onClick = () => {
     if (message !== "") {
       socket.emit("message", message);
-      console.log(socket)
       setMessage("");
     } else {
       alert("Please Add A Message");

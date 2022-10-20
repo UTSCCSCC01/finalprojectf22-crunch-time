@@ -29,10 +29,10 @@ CREATE TABLE loggedInUsers (
 );
   
 CREATE TABLE Users (
-  user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  firstName TEXT NOT NULL,
+  user_id INTEGER  AUTOINCREMENT,
+  firstName TEXT  NOT NULL,
   lastName TEXT NOT NULL,
-  email TEXT NOT NULL,
+  email PRIMARY KEY TEXT NOT NULL,
   password TEXT NOT NULL,
   address TEXT NOT NULL
 );

@@ -2,19 +2,11 @@ import React, { Component, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.reset();
+ state = {
+    Email: '',
+    Password: ''
   }
-  
-  reset() {
-    // Always set the initial state in its own function, so that
-    // you can trivially reset your components at any point.
-    this.state = {
-      Email: '',
-      Password: ''
-    };
-  }
+
   
   
   updateEmail(evt) {
@@ -30,40 +22,52 @@ class Login extends Component {
       Password: val
     });
   }
-  // For verifying login authentication
+  //Checks if user is already loggined in
+//   async  componentDidMount(){
+
+//     fetch("/user",{
+//       method: 'get', // or 'PUT'
+//       headers: {
+//         'Content-Type': 'application/json',
+//         },
+//       })       
+//     .then((response) => response.json())
+//     .then(() => {
+//       window.location.replace("/home")
+      
+        
+//     })  
+//     .catch((error) => {
+//       console.log(error)
+
+
+//     },[]);
+
+//  }
+  // For loggin in
   fetchMsgs = () =>{
     const data = this.state;
-    
     fetch("/login",{
         method: 'POST', // or 'PUT'
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        
         body: JSON.stringify(data),
     })       
     .then((response) => response.json())
     .then((data) => {
-        //console.log('Success:', data);
-       
-    })
+      console.log(data)
+      window.location.replace("/home")
+        
+    })  
     .catch((error) => {
-        console.error('Error:', error);
+
+        alert('Error:', error);
+        window.location.reload()
+
+
     },[]);
   }
 
-  sendMsg = (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.set("message", this.state.message);
-    fetch("/", {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({ ...data });
-      });
-  };
+
 
 
   handleChange = (event) => {

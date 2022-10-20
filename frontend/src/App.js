@@ -24,6 +24,7 @@ function App() {
         <Route path='/Create_Group' element={<Create_Group />} />
         <Route path='/search' element={<Search />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/Login' element={<Login />} />
         <Route path='/Chat' element={<Chat />} />
         <Route path='/Chat2' element={<Chat2 />} />
       </Routes>

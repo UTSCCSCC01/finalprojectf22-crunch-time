@@ -9,7 +9,6 @@ function Chat2(){
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    console.log(socket)
     getMessages();
   }, [messages.length]);
 

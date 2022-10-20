@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from flask import jsonify;
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from . import app
 from app.db import get_db
 import sqlite3 
@@ -7,10 +6,29 @@ import sqlite3 as sql
 from flask import g
 from app.user import User
 from flask_socketio import SocketIO, join_room, leave_room, send
+from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
+from flask_cors import CORS, cross_origin
+from flask_session import Session
+import json
 
 """@app.route('/')
 def route():
     return 'Hi!'"""
+
+app.secret_key = 'super secret key'
+app.config['SESSION_TYPE'] = 'filesystem'
+bcrypt = Bcrypt(app)
+CORS(app, supports_credentials=True)
+server_session = Session(app)
+#db.init_app(app)
+
+@app.route('/user', methods=['GET', 'POST'])
+def get_user():
+
+    if 'user_id' != None :
+        return jsonify({'user_id': session['user_id']})
+    return 'bad request!', 400
 
 
 @app.route('/example', methods=['GET', 'POST'])
@@ -24,24 +42,31 @@ def example():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+
     db = get_db()
+    print(request.json)
     Email = request.json['Email']
     Password = request.json['Password']
+    messages =  db.execute("SELECT * FROM users WHERE email = (?)", [Email]).fetchall()
+    print(temp['messages'][0]['password'])
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-    User.loginUser(email, password, db)
-    return redirect('/')
+        if messages!=None:
+            temp = {'messages': list(map(dict, messages))}
+            if Password == str(temp['messages'][0]['password']):
+                session['user_id'] = Email
+                return temp
+    return 'bad request!', 400
 
-@app.route('/logout', methods=['GET', 'POST'])
-def logout():
-    db = get_db()
-    User.logoutUser(db)
-    return redirect('/')
+
+@app.route("/logout", methods=["POST"])
+def logout_user():
+    session.pop("user_id")
+    return "200"
+
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    print("a")
     db = get_db()
     FirstName = str(request.json['FirstName'])
     LastName = str(request.json['LastName']) 

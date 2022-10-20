@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import {withRouter} from 'react-router-dom';
 
 class Register extends Component {
  
@@ -10,8 +11,6 @@ class Register extends Component {
     Password: '',
     Address: ''
   };
-
-
 
   updateFirstName(evt) {
     const val = evt.target.value;
@@ -70,13 +69,14 @@ class Register extends Component {
     })       
     .then((response) => response.json())
     .then((data) => {
-      
-        //alert('Success:', data);
+      window.location.replace("/")
+        alert('Success:', data);
     })  
     .catch((error) => {
 
-        //alert('Error:', error);
-        window.location.reload();
+        alert('Error:', error);
+        window.location.reload()
+
 
     },[]);
   }
@@ -114,7 +114,7 @@ class Register extends Component {
               <br/>
               <br/>
 
-              <button type="register" class="login-bttn" onClick = {this.fetchMsgs}><Link to="/">Register</Link></button>
+              <button type="register" class="login-bttn" onClick = {this.fetchMsgs}>Register</button>
               <h6>Already have an account? <Link to="/">Login</Link></h6>
             </form></center>
         </div>
