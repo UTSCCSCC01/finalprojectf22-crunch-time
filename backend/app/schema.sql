@@ -15,6 +15,7 @@ CREATE TABLE Groups (
   group_name Text NOT NULL,
   latitude FLOAT DEFAULT NULL,
   longitude FLOAT DEFAULT NULL
+  skill_level INTEGER CHECK (skill_level IN (0, 1, 2))
 );
 
 CREATE TABLE User_in_group (
