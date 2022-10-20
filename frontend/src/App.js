@@ -10,6 +10,8 @@ import Search from './components/search';
 import Login from './components/login';
 import Register from './components/register';
 import Chat from './components/Chat';
+import Chat2 from './components/Chat2';
+
 
 function App() {
   const [selectedMode, setSelectedMode] = useState('open')
@@ -23,6 +25,7 @@ function App() {
         <Route path='/search' element={<Search />} />
         <Route path='/register' element={<Register />} />
         <Route path='/Chat' element={<Chat />} />
+        <Route path='/Chat2' element={<Chat2 />} />
       </Routes>
     </BrowserRouter>
   );

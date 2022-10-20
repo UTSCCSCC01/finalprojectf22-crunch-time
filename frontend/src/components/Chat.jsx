@@ -4,11 +4,11 @@ import io from "socket.io-client";
 
 let endPoint = "http://localhost:5000";
 let socket = io.connect(`${endPoint}`);
-const Chat2 = () => {
+const Chat = () => {
   const location = useLocation()
   const {props} = location.state
   const roomId  = props;
-  const [messages, setMessages] = useState(["Hello And Welcome"]);
+  const [messages, setMessages] = useState(["Username"]);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -17,9 +17,9 @@ const Chat2 = () => {
 
   const getMessages = () => {
     socket.on("message", msg => {
-      //   let allMessages = messages;
-      //   allMessages.push(msg);
-      //   setMessages(allMessages);
+        // let allMessages = messages;
+        // allMessages.push(msg);
+        // setMessages(allMessages);
       setMessages([...messages, msg]);
     });
   };
@@ -33,23 +33,38 @@ const Chat2 = () => {
   const onClick = () => {
     if (message !== "") {
       socket.emit("message", message);
+      console.log(socket)
       setMessage("");
     } else {
       alert("Please Add A Message");
     }
   };
+  const handleKeyDown = (event) => {
+      if (message !== "" && event.key === 'Enter') {
+        socket.emit("message", message);
+        setMessage("");
+      } 
+      
+      else if(message == "" && event.key === 'Enter' ) {
+        alert("Please Add A Message");
+      }
+  };
+  
+  
 
   return (
     <div>
+      <h1> Room {roomId}</h1>
+      
       {messages.length > 0 &&
         messages.map(msg => (
-          <div>
-            <p>{msg}</p>
-          </div>
+          <ul>
+            <li>{msg}</li>
+          </ul>
         ))}
-      <input value={message} name="message" onChange={e => onChange(e)} />
-      <button onClick={() => onClick()}>Sesnd Message</button>
+      <input value={message} name="message" onKeyDown={handleKeyDown} onChange={e => onChange(e) } />
+      <button   onClick={() => onClick()}>Send Message</button>
     </div>
   );
 };
-export default Chat2;
+export default Chat;

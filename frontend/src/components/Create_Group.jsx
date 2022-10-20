@@ -18,7 +18,7 @@ class Create_Group extends Component {
         })       
         .then((response) => response.json())
         .then((data) => {
-            //console.log('Success:', data);
+            console.log('Success:', data);
            
         })
         .catch((error) => {
