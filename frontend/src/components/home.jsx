@@ -12,7 +12,8 @@ export default function Home() {
       <p>This is a test page.</p>
       <Link to="/example">Link to example route</Link><br/>
       <Link to="/search">Link to group search</Link><br/>
-      <Link to="/Create_Group">Link to Create_Group</Link>
+      <Link to="/Create_Group">Link to Create_Group</Link><br/>
+      <Link to="/join_group">Join a group</Link><br/>
     </div>;
   </div>
   )
