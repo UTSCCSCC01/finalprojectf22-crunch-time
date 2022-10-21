@@ -66,8 +66,14 @@ def Create_Group():
     db = get_db()
     if request.method == 'POST':
         data = request.get_json()
-        db.execute('INSERT INTO Groups (group_name, skill_level) VALUES ("Best group", ?)',
-            (data['skillLevel'],))
+        for elem in data:
+            print(elem, type(elem))
+        
+        if (data["loc"] == "true"):
+            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude) VALUES (?, ?)', 
+            (data["group_name"], data['skillLevel'], data['lat'], data['long'],))
+        else:
+            db.execute('INSERT INTO Groups (group_name, skill_level) VALUES (?, ?)', (data["group_name"], data['skillLevel'],))
         db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')
         db.commit()
         
