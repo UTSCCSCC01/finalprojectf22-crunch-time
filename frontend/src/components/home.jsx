@@ -14,6 +14,7 @@ export default function Home() {
       <Link to="/search">Link to group search</Link><br/>
       <Link to="/Create_Group">Link to Create_Group</Link><br/>
       <Link to="/join_group">Join a group</Link><br/>
+      <Link to="/account_information">Link to Account_information</Link>
     </div>;
   </div>
   )
