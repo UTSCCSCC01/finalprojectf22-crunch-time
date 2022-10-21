@@ -16,3 +16,4 @@ python-dotenv
 flask-session
 redis
 flask-cors
+geopy==2.2.0
