@@ -26,9 +26,9 @@ server_session = Session(app)
 
 @app.route('/user', methods=['GET', 'POST'])
 def get_user():
-
-    if 'user_id' != None :
-        return jsonify({'user_id': session['user_id']})
+    print(len(session))
+    if len(session) > 1 :
+        return jsonify(session)
     return 'bad request!', 400
 
 
@@ -45,23 +45,27 @@ def example():
 def login():
 
     db = get_db()
-    print(request.json)
     Email = request.json['Email']
     Password = request.json['Password']
-    messages =  db.execute("SELECT * FROM users WHERE email = (?)", [Email]).fetchall()
-    # print(temp['messages'][0]['password'])
     if request.method == 'POST':
-        if messages:
-            temp = {'messages': list(map(dict, messages))}
-            if Password == str(temp['messages'][0]['password']):
-                session['user_id'] = Email
-                return temp
+        messages =  db.execute("SELECT * FROM users WHERE email = (?) AND password = (?)", [Email, Password]).fetchall()
+        temp = {'messages': list(map(dict, messages))}['messages']
+        if len(temp) >  0 :
+            temp = {'messages': list(map(dict, messages))}['messages'][0]
+            session['user_id'] = temp['user_id']
+            session['firstName'] = temp['firstName']
+            session['lastName'] = temp['lastName']
+            session['email'] = Email
+            session['password'] = Password
+            session['address'] = temp['address']
+            return temp
     return 'bad request!', 400
 
 
 @app.route("/logout", methods=["POST"])
 def logout_user():
-    session.pop("user_id")
+    print(session)
+    session.clear()
     return "200"
 
 

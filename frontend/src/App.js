@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom/client';
-import React, {useState, useEffect, useInsertionEffect} from 'react';
+import React, {useState, useMemo, useEffect, useInsertionEffect} from 'react';
+import { useLocation } from 'react-router-dom'
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -16,12 +17,16 @@ import JoinGroup from './components/joinGroup'
 import Homepage from './components/homepage/homepage';
 
 function App() {
+  const [count, setCount] = useState('');
+
+  
+
   const [selectedMode, setSelectedMode] = useState('open')
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Homepage />} />
-        <Route path='/home' element={<Home />} />
+        <Route path='/home' element={<Home state = {{prop:'a'}}/>} />
         <Route path='/example' element={<Example />} />
         <Route path='/Create_Group' element={<Create_Group />} />
         <Route path='/search' element={<Search />} />

@@ -23,27 +23,26 @@ class Login extends Component {
     });
   }
   //Checks if user is already loggined in
-//   async  componentDidMount(){
-
-//     fetch("/user",{
-//       method: 'get', // or 'PUT'
-//       headers: {
-//         'Content-Type': 'application/json',
-//         },
-//       })       
-//     .then((response) => response.json())
-//     .then(() => {
-//       window.location.replace("/home")
-      
+  async  componentDidMount(){
+    fetch("/user",{
+      method: 'get', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+        },
+      })       
+    .then((response) => response.json())
+    .then(() => {
+      window.location.replace("/home")
+  
         
-//     })  
-//     .catch((error) => {
-//       console.log(error)
+    })  
+    .catch((error) => {
+      console.log(error)
 
 
-//     },[]);
+    },[]);
 
-//  }
+ }
   // For loggin in
   fetchMsgs = (e) =>{
     e.preventDefault();
@@ -57,9 +56,9 @@ class Login extends Component {
     })       
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+
       window.location.replace("/home");
-        
+      
     })  
     .catch((error) => {
       console.log(error);
