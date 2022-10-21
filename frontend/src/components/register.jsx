@@ -1,39 +1,86 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import {withRouter} from 'react-router-dom';
 
 class Register extends Component {
-  state = { message: "", messages: [] };
-
-  fetchMsgs() {
-    console.log('fetch');
-    fetch("/register")
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({ ...data });
-      });
-  }
-
-  sendMsg = (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.set("message", this.state.message);
-    fetch("/register", {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({ ...data });
-      });
+ 
+  state = {
+    FirstName: '',
+    LastName: '',
+    Email: '',
+    Password: '',
+    Address: ''
   };
 
-  componentDidMount() {
-    this.fetchMsgs();
+  updateFirstName(evt) {
+    const val = evt.target.value;
+    this.setState({
+      FirstName: val
+    });
   }
 
-  handleChange = (event) => {
-    this.setState({ message: event.target.value });
-  };
+  updateLastName(evt) {
+    const val = evt.target.value;
+    this.setState({
+      LastName: val
+    });
+  }
+
+  updateEmail(evt) {
+    const val = evt.target.value;
+    this.setState({
+      Email: val
+    });
+  }
+
+  updatePassword(evt) {
+    const val = evt.target.value;
+    this.setState({
+      Password: val
+    });
+  }
+
+  updateAddress(evt) {
+    const val = evt.target.value;
+    this.setState({
+      Address: val
+    });
+  }
+
+  // componentDidMount() {
+  //   const reloadCount = sessionStorage.getItem('reloadCount');
+  //   if(reloadCount < 2) {
+  //     sessionStorage.setItem('reloadCount', String(reloadCount + 1));
+  //     window.location.reload();
+  //   } else {
+  //     sessionStorage.removeItem('reloadCount');
+  //   }
+  // }
+  
+  fetchMsgs = () =>{
+    const data = this.state;
+    fetch("/register",{
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        
+        body: JSON.stringify(data),
+    })       
+    .then((response) => response.json())
+    .then((data) => {
+      window.location.replace("/")
+        alert('Success:', data);
+    })  
+    .catch((error) => {
+
+        alert('Error:', error);
+        window.location.reload()
+
+
+    },[]);
+  }
+
 
   render() {
     return (
@@ -43,32 +90,33 @@ class Register extends Component {
             <form action="http://localhost:3000/register" method = "POST" id="register-form">
             
               <label for="firstName">First Name</label> 
-              <input type="text" id="firstName" name="firstName" class="loginLabel"></input>
+              <input type="text" id="firstName" name="firstName" class="loginLabel" onChange={evt => this.updateFirstName(evt)}></input>
               <br/>
               <br/>
 
               <label for="lastName">Last Name</label>
-              <input type="text" id="lastName" name="lastName" class="loginLabel"></input>
+              <input type="text" id="lastName" name="lastName" class="loginLabel" onChange={evt => this.updateLastName(evt)}></input>
               <br/>
               <br/>
 
               <label for="email">Email</label>
-              <input type="text" id="email" name="email" class="loginLabel"></input>
+              <input type="text" id="email" name="email" class="loginLabel" onChange={evt => this.updateEmail(evt)}></input>
               <br/>
               <br/>
               
               <label for="password">Password</label>
-              <input type="text" id="password" name="password" class="loginLabel"></input>
+              <input type="text" id="password" name="password" class="loginLabel" onChange={evt => this.updatePassword(evt)}></input>
               <br/>
               <br/>
 
               <label for="address">Address</label>
-              <input type="text" id="address" name="address" class="loginLabel"></input>
+              <input type="text" id="address" name="address" class="loginLabel" onChange={evt => this.updateAddress(evt)}></input>
               <br/>
               <br/>
 
-              <button type="register" class="login-bttn"><Link to="/home">Register</Link></button>
+              <button type="register" class="login-bttn" onClick = {this.fetchMsgs}>Register</button>
               <h6>Already have an account? <Link to="/login">Login</Link></h6>
+
             </form></center>
         </div>
     );

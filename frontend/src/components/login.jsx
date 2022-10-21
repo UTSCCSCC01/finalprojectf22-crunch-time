@@ -1,54 +1,94 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 class Login extends Component {
-  state = { message: "", messages: [] };
-
-  fetchMsgs() {
-    console.log('fetch');
-    fetch("/")
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({ ...data });
-      });
+ state = {
+    Email: '',
+    Password: ''
   }
 
-  sendMsg = (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.set("message", this.state.message);
-    fetch("/", {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({ ...data });
-      });
-  };
-
-  componentDidMount() {
-    this.fetchMsgs();
+  
+  
+  updateEmail(evt) {
+    const val = evt.target.value;
+    this.setState({
+      Email: val
+    });
   }
+
+  updatePassword(evt) {
+    const val = evt.target.value;
+    this.setState({
+      Password: val
+    });
+  }
+  //Checks if user is already loggined in
+//   async  componentDidMount(){
+
+//     fetch("/user",{
+//       method: 'get', // or 'PUT'
+//       headers: {
+//         'Content-Type': 'application/json',
+//         },
+//       })       
+//     .then((response) => response.json())
+//     .then(() => {
+//       window.location.replace("/home")
+      
+        
+//     })  
+//     .catch((error) => {
+//       console.log(error)
+
+
+//     },[]);
+
+//  }
+  // For loggin in
+  fetchMsgs = () =>{
+    const data = this.state;
+    fetch("/login",{
+        method: 'POST', // or 'PUT'
+        
+        body: JSON.stringify(data),
+    })       
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data)
+      window.location.replace("/home")
+        
+    })  
+    .catch((error) => {
+
+        alert('Error:', error);
+        window.location.reload()
+
+
+    },[]);
+  }
+
+
+
 
   handleChange = (event) => {
     this.setState({ message: event.target.value });
   };
-
+  
   render() {
+
     return (
         <div class = "content"><center>
             <h1>Welcome back!</h1>
             <form action="http://localhost:3000/login" method = "POST" id="login-form">
                 <label for="email">Email</label>
-                <input type="text" id="email" name="email" class="loginLabel"/>
+                <input type="text" id="email" name="email" class="loginLabel" onChange={evt => this.updateEmail(evt)}/>
                 <br/>
                         
                 <label for="Password">Password</label>
-                <input type="text" id="password" name="password" class="loginLabel"/>
+                <input type="text" id="password" name="password" class="loginLabel" onChange={evt => this.updatePassword(evt)}/>
                 <br/>
 
-                <button type="login" class = "login-bttn"><Link to="/home">Login</Link></button>
+                <button onClick = {this.fetchMsgs} type="login" class = "login-bttn">Login</button>
                 <h5>Don't have an account yet? <Link to="/register">Register</Link></h5>
             </form></center>
         </div>
