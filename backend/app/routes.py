@@ -49,9 +49,9 @@ def login():
     Email = request.json['Email']
     Password = request.json['Password']
     messages =  db.execute("SELECT * FROM users WHERE email = (?)", [Email]).fetchall()
-    print(temp['messages'][0]['password'])
+    # print(temp['messages'][0]['password'])
     if request.method == 'POST':
-        if messages!=None:
+        if messages:
             temp = {'messages': list(map(dict, messages))}
             if Password == str(temp['messages'][0]['password']):
                 session['user_id'] = Email

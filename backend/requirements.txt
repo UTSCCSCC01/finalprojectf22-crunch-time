@@ -13,7 +13,6 @@ python-socketio==5.0.2
 flask-sqlalchemy
 flask-bcrypt
 python-dotenv
-flask-session
 redis
 flask-cors
 geopy==2.2.0
