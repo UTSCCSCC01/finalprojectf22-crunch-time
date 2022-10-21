@@ -1,0 +1,93 @@
+h1 {
+    font-size: 60px;
+}
+
+h2 {
+    font-size: 25px;
+    font-weight: 300;
+}
+
+h3 {
+    font-size: 28px;
+    font-weight: 500;
+}
+
+h4 {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 150%;
+}
+
+p {
+    font-size: 22px;
+}
+
+.home-content {
+    margin: 2% 8% 8% 8%;
+}
+
+.home-intro {
+    margin-top: 4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-intro-text {
+    float: left;
+}
+
+.home-bttn {
+    background-color: #0C3ADE;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 2% 3% 2% 3%;
+    border: none;
+}
+
+.home-bttn a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.home-bttn a:hover {
+    color: #000000;
+}
+
+.magnifier {
+    position: relative;
+    width: 40%;
+    height: 40%;
+    float: right;
+}
+
+.home-description {
+    margin: 10% 5% 10% 5%;
+}
+
+.container {
+    position: relative;
+    display: block;
+    margin: 12% 0% 12% 0%;
+}
+
+.container .box {
+    position: relative;
+    width: 27.5%;
+    height: 23vh;
+    background: #000000;
+    float: left;
+    overflow: hidden;
+    border-radius: 10px;
+    padding: 1.5%;
+    margin: 0% 5% 12% 0%;
+}
+
+.container .box h2 {
+    color: #ffffff;
+}
+
+.home-contact {
+    width: 50%;
+    margin: 12% 6% 12% 6%;
+}
