@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import Navbar from './navbar/navbar-logged-in.jsx';
 
 class Search extends Component {
   //state = { groupName: "d", messages: [], lat: 0.0, long: 0.0, dist: 0.0 };
@@ -75,77 +76,82 @@ class Search extends Component {
   
   render() {
     return (
-      <div className="container mt-3 mb-3">
-        <h1>Search page</h1>
-        <p>
-          <Link to="/">Return to home</Link>
-        </p>
-        <form onSubmit={this.sendMsg} className="mb-3">
-          <div className="form-group mb-3">
-            <label htmlFor="msg">Group:</label>
-            <input
-              type="text"
-              className="form-control"
-              name="groupName"
-              value={this.state.groupName}
-              onChange={this.handleChange}
-            />
-          </div>
-          <input type="checkbox" name="loc" id="loc" checked={this.state.loc} onChange={this.handleLoc} />
-          <label htmlFor="loc"> Filter By distance</label>
-          
-          { this.state.loc?
-          <div>
+
+      <div className = "root">
+        <Navbar/>
+        
+        <div className="container mt-3 mb-3">
+          <h1>Search page</h1>
+          <p>
+            <Link to="/">Return to home</Link>
+          </p>
+          <form onSubmit={this.sendMsg} className="mb-3">
             <div className="form-group mb-3">
-              <label htmlFor="lat">Latitude:</label>
+              <label htmlFor="msg">Group:</label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
-                name="lat"
-                value={this.state.lat}
+                name="groupName"
+                value={this.state.groupName}
                 onChange={this.handleChange}
               />
             </div>
-            <div className="form-group mb-3">
-              <label htmlFor="long">Longitude:</label>
-              <input
-                type="number"
-                className="form-control"
-                name="long"
-                value={this.state.long}
-                onChange={this.handleChange}
-              />
+            <input type="checkbox" name="loc" id="loc" checked={this.state.loc} onChange={this.handleLoc} />
+            <label htmlFor="loc"> Filter By distance</label>
+
+            { this.state.loc?
+            <div>
+              <div className="form-group mb-3">
+                <label htmlFor="lat">Latitude:</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="lat"
+                  value={this.state.lat}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="form-group mb-3">
+                <label htmlFor="long">Longitude:</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="long"
+                  value={this.state.long}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="form-group mb-3">
+                <label htmlFor="dist">Maximum distance (Km):</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="dist"
+                  value={this.state.dist}
+                  onChange={this.handleChange}
+                />
+              </div>
+            <button type="button" className="btn btn-primary" onClick={this.getLocation}>
+              Use My Location
+            </button>
             </div>
-            <div className="form-group mb-3">
-              <label htmlFor="dist">Maximum distance (Km):</label>
-              <input
-                type="number"
-                className="form-control"
-                name="dist"
-                value={this.state.dist}
-                onChange={this.handleChange}
-              />
-            </div>
-          <button type="button" className="btn btn-primary" onClick={this.getLocation}>
-            Use My Location
-          </button>
-          </div>
-          :
-          <div></div>
-          }
-          <button className="btn btn-primary" type="submit">
-            Find
-          </button>
-        </form>
-        <h2>List of found groups:</h2>
-        <ul className="list-group">
-          {this.state.messages.map((msg) => (
-            <li className="list-group-item" key={msg.group_id}>
-              {msg.group_name}
-            </li>
-          ))}
-        </ul>
+            :
+            <div></div>
+            }
+            <button className="btn btn-primary" type="submit">
+              Find
+            </button>
+          </form>
+          <h2>List of found groups:</h2>
+          <ul className="list-group">
+            {this.state.messages.map((msg) => (
+              <li className="list-group-item" key={msg.group_id}>
+                {msg.group_name}
+              </li>
+            ))}
+          </ul>
       </div>
+     </div> 
     );
   }
 }

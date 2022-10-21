@@ -1,5 +1,6 @@
 import React, {Component, useState, useEffect, useInsertionEffect} from 'react';
 import { Link } from "react-router-dom";
+import Navbar from './navbar/navbar-logged-in.jsx';
 
 class Create_Group extends Component {
   state = {skillLevel: 0, group_name: "", loc: false, lat: 0.0, long: 0.0}
@@ -63,6 +64,8 @@ class Create_Group extends Component {
         // <div> {this.fetchMsgs()}
         //     data['messages'] 
         // </div>
+        <div className = "root">
+            <Navbar/>
         <div className="bg-image position-relative" /* Style="background: #E4A11B; height: 100vh" */>
         <form onSubmit={this.sendReq} className="mb-3">
           <div className="form-group mb-3">
@@ -117,6 +120,7 @@ class Create_Group extends Component {
           <button type="submit" className="btn btn-primary "/*position-relative top-50 start-50"*/>Create Group</button>
         </form>
         </div>
+        </div> 
     );
   }
 }
