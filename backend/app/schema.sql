@@ -32,10 +32,10 @@ CREATE TABLE loggedInUsers (
 );
   
 CREATE TABLE Users (
-  user_id INTEGER  AUTOINCREMENT,
+  user_id INTEGER PRIMARY KEY AUTOINCREMENT,
   firstName TEXT  NOT NULL,
   lastName TEXT NOT NULL,
-  email PRIMARY KEY TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
   address TEXT NOT NULL
 );
