@@ -15,6 +15,7 @@ import Chat2 from './components/Chat2';
 import Account_information from './components/Account_information';
 import JoinGroup from './components/joinGroup'
 import Homepage from './components/homepage/homepage';
+import { ReactSession } from 'react-client-session';
 
 function App() {
   const [count, setCount] = useState('');

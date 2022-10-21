@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom'
 import io from "socket.io-client";
 import Navbar from './navbar/navbar-logged-in.jsx';
+import { ReactSession } from 'react-client-session';
 
 let endPoint = "http://localhost:5000";
 let socket = io.connect(`${endPoint}`);

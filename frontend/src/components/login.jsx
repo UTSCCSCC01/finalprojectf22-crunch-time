@@ -1,5 +1,6 @@
 import React, { Component, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { ReactSession } from 'react-client-session';
 
 class Login extends Component {
  state = {
@@ -56,7 +57,11 @@ class Login extends Component {
     })       
     .then((response) => response.json())
     .then((data) => {
-
+      ReactSession.set("firstName", data['firstName']);
+      ReactSession.set("lastName", data['lastName']);
+      ReactSession.set("email", data['email']);
+      ReactSession.set("password", data['password']);
+      ReactSession.set("address", data['address']);
       window.location.replace("/home");
       
     })  

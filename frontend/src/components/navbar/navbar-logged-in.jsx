@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import './navbar.css';
+import { ReactSession } from 'react-client-session';
 
 // Media
 import graphic from "../../media/logo.png";
@@ -16,7 +17,6 @@ const Navbar = () => {
         .then(() => {
           
           window.location.replace("/")
-  
             
         })  
         .catch((error) => {
