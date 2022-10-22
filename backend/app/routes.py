@@ -104,10 +104,10 @@ def Create_Group():
     if request.method == 'POST':
         data = request.get_json()
         for elem in data:
-            print(elem, type(elem))
+            print(elem, type(data[elem]), data[elem])
         
-        if (data["loc"] == "true"):
-            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude) VALUES (?, ?)', 
+        if (data["loc"]):
+            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude) VALUES (?, ?, ?, ?)', 
             (data["group_name"], data['skillLevel'], data['lat'], data['long'],))
         else:
             db.execute('INSERT INTO Groups (group_name, skill_level) VALUES (?, ?)', (data["group_name"], data['skillLevel'],))
