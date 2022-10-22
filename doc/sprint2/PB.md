@@ -53,7 +53,7 @@
 * The redirected homepage should be the general one, where users don’t have to be logged in to access
 * "logout" button should be in the navigation bar and always accesible for logged in users
 
-### 11. As a logged in user, I want to be able to search for my desired sports (physical and e-sports) so that I can find a group of individuals with similar preferences to play the sport with.
+### 11. As a logged in user, I want to be able to search for my desired activities (sports and games) so that I can find a group of individuals with similar preferences to play the sport with.
 * Users should be able to search for their desired sport through a search bar
 * Users will then have the option to create/join group for their searched sport
 
