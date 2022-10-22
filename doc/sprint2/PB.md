@@ -1,7 +1,4 @@
-### 1. As a user, I want to be able to view the home page without needing to sign up and login, so that I can navigate through the site and determine if the site offers the services I need 
-* The home page should have a navigation bar with clickable links that allow users to visit other pages like contacts, about, and FAQ
-* Should contain a visible button for login/sign up
-* Should contain visuals and descriptions that give the user a clear description of the services on the site 
+### Unstarted:
 
 ### 2. As a user, I want to be able to access Frequently Asked Questions page on the website without needing to sign up and login so that I can potentially answer any questions I have about the services offered quickly
 * Should be a static FAQ page in nav bar 
@@ -12,17 +9,9 @@
 ### 4. As a user, I want to be able to access a page where I can contact directly for help so that I can directly reach out to a support team regarding any issues or questions
 * Should have a static “Contact Us” page in the nav bar that any users can view without needing to be signed in
 
-### 7. As a logged in user, I want to be able to logout by clicking a "logout" button on any of the pages and be sent to the homepage for all users so that I can keep my account information secure
-* The redirected homepage should be the general one, where users don’t have to be logged in to access
-* "logout" button should be in the navigation bar and always accesible for logged in users
-
 ### 9. As a logged in user, I want to be able to delete my account along with any personal information permanently from the website in case the user has security concerns or doesn’t wish to continue using the website
 * There should be a button in the account information page that allows the user to delete the account. 
 * Should require additional verification, like password input, to access the personal information for extra security
-
-### 11. As a logged in user, I want to be able to search for my desired sports (physical and e-sports) so that I can find a group of individuals with similar preferences to play the sport with.
-* Users should be able to search for their desired sport through a search bar
-* Users will then have the option to create/join group for their searched sport
 
 ### 15. As a logged in user, I want to be able to set a group size limit when creating a group, so that I can get the ideal number of people for my group
 * Once a group has reached its capacity it will no longer be available to join
@@ -48,6 +37,23 @@
 
 ### 25. As a logged in user and the owner of a group, I want to be able to set a group picture for the group so that when others are viewing the group page they can see a visual that captures what the group is about
 * The group picture will be seen when someone is viewing the group page mentioned above. 
+
+
+
+### In progress:
+
+### 1. As a user, I want to be able to view the home page without needing to sign up and login, so that I can navigate through the site and determine if the site offers the services I need 
+* The home page should have a navigation bar with clickable links that allow users to visit other pages like contacts, about, and FAQ
+* Should contain a visible button for login/sign up
+* Should contain visuals and descriptions that give the user a clear description of the services on the site 
+
+### 7. As a logged in user, I want to be able to logout by clicking a "logout" button on any of the pages and be sent to the homepage for all users so that I can keep my account information secure
+* The redirected homepage should be the general one, where users don’t have to be logged in to access
+* "logout" button should be in the navigation bar and always accesible for logged in users
+
+### 11. As a logged in user, I want to be able to search for my desired sports (physical and e-sports) so that I can find a group of individuals with similar preferences to play the sport with.
+* Users should be able to search for their desired sport through a search bar
+* Users will then have the option to create/join group for their searched sport
 
 
 
