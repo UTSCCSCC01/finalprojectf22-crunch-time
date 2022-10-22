@@ -38,6 +38,8 @@
 ### 25. As a logged in user and the owner of a group, I want to be able to set a group picture for the group so that when others are viewing the group page they can see a visual that captures what the group is about
 * The group picture will be seen when someone is viewing the group page mentioned above. 
 
+### 26. As a friend I would like to send messages to my friends via in-app messaging.
+* Quick, easy access to sending messages to other users on one's friendlist
 
 
 ### In progress:
