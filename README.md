@@ -23,6 +23,7 @@ Set up and run the frontend (run these commands in the `frontend/` directory):
 
 ```sh
 npm install
+npm install react-client-session
 
 npm start
 ```
