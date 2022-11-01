@@ -12,6 +12,8 @@ import Register from './components/register';
 import Account_information from './components/Account_information';
 import JoinGroup from './components/joinGroup'
 import Homepage from './components/homepage/homepage';
+import Edit_info from './components/Edit_info';
+import Account_info_authentification from './components/account_info_authentification';
 
 function App() {
  
@@ -27,6 +29,8 @@ function App() {
         <Route path='/account_information' element={<Account_information />} />
         <Route path='/join_group' element={<JoinGroup />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/edit_info' element={<Edit_info />} />
+        <Route path='account_info_authentification' element={<Account_info_authentification />} />
       </Routes>
     </BrowserRouter>
   );
