@@ -109,7 +109,8 @@ def Create_Group():
             db.execute('INSERT INTO Groups (group_name, skill_level) VALUES (?, ?)', (data["group_name"], data['skillLevel'],))
         db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')
         db.commit()
-        
+    else:
+           
     return {'messages': [request.method]}
 app.config['SECRET_KEY'] = 'mysecret'
 

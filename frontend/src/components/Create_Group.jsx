@@ -32,6 +32,21 @@ class Create_Group extends Component {
     },[]);
   }
 
+  componentDidMount() {
+    this.fetchMsgs();
+  }
+
+  fetchMsgs() {
+    console.log('fetch');
+    fetch("/Create_Group")
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ ...data });
+      });
+  }
+
+  
+
   handleSkillLevelChange = (event) => {
     this.setState({ skillLevel: parseInt(event.target.value) });
   };
