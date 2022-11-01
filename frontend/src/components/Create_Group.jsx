@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Navbar from './navbar/navbar-logged-in.jsx';
 
 class Create_Group extends Component {
-  state = {skillLevel: 0, group_name: "", loc: false, lat: 0.0, long: 0.0, value: 1,}
+  state = {skillLevel: 0, group_name: "", loc: false, lat: 0.0, long: 0.0, value: 1, activities: [], activity: 0}
     
   sendReq = (event) => {
     event.preventDefault();
@@ -14,7 +14,8 @@ class Create_Group extends Component {
       group_name: this.state.group_name, 
       loc: this.state.loc, 
       lat: this.state.lat, 
-      long: this.state.long
+      long: this.state.long,
+      activity: this.state.activity
     };
     fetch("/Create_Group",{
         method: 'POST', // or 'PUT'
@@ -33,10 +34,10 @@ class Create_Group extends Component {
   }
 
   componentDidMount() {
-    this.fetchMsgs();
+    this.fetchActs();
   }
 
-  fetchMsgs() {
+  fetchActs() {
     console.log('fetch');
     fetch("/Create_Group")
       .then((res) => res.json())
@@ -44,8 +45,6 @@ class Create_Group extends Component {
         this.setState({ ...data });
       });
   }
-
-  
 
   handleSkillLevelChange = (event) => {
     this.setState({ skillLevel: parseInt(event.target.value) });
@@ -85,6 +84,16 @@ class Create_Group extends Component {
         <div className="bg-image position-relative" /* Style="background: #E4A11B; height: 100vh" */>
         <form onSubmit={this.sendReq} className="mb-3">
           <div className="form-group mb-3">
+            <label htmlFor="activities">Activities</label>
+            <select id="activities" name="activities" onChange={this.handleChange}>
+              {this.state.activities.map((option) => {
+                return (
+                  <option key={option.id} value={option.name}>
+                    {option.name}
+                  </option>
+                );
+              })}
+            </select>
             <label htmlFor="msg">Group Name:</label>
             <input
               type="text"

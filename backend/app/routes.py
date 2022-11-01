@@ -110,8 +110,9 @@ def Create_Group():
         db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')
         db.commit()
     else:
-           
-    return {'messages': [request.method]}
+        activities = db.execute("SELECT (id, name) FROM Activities").fetchall()
+        return {}  
+    return {'activities': list(map(dict, activities))}
 app.config['SECRET_KEY'] = 'mysecret'
 
 socketIo = SocketIO(app, cors_allowed_origins="*")
