@@ -15,7 +15,12 @@ const Navbar = () => {
           })       
         .then((response) => response.json())
         .then(() => {
-          
+            ReactSession.remove("firstName");
+            ReactSession.remove("lastName" );
+            ReactSession.remove("email");
+            ReactSession.remove("password");
+            ReactSession.remove("messages")
+            ReactSession.remove("Group_Members")
           window.location.replace("/")
             
         })  

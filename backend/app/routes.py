@@ -129,11 +129,12 @@ def handleMessage(msg):
     return None
 @socketIo.on('join')
 def on_join(data):
-    username = data['username']
-    room = data['room']
-    join_room(room)
-    send(username + ' has entered the room.', to=room)
-
+    # username = data['username']
+    print(data)
+    send(data, broadcast=True)
+    # join_room(room)
+    #send(username + ' has entered the room.', to=room)
+    return None
 @socketIo.on('leave')
 def on_leave(data):
     username = data['username']

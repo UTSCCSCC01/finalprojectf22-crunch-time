@@ -62,6 +62,8 @@ class Login extends Component {
       ReactSession.set("email", data['email']);
       ReactSession.set("password", data['password']);
       ReactSession.set("address", data['address']);
+      ReactSession.set("messages", [])
+      ReactSession.set("Group_Members",[])
       window.location.replace("/home");
       
     })  
