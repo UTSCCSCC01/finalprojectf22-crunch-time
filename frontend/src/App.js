@@ -14,6 +14,7 @@ import Chat2 from './components/Chat2';
 import Account_information from './components/Account_information';
 import JoinGroup from './components/joinGroup'
 import Homepage from './components/homepage/homepage';
+import FAQ from './components/faq/faq';
 
 function App() {
   const [selectedMode, setSelectedMode] = useState('open')
@@ -31,6 +32,7 @@ function App() {
         <Route path='/Chat2' element={<Chat2 />} />
         <Route path='/account_information' element={<Account_information />} />
         <Route path='/join_group' element={<JoinGroup />} />
+        <Route path='/faq' element={<FAQ />} />
       </Routes>
     </BrowserRouter>
   );
