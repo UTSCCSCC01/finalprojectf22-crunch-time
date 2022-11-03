@@ -1,36 +1,35 @@
 ## Sprint 2 - Goals
-* Aim to finish implementing the user stories for set skill level, chat with group members, join groups, home page, nav bar, distance radius.
-* Finish the unfinished tasks for login of user and registration of user.
+* Aim to finish implementing the user stories for About Us Page, Personal Info Page, Account deletion, Logout Of User, join groups, Leave Groups, View Group Page, Set Group Size Limit, Search For Group, Activities and Contact Us Page
+* Finish the unfinished tasks for the Chat with group members user story
+* Work on connecting all the pages and account for displaying the correct navbar for a logged in vs logged out user
 * Complete the tasks based on their acceptance criteria to have a working software.
 ## Team Participants
 Denis, Iangola, Jesse, Justin, Shaahid, Sharon
 ## Standup meetings 
-* Meeting 1 on 13/10/22
-  * Move user stories to Trello.
-  * Decide and assign tasks to be completed for the sprint.
-* Meeting 2 on 16/10/22
-  * Discuss progress on assigned tasks. 
-  * Discuss sprint 1 demo logistics.
-  * Set priorities and story points on user stories on Trello.
-* Meeting 3 on 17/10/22
-  * Discuss progress on assigned taks, detailes implementation of the tasks. 
-*Meeting 4 on 18/10/22
-  * Reframe sprint goal in order to have a successful sprint by prioritizing unfinished user stories necessary for the functionality of other stories.
-* Meeting 5 on 19/10/22
+* Meeting 1 on 1/11/22
+  * Decided and assigned feature user stories to be completed for the sprint.
+  * Assigned documentation (i.e sprint3.md) to be completed
+  * Discuss priorities and story points on user stories on Trello.
+* Meeting 2 on 2/11/22
+  * Discuss progress on assigned tasks and  details regarding implementation of the tasks. 
+  * Discussed any blockeres and issues with SocketIO for the chat feature 
+* Meeting 3 on 3/11/22
   * Discuss progress on assigned taks and problems encountered. 
   * Discuss what needs to be done for the completion of the sprint. 
-* Meeting 6 on 20/10/22
-* Merge feature branches and resolve conflicts.
-* Go over the requirements and missing documents for the sprint.
+*Meeting 4 on 4/11/22
+  * Discuss progress on assigned taks, problems encourted, and move any tasks that weren't fully completed to next sprint
+  * Reframe sprint goal in order to have a successful sprint by prioritizing unfinished user stories necessary for the functionality of other stories.
+  * Merge feature branches and resolve conflicts.
+  * Go over the requirements and insure they are statistifed
 ## User Stories (Point Estimation)
-* CRUN-1- home page (13 points)
-* CRUN-10 nav bar (5 points)
-* CRUN-21 chat (13 points)
-* CRUN-13 set skill level  (2 points)
-* CRUN-12 distance radius  (8 points)
+* CRUN-3 About Us Page (2 points)
+* CRUN-8 Personal info page (3 points)
+* CRUN-21 chat with group memebers (13 points)
+* CRUN-9 Account Deletion (3 points)
+* CRUN-7 Logout of user  (5 points)
 * CRUN-16 join groups  (5 points)
-* CRUN-6 login of user  (8 points)
-* CRUN-3 registration of user  (8 points)
+* CRUN-22 Leave Group  (2 points)
+* CRUN-11 Search for Group  (5 points)
 * CRUN-36 create group IU (3 points) 
 * CRUN-41 account information page (2 points)
 ## Task Breakdown
@@ -61,6 +60,7 @@ Denis, Iangola, Jesse, Justin, Shaahid, Sharon
 * Iangola / 1.5
 * Shaahid / 2
 ## Spikes
-* Issues with React and flask. 
+* Many group memebers were overwhelemd with other course work, and finding approiote stand up times was difficult
+* SocketIO is very buggy with the Chat with group user story
 
 https://trello.com/invite/cscc01crunchtime/ATTI6e4c4fc6da2e462954d387e8c77e0ec4C7D05536
