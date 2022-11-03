@@ -1,5 +1,5 @@
-## Sprint 2 - Goals
-* Aim to finish implementing the user stories for About Us Page, Personal Info Page, Account deletion, Logout Of User, join groups, Leave Groups, View Group Page, Set Group Size Limit, Search For Group, Activities and Contact Us Page
+## Sprint 3 - Goals
+* Aim to finish implementing the user stories for About Us Page, Personal Info Page, Account deletion, Logout Of User, join groups, Leave Groups, View Group Page, Set Group Size Limit, Search For Group, Activities, Create front-end for login page, Create front-end for register page and Contact Us Page
 * Finish the unfinished tasks for the Chat with group members user story
 * Work on connecting all the pages and account for displaying the correct navbar for a logged in vs logged out user
 * Complete the tasks based on their acceptance criteria to have a working software.
@@ -30,27 +30,40 @@ Denis, Iangola, Jesse, Justin, Shaahid, Sharon
 * CRUN-16 join groups  (5 points)
 * CRUN-22 Leave Group  (2 points)
 * CRUN-11 Search for Group  (5 points)
-* CRUN-36 create group IU (3 points) 
-* CRUN-41 account information page (2 points)
+* CRUN-37 Activities (5 points) 
+* CRUN-2 FAQ page (2 points)
+* CRUN-34 Create front-end for login page (5 points)
+* CRUN-24 View Group Page (5 points)
+* CRUN-15 Set group size limit(3 points)
+* CRUN-35 Create front-end for register page (5 points)
+* CRUN-42 Determine correct Navbar for logged in and logged users (2 points)
+* CRUN-4 Contact US page (2 points)
+* CRUN 41 Personal Information and authentification (2 points)
 ## Task Breakdown
 ### Ticket / Description / Assigned to 
-* CRUN-13 / Implement setting skill level of group / Jesse
-* CRUN-21 / Implement chatting with group members / Justin
-* CRUN-16 / Implement joining groups / Jesse
-* CRUN-1 / Implement home page / Sharon
-* CRUN-10 / Implement navigation bar / Shaahid
-* CRUN-12 / Implement distance radius for joining and creating a group / Denis
-* CRUN-6 / Finish implementing login of user / Justin
-* CRUN-36 / Implement IU for create group page / Denis
-* CRUN-41 / Implement personal information page / Iangola
-* CRUN-3 / Finish implementing registration of user / Justin
-* n/a / Sprint2.md / Iangola 
-* n/a / SR2.md / TBD
-* n/a / burndown.pdf / Iangola
-* n/a / schedule.pdf / Shaahid & Sharon
-* n/a / Update software architecture diagram / Sharon
-* n/a / Update product backlog / Denis
-* n/a / RPM.md / Justin
+* CRUN-3 About Us Page / Implement an "about us" page / Shaahid
+* CRUN-8 Personal info page / Implement Personal info page for a logged in user / Iangola
+* CRUN-9 Account Deletion / Impleted an account deletion feature  / Shaahid
+* CRUN-7 Logout of user / Implement a user logout feature / Iangola
+* CRUN-21 chat with group memebers  / Implement front portion of the chat feature / Justin
+* CRUN-16 join groups /  Allows users to join groups / Jesse
+* CRUN-22 Leave Group / Allow users to leave a group / Sharon
+* CRUN-11 Search for Group  / Allows users to search for their desired group/ Denis
+* CRUN-37 Activities / Allows users to find their desired activity based on their search criteria / Denis
+* CRUN-2 FAQ page / Implement an "FAQ" page / Sharon
+* CRUN-34 Create front-end for login page / Create a visually appealing frontend for login page / Sahron
+* CRUN-24 View Group Page / Allows users to look at information for a group / Jesse
+* CRUN-15 Set group size limit / Implement a set group size limit features / Jesse
+* CRUN-35 Create front-end for register page / Create a visually appealing frontend for registration page / Justin and Shaahid
+* CRUN-42 Determine correct Navbar for logged in and logged users / Displays correct navbar based on type of user / Shaahid
+* CRUN-4 Contact US page / Implements a "contact us" page / Iangola
+* CRUN 41 Personal Information and authentification  / Implements a personal Information and authentifiction feature for each user / Justin
+*  NA / Complete Sprint2 retrospective / Everyone
+*  NA / Rename branches / Everyone
+*  NA / Have backend points documented / Everyone
+*  NA / Complete Schedule.pdf / Shaahid
+*  NA / Complete Spint3.md / Justin
+*  NA / Update backend documentation / Jesse
 ## Team Capacity
 ### Member / Estimated hours of work per day 
 * Justin / 2.5
