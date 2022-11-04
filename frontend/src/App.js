@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom/client';
-import React, {useState, useEffect, useInsertionEffect} from 'react';
+import React, {useState, useMemo, useEffect, useInsertionEffect} from 'react';
+import { useLocation } from 'react-router-dom'
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -20,14 +21,19 @@ import Edit_info from './components/Edit_info';
 import Account_info_authentification from './components/account_info_authentification';
 import Contact_us from './components/contact_us';
 import About_Us from './components/about_us/about_us';
+import { ReactSession } from 'react-client-session';
 
 function App() {
+  const [count, setCount] = useState('');
+
+  
+
   const [selectedMode, setSelectedMode] = useState('open')
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Homepage />} />
-        <Route path='/home' element={<Home />} />
+        <Route path='/home' element={<Home state = {{prop:'a'}}/>} />
         <Route path='/example' element={<Example />} />
         <Route path='/Create_Group' element={<Create_Group />} />
         <Route path='/search' element={<Search />} />

@@ -26,9 +26,9 @@ server_session = Session(app)
 
 @app.route('/user', methods=['GET', 'POST'])
 def get_user():
-
-    if 'user_id' != None :
-        return jsonify({'user_id': session['user_id']})
+    print(len(session))
+    if len(session) > 1 :
+        return jsonify(session)
     return 'bad request!', 400
 
 @app.route('/user_in_group/<group_id>', methods=['GET'])
@@ -59,25 +59,27 @@ def example():
 def login():
 
     db = get_db()
-    print(request.json)
     Email = request.json['Email']
     Password = request.json['Password']
-    messages =  db.execute("SELECT * FROM users WHERE email = (?)", [Email]).fetchall()
-    # print(temp['messages'][0]['password'])
     if request.method == 'POST':
-        if messages!=None:
-            temp = {'messages': list(map(dict, messages))}
-            if Password == str(temp['messages'][0]['password']):
-                session['user_id'] = temp['messages'][0]['user_id']
-                session['email'] = Email
-                return temp
+        messages =  db.execute("SELECT * FROM users WHERE email = (?) AND password = (?)", [Email, Password]).fetchall()
+        temp = {'messages': list(map(dict, messages))}['messages']
+        if len(temp) >  0 :
+            temp = {'messages': list(map(dict, messages))}['messages'][0]
+            session['user_id'] = temp['user_id']
+            session['firstName'] = temp['firstName']
+            session['lastName'] = temp['lastName']
+            session['email'] = Email
+            session['password'] = Password
+            session['address'] = temp['address']
+            return temp
     return 'bad request!', 400
 
 
 @app.route("/logout", methods=["POST"])
 def logout_user():
-    session.pop("user_id")
-    session.pop("email")
+    print(session)
+    session.clear()
     return "200"
 
 
@@ -116,10 +118,10 @@ def Create_Group():
     if request.method == 'POST':
         data = request.get_json()
         for elem in data:
-            print(elem, type(elem))
+            print(elem, type(data[elem]), data[elem])
         
-        if (data["loc"] == "true"):
-            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude) VALUES (?, ?)', 
+        if (data["loc"]):
+            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude) VALUES (?, ?, ?, ?)', 
             (data["group_name"], data['skillLevel'], data['lat'], data['long'],))
         else:
             db.execute('INSERT INTO Groups (group_name, skill_level) VALUES (?, ?)', (data["group_name"], data['skillLevel'],))
