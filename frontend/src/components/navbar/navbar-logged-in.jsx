@@ -21,7 +21,7 @@ const Navbar = () => {
                 <a href = "/faq">FAQs</a>
             </li>
             <li>
-                <a href = "/profile">Account Info</a>
+                <a href = "/account_info_authentification">Account Info</a>
             </li>
             <li>
                 <a href = "/search">Search</a>
