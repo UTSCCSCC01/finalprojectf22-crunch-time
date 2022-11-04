@@ -164,12 +164,12 @@ const Chat = () => {
                   <li className="p-2 border-bottom">
                   <a href="#!" className="d-flex justify-content-between">
                     <div className="d-flex flex-row">
-                      <img
+                      {/* <img
                         src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                         alt="avatar"
                         className="rounded-circle d-flex align-self-center me-3 shadow-1-strong"
                         width="60"
-                      />
+                      /> */}
                       <div className="pt-1">
                         <p className="fw-bold mb-0">{User}</p>
                       </div>
@@ -191,12 +191,12 @@ const Chat = () => {
               
               <MDBCard  >
                 <MDBCardHeader className="d-flex justify-content-between p-3">
-                <img
+                {/* <img
                 src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                 alt="avatar"
                 className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
                 width="40"
-              />
+              /> */}
                   <h6 className="fw-bold mb-0">{msg[0]}       </h6> <h6 className="text-secondary"> &nbsp;{msg[2]}</h6>
                   <h6 className="text-muted small mb-0">
                   </h6>

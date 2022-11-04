@@ -24,6 +24,7 @@ const Navbar_Login = () => {
             ReactSession.remove("messages")
             ReactSession.remove("Group_Members")
             ReactSession.remove("GroupName")
+            ReactSession.remove("user_id");
             window.location.replace("/")
             
         })  
@@ -45,15 +46,13 @@ const Navbar_Login = () => {
                 <a href = "/about">About Us</a>
             </li>
             <li>
-                <a href = "/contact_us">Contact Us</a>
+                <a href = "/contact">Contact Us</a>
             </li>
             <li>
                 <a href = "/faq">FAQs</a>
             </li>
             <li>
                 <a href = "/Account_information">Account Info</a>
-
-                <a href = "/account_info_authentification">Account Info</a>
             </li>
             <li>
                 <a href = "/search">Search</a>
@@ -65,5 +64,3 @@ const Navbar_Login = () => {
     </nav>)
 }
 export default Navbar_Login
-
-
