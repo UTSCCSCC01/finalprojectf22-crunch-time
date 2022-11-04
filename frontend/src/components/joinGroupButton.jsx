@@ -26,8 +26,8 @@ function JoinGroupButton(props) {
       })
         .then((res) => {
           if (res.status == 200) {
-            fetchJoined();
             if (props.callback) props.callback();
+            else fetchJoined();
           } else {
             alert('An error has occurred. Please inform the web devs.');
           }

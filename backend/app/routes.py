@@ -173,7 +173,6 @@ def account_information():
 @app.route('/join_group', methods=['POST', 'GET'])
 def join_group():
     db = get_db()
-    print(session)
     # record user joining the group into the database
     if request.method == 'POST':
         data = request.get_json()
@@ -196,6 +195,25 @@ def join_group():
         group['users'] = rows_to_dicts(users)
     all_users = db.execute('SELECT user_id, email FROM Users').fetchall()
     return {'groups': groups, 'users': rows_to_dicts(all_users)}
+
+@app.route('/view_group/<group_id>', methods=['GET'])
+def group_info(group_id):
+    try:
+        group_id = int(group_id)
+    except ValueError:
+        return 'group not found', 404
+    db = get_db()
+    group = db.execute('SELECT * FROM Groups WHERE group_id = ?', (group_id,)).fetchone()
+    if group is None:
+        return 'group not found', 404
+    group = dict(group)
+    members = db.execute('SELECT user_id, firstName, lastName FROM Users NATURAL JOIN User_in_group WHERE group_id = ?',
+        (group_id,)).fetchall()
+    group['members'] = rows_to_dicts(members)
+    return jsonify(group)
+    
+    
+
 
 if __name__ == '__main__':
     

@@ -32,8 +32,7 @@ class JoinGroup extends Component {
         <p>
           <Link to="/home">Return to home</Link>
         </p>
-        <p>This is a temporary/test page until a proper way to access a "Join Group" link
-          and act as a user in a session is implemented.</p>
+        <p>This is a temporary/test page.</p>
         {/*
         <label htmlFor="user-select">Act as user:</label>
         <select name="user-select" id="user-select" onChange={this.handleUserChange}>

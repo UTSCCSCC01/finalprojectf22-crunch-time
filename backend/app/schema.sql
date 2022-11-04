@@ -46,11 +46,11 @@ INSERT into users (user_id, firstName, lastName, email, password, address) VALUE
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (4, "Ben", "Uncle", "ben@mail.com", "securepass", 'user4');
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (5, "Mike", "Flem", "mike@mail.com", "securepass", "user5");
 
-INSERT into Groups (group_id, group_name, latitude, longitude) VALUES (1, "Best basketball", 45, -80);
-INSERT into Groups (group_id, group_name, latitude, longitude) VALUES (2, "Noobie chess", 44, -80);
-INSERT into Groups (group_id, group_name, latitude, longitude) VALUES (3, "Cycling maniacs", 43, -79);
-INSERT into Groups (group_id, group_name, latitude, longitude) VALUES (4, "Soccer bros", 10, 45);
-INSERT into Groups (group_id, group_name) VALUES (5, "CS:GO Pro team");
+INSERT into Groups (group_id, group_name, latitude, longitude, skill_level) VALUES (1, "Best basketball", 45, -80, 2);
+INSERT into Groups (group_id, group_name, latitude, longitude, skill_level) VALUES (2, "Noobie chess", 44, -80, 0);
+INSERT into Groups (group_id, group_name, latitude, longitude, skill_level) VALUES (3, "Cycling maniacs", 43, -79, 1);
+INSERT into Groups (group_id, group_name, latitude, longitude, skill_level) VALUES (4, "Soccer bros", 10, 45, 1);
+INSERT into Groups (group_id, group_name, skill_level) VALUES (5, "CS:GO Pro team", 2);
 
 INSERT into User_in_group (user_id, group_id) VALUES (1, 1);
 INSERT into User_in_group (user_id, group_id) VALUES (2, 2);
