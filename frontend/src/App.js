@@ -15,6 +15,12 @@ import Chat2 from './components/Chat2';
 import Account_information from './components/Account_information';
 import JoinGroup from './components/joinGroup'
 import Homepage from './components/homepage/homepage';
+import ViewGroup from './components/viewGroup';
+import FAQ from './components/faq/faq';
+import Edit_info from './components/Edit_info';
+import Account_info_authentification from './components/account_info_authentification';
+import Contact_us from './components/contact_us';
+import About_Us from './components/about_us/about_us';
 import { ReactSession } from 'react-client-session';
 import ViewGroup from './components/viewGroup';
 import FAQ from './components/faq/faq';

@@ -53,6 +53,7 @@ const Navbar_Login = () => {
             <li>
                 <a href = "/Account_information">Account Info</a>
 
+                <a href = "/account_info_authentification">Account Info</a>
             </li>
             <li>
                 <a href = "/search">Search</a>
@@ -64,4 +65,5 @@ const Navbar_Login = () => {
     </nav>)
 }
 export default Navbar_Login
+
 

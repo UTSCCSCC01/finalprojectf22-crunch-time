@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { ReactSession } from 'react-client-session';
-
 import Navbar from './navbar/navbar-logged-in.jsx';
 
 class Account_information extends Component {
+
   
   state = {
     firstName: ReactSession.get("firstName"), lastName: ReactSession.get("lastName"), email:  ReactSession.get("email"), password_input: "",
