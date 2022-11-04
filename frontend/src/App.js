@@ -14,6 +14,7 @@ import Chat2 from './components/Chat2';
 import Account_information from './components/Account_information';
 import JoinGroup from './components/joinGroup'
 import Homepage from './components/homepage/homepage';
+import FAQ from './components/faq/faq';
 import Edit_info from './components/Edit_info';
 import Account_info_authentification from './components/account_info_authentification';
 import Contact_us from './components/contact_us';
@@ -35,6 +36,7 @@ function App() {
         <Route path='/Chat2' element={<Chat2 />} />
         <Route path='/account_information' element={<Account_information />} />
         <Route path='/join_group' element={<JoinGroup />} />
+        <Route path='/faq' element={<FAQ />} />
         <Route path='/login' element={<Login />} />
         <Route path='/edit_info' element={<Edit_info />} />
         <Route path='account_info_authentification' element={<Account_info_authentification />} />
