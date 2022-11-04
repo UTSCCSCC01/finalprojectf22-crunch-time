@@ -31,6 +31,20 @@ def get_user():
         return jsonify({'user_id': session['user_id']})
     return 'bad request!', 400
 
+@app.route('/user_in_group/<group_id>', methods=['GET'])
+def user_in_group(group_id):
+    user_id = session.get('user_id')
+    try:
+        user_id = int(user_id)
+        group_id = int(group_id)
+    except ValueError:
+        return 'malformed user or group IDs', 400
+    db = get_db()
+    res = db.execute('SELECT * FROM User_in_group WHERE user_id = ? AND group_id = ?',
+        (user_id, group_id))
+    return jsonify({'joined': not (res.fetchone() is None)})
+    
+
 
 @app.route('/example', methods=['GET', 'POST'])
 def example():
@@ -49,12 +63,13 @@ def login():
     Email = request.json['Email']
     Password = request.json['Password']
     messages =  db.execute("SELECT * FROM users WHERE email = (?)", [Email]).fetchall()
-    print(temp['messages'][0]['password'])
+    # print(temp['messages'][0]['password'])
     if request.method == 'POST':
         if messages!=None:
             temp = {'messages': list(map(dict, messages))}
             if Password == str(temp['messages'][0]['password']):
-                session['user_id'] = Email
+                session['user_id'] = temp['messages'][0]['user_id']
+                session['email'] = Email
                 return temp
     return 'bad request!', 400
 
@@ -62,6 +77,7 @@ def login():
 @app.route("/logout", methods=["POST"])
 def logout_user():
     session.pop("user_id")
+    session.pop("email")
     return "200"
 
 
@@ -200,11 +216,12 @@ def account_info_authentifaction():
 @app.route('/join_group', methods=['POST', 'GET'])
 def join_group():
     db = get_db()
-
     # record user joining the group into the database
     if request.method == 'POST':
         data = request.get_json()
-        user_id = data['user_id']
+        user_id = session.get('user_id')
+        if user_id is None:
+            return 'invalid user ID', 400
         group_id = data['group_id']
         db.execute('INSERT OR IGNORE INTO User_in_group (user_id, group_id) VALUES (?, ?)',
             (user_id, group_id))
@@ -222,6 +239,22 @@ def join_group():
     all_users = db.execute('SELECT user_id, email FROM Users').fetchall()
     return {'groups': groups, 'users': rows_to_dicts(all_users)}
 
+@app.route('/view_group/<group_id>', methods=['GET'])
+def group_info(group_id):
+    try:
+        group_id = int(group_id)
+    except ValueError:
+        return 'group not found', 404
+    db = get_db()
+    group = db.execute('SELECT * FROM Groups WHERE group_id = ?', (group_id,)).fetchone()
+    if group is None:
+        return 'group not found', 404
+    group = dict(group)
+    members = db.execute('SELECT user_id, firstName, lastName FROM Users NATURAL JOIN User_in_group WHERE group_id = ?',
+        (group_id,)).fetchall()
+    group['members'] = rows_to_dicts(members)
+    return jsonify(group)
+    
 @app.route('/contact_us', methods=['POST', 'GET'])
 def contact_us():
     db = get_db()
