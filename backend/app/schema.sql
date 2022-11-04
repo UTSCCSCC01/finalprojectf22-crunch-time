@@ -40,17 +40,24 @@ CREATE TABLE Users (
   address TEXT NOT NULL
 );
 
+CREATE TABLE Questions (
+  firstName TEXT  NOT NULL,
+  lastName TEXT NOT NULL,
+  email TEXT NOT NULL,
+  message TEXT NOT NULL
+);
+
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (1, "Ken", "Nim", "Ken@mail.com", "securepass", "user1");
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (2, "Phil", "Ivy", "phil@mail.com", "securepass", "user2");
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (3, "Jim", "Carrie", "jim@mail.com", "securepass", "user3");
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (4, "Ben", "Uncle", "ben@mail.com", "securepass", 'user4');
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (5, "Mike", "Flem", "mike@mail.com", "securepass", "user5");
 
-INSERT into Groups (group_id, group_name, latitude, longitude) VALUES (1, "Best basketball", 45, -80);
-INSERT into Groups (group_id, group_name, latitude, longitude) VALUES (2, "Noobie chess", 44, -80);
-INSERT into Groups (group_id, group_name, latitude, longitude) VALUES (3, "Cycling maniacs", 43, -79);
-INSERT into Groups (group_id, group_name, latitude, longitude) VALUES (4, "Soccer bros", 10, 45);
-INSERT into Groups (group_id, group_name) VALUES (5, "CS:GO Pro team");
+INSERT into Groups (group_id, group_name, latitude, longitude, skill_level) VALUES (1, "Best basketball", 45, -80, 2);
+INSERT into Groups (group_id, group_name, latitude, longitude, skill_level) VALUES (2, "Noobie chess", 44, -80, 0);
+INSERT into Groups (group_id, group_name, latitude, longitude, skill_level) VALUES (3, "Cycling maniacs", 43, -79, 1);
+INSERT into Groups (group_id, group_name, latitude, longitude, skill_level) VALUES (4, "Soccer bros", 10, 45, 1);
+INSERT into Groups (group_id, group_name, skill_level) VALUES (5, "CS:GO Pro team", 2);
 
 INSERT into User_in_group (user_id, group_id) VALUES (1, 1);
 INSERT into User_in_group (user_id, group_id) VALUES (2, 2);

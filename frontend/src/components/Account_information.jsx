@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { ReactSession } from 'react-client-session';
 
+import Navbar from './navbar/navbar-logged-in.jsx';
+
 class Account_information extends Component {
   
   state = {
     firstName: ReactSession.get("firstName"), lastName: ReactSession.get("lastName"), email:  ReactSession.get("email"), password_input: "",
      address: ReactSession.get("address"), user_id: ReactSession.get("user_id")
   };
+
 
   
   async  componentDidMount(){
@@ -104,12 +107,13 @@ class Account_information extends Component {
 
     render() {
       return (
+        <div className = "root">
+        <Navbar/>
         <div className="container mt-3 mb-3">
           <h1>Account information</h1>
           <p>
             <Link to="/home">Return to home</Link>
           </p>
-
           <form onSubmit={this.sendMsg} className="mb-3">
 
             
@@ -190,7 +194,7 @@ class Account_information extends Component {
             <button className="btn btn-danger" type="submit" onClick={this.deleteAccount}>
                 Delete Account
             </button>
-          </form>
+          </form>         
         </div>
         
       );

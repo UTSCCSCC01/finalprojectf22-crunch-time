@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import JoinGroupButton from "./joinGroupButton.jsx";
 import Navbar from './navbar/navbar-logged-in.jsx';
 import { ReactSession } from 'react-client-session';
 
@@ -159,7 +160,8 @@ class Search extends Component {
           <ul className="list-group">
             {this.state.messages.map((msg) => (
               <li className="list-group-item" key={msg.group_id}>
-                {msg.group_name}
+                <Link to={"/view_group/"+msg.group_id}>{msg.group_name}</Link>
+                <span style={{float:'right'}}><JoinGroupButton groupID={msg.group_id}/></span>
               </li>
             ))}
           </ul>
