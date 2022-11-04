@@ -179,6 +179,19 @@ def join_group():
     all_users = db.execute('SELECT user_id, email FROM Users').fetchall()
     return {'groups': groups, 'users': rows_to_dicts(all_users)}
 
+@app.route('/contact_us', methods=['POST', 'GET'])
+def contact_us():
+    db = get_db()
+    if request.method == 'POST':
+        firstName = str(request.json['FirstName'])
+        lastName = str(request.json['LastName'])
+        email= str(request.json['Email'])
+        message= str(request.json['Message'])
+        db.execute('INSERT INTO Questions (firstName, lastName, email, message) VALUES (?, ?, ?, ?)',
+            (firstName, lastName, email, message))
+        db.commit()
+    return {'messages':1}
+
 if __name__ == '__main__':
     
     socketIo.run(app)
