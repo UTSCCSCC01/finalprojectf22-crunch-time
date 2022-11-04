@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Navbar_Login from './navbar/navbar-logged-in.jsx';
 import Navbar_Logout from './navbar/navbar-not-logged-in.jsx';
 import { ReactSession } from 'react-client-session';
+import io from "socket.io-client";
 
 
 
@@ -21,33 +22,43 @@ const Redirector = ({submitted, nextState}) => {
 
 class Create_Group extends Component {
   state = {skillLevel: 0, group_name: "", loc: false, lat: 0.0, long: 0.0, value: 1,submitted: false}
-  
+  //Will use client session instead of server session
   async  componentDidMount(){
-    fetch("/user",{
-      method: 'get', // or 'PUT'
-      headers: {
-        'Content-Type': 'application/json',
-        },
-      })       
-    .then((response) => response.json())
-    .then(() => {
+    //console.log(ReactSession.get("messages"))
+    try{
+      if(ReactSession.get("firstName")== undefined){
+        window.location.replace("/")
+      }
+    }
+    catch(e){
+      window.location.replace("/")
+    }
+  }
+//     fetch("/user",{
+//       method: 'get', // or 'PUT'
+//       headers: {
+//         'Content-Type': 'application/json',
+//         },
+//       })       
+//     .then((response) => response.json())
+//     .then(() => {
   
         
-    })  
-    .catch((error) => {
-      window.location.replace("/home")
+//     })  
+//     .catch((error) => {
+//       window.location.replace("/home")
 
 
-    },[]);
+//     },[]);
 
- }
+//  }
 
 
 
   sendReq = (event) => {
     event.preventDefault();
     const data = {
-      username: 'example',
+      user_id:ReactSession.get("user_id"),
       skillLevel: this.state.skillLevel,
       group_name: this.state.group_name, 
       loc: this.state.loc, 
@@ -63,9 +74,11 @@ class Create_Group extends Component {
     })       
     .then((response) => response.json())
     .then((data) => {
-        console.log('Success:', data);
-        // console.log(this.props, this.state);
         ReactSession.set("Group_Members", [ReactSession.get("firstName") + " " + ReactSession.get("lastName")])
+        ReactSession.set("groupName", [data['messages'][0]['group_id']])
+        // let endPoint = "http://localhost:5000"; 
+        // let socket = io.connect(`${endPoint}`);
+        // socket.emit("join", {userName:ReactSession.get("firstName") + " " + ReactSession.get("lastName"), id:1 })
         this.setState({submitted: true});
     })
     .catch((error) => {

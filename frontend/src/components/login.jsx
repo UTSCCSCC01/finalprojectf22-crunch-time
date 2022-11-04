@@ -25,23 +25,16 @@ class Login extends Component {
   }
   //Checks if user is already loggined in
   async  componentDidMount(){
-    fetch("/user",{
-      method: 'get', // or 'PUT'
-      headers: {
-        'Content-Type': 'application/json',
-        },
-      })       
-    .then((response) => response.json())
-    .then(() => {
+    try{
+    if(ReactSession.get("firstName")== undefined){
+    }
+    else{
       window.location.replace("/home")
-  
-        
-    })  
-    .catch((error) => {
-      console.log(error)
-
-
-    },[]);
+    }
+  }
+  catch(e){
+    window.location.replace("/")
+  }
 
  }
   // For loggin in
@@ -62,8 +55,11 @@ class Login extends Component {
       ReactSession.set("email", data['email']);
       ReactSession.set("password", data['password']);
       ReactSession.set("address", data['address']);
+      ReactSession.set("user_id", data['user_id']);
       ReactSession.set("messages", [])
       ReactSession.set("Group_Members",[])
+      ReactSession.set("groupName",[])
+
       window.location.replace("/home");
       
     })  

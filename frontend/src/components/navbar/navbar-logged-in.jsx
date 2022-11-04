@@ -5,13 +5,15 @@ import { ReactSession } from 'react-client-session';
 // Media
 import graphic from "../../media/logo.png";
 
-const Navbar = () => {
+const Navbar_Login = () => {
     const logout = () => {
         fetch("/logout",{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            },
+            },            
+          body: JSON.stringify({'username': ReactSession.get("firstName") + " " + ReactSession.get("lastName")}),
+
           })       
         .then((response) => response.json())
         .then(() => {
@@ -21,11 +23,14 @@ const Navbar = () => {
             ReactSession.remove("password");
             ReactSession.remove("messages")
             ReactSession.remove("Group_Members")
-          window.location.replace("/")
+            ReactSession.remove("GroupName")
+            window.location.replace("/")
             
         })  
         .catch((error) => {
           console.log(error)
+    
+    
     
     
         },[]);
@@ -46,7 +51,7 @@ const Navbar = () => {
                 <a href = "/faq">FAQs</a>
             </li>
             <li>
-                <a href = "/profile">Account Info</a>
+                <a href = "/Account_information">Account Info</a>
             </li>
             <li>
                 <a href = "/search">Search</a>
@@ -57,4 +62,4 @@ const Navbar = () => {
         </ul>
     </nav>)
 }
-export default Navbar
+export default Navbar_Login
