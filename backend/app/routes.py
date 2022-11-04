@@ -22,11 +22,13 @@ app.config['SESSION_TYPE'] = 'filesystem'
 bcrypt = Bcrypt(app)
 CORS(app, supports_credentials=True)
 server_session = Session(app)
+#Stores all the usernames. Eventually each index will represent users in a group. Will make it a dictionary eventually
+users = {'username': []}
+
 #db.init_app(app)
 
 @app.route('/user', methods=['GET', 'POST'])
 def get_user():
-    print(len(session))
     if len(session) > 1 :
         return jsonify(session)
     return 'bad request!', 400
@@ -73,13 +75,45 @@ def login():
             session['password'] = Password
             session['address'] = temp['address']
             return temp
-    return 'bad request!', 400
+
 
 
 @app.route("/logout", methods=["POST"])
 def logout_user():
-    print(session)
+    username = request.json['username']
+    if username in users['username']:
+        users['username'].remove(username)
+    print(users)
+    #send(users, broadcast=True)
     session.clear()
+    return "200"
+
+@app.route("/updateAccount", methods=["POST"])
+def updateAccount():
+
+    db = get_db()
+    FirstName = str(request.json['firstName'])
+    LastName = str(request.json['lastName']) 
+    Email = str(request.json['email'])
+    Password = str(request.json['password'])
+    Address = str(request.json['address'])
+    if request.method == 'POST':
+        db.execute('UPDATE Users SET firstName = (?), lastName = (?), address = (?) WHERE email = (?)', [FirstName, LastName, Address, Email])
+
+        db.commit()
+    return "200"
+
+@app.route("/deleteAccount", methods=["DELETE"])
+def deleteAccount():
+    db = get_db()
+    print(request.json)
+    Email = str(request.json['email'])
+    user_id = request.json['user_id']
+    print (request.method)
+    if request.method == 'DELETE':
+        db.execute('DELETE FROM users where email = (?)', [Email])
+        db.execute('DELETE FROM User_in_group where user_id = (?)', [user_id])
+        db.commit()
     return "200"
 
 
@@ -115,6 +149,7 @@ def search():
 @app.route('/Create_Group', methods=['POST', 'GET'])
 def Create_Group():
     db = get_db()
+    user_id = request.json['user_id']
     if request.method == 'POST':
         data = request.get_json()
         for elem in data:
@@ -125,29 +160,33 @@ def Create_Group():
             (data["group_name"], data['skillLevel'], data['lat'], data['long'],))
         else:
             db.execute('INSERT INTO Groups (group_name, skill_level) VALUES (?, ?)', (data["group_name"], data['skillLevel'],))
-        db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')
+        db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (?, LAST_INSERT_ROWID())',[user_id])
+        messages = db.execute('SELECT * From Groups WHERE group_id = (LAST_INSERT_ROWID()) ').fetchall()
         db.commit()
         
-    return {'messages': [request.method]}
+
+    return {'messages': list(map(dict, messages))}
 app.config['SECRET_KEY'] = 'mysecret'
 
 socketIo = SocketIO(app, cors_allowed_origins="*")
 
 app.debug = True
 app.host = 'localhost'
-
 @socketIo.on("message")
 def handleMessage(msg):
-    print(msg)
     send(msg, broadcast=True)
     return None
 @socketIo.on('join')
 def on_join(data):
-    username = data['username']
-    room = data['room']
-    join_room(room)
-    send(username + ' has entered the room.', to=room)
+    # username = data['username']
 
+    if data['userName'] not in users['username']:
+        users['username'].append(data['userName'])
+    print(users)
+    send(users, broadcast=True)
+    # join_room(room)
+    #send(username + ' has entered the room.', to=room)
+    return None
 @socketIo.on('leave')
 def on_leave(data):
     username = data['username']
