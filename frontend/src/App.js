@@ -22,13 +22,6 @@ import Account_info_authentification from './components/account_info_authentific
 import Contact_us from './components/contact_us';
 import About_Us from './components/about_us/about_us';
 import { ReactSession } from 'react-client-session';
-import ViewGroup from './components/viewGroup';
-import FAQ from './components/faq/faq';
-import Edit_info from './components/Edit_info';
-import Account_info_authentification from './components/account_info_authentification';
-import Contact_us from './components/contact_us';
-import About_Us from './components/about_us/about_us';
-
 function App() {
   const [count, setCount] = useState('');
 

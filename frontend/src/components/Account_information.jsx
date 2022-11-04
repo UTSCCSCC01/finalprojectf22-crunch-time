@@ -196,7 +196,7 @@ class Account_information extends Component {
             </button>
           </form>         
         </div>
-        
+      </div>
       );
     }
   }
