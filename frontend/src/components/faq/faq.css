@@ -1,0 +1,30 @@
+.faq-content {
+    margin: 2% 8% 8% 8%;
+}
+
+.faq-intro {
+    margin: 6% 4% 0% 4%;
+}
+
+.container {
+    position: relative;
+    display: block;
+    margin: 5% 0% 10% 0%;
+}
+
+.container .faq-box {
+    position: relative;
+    width: 96%;
+    height: 20%;
+    background: #ffffff;
+    float: left;
+    margin: 2%;
+    overflow: hidden;
+    border-radius: 10px;
+    padding: 2%;
+}
+
+.faq-contact {
+    width: 50%;
+    margin: 20% 6% 12% 6%;
+}

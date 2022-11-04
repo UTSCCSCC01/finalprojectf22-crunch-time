@@ -15,13 +15,13 @@ const Navbar = () => {
                 <a href = "/about">About Us</a>
             </li>
             <li>
-                <a href = "/contact">Contact Us</a>
+                <a href = "/contact_us">Contact Us</a>
             </li>
             <li>
                 <a href = "/faq">FAQs</a>
             </li>
             <li>
-                <a href = "/profile">Account Info</a>
+                <a href = "/account_info_authentification">Account Info</a>
             </li>
             <li>
                 <a href = "/search">Search</a>
