@@ -14,7 +14,7 @@ CREATE TABLE Groups (
   size INTEGER DEFAULT 1000, 
   group_name Text NOT NULL,
   latitude FLOAT DEFAULT NULL,
-  longitude FLOAT DEFAULT NULL
+  longitude FLOAT DEFAULT NULL,
   skill_level INTEGER CHECK (skill_level IN (0, 1, 2))
 );
 
@@ -33,11 +33,18 @@ CREATE TABLE loggedInUsers (
   
 CREATE TABLE Users (
   user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  firstName TEXT NOT NULL,
+  firstName TEXT  NOT NULL,
   lastName TEXT NOT NULL,
-  email TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
   address TEXT NOT NULL
+);
+
+CREATE TABLE Questions (
+  firstName TEXT  NOT NULL,
+  lastName TEXT NOT NULL,
+  email TEXT NOT NULL,
+  message TEXT NOT NULL
 );
 
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (1, "Ken", "Nim", "Ken@mail.com", "securepass", "user1");

@@ -1,8 +1,30 @@
-import React from "react";
+import React, { Component, useEffect } from "react";
 import Navbar from './navbar/navbar-logged-in.jsx';
 import { Link } from "react-router-dom";
 
 export default function Home() {
+
+  const logout = () => {
+      fetch("/logout",{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          },
+        })       
+      .then((response) => response.json())
+      .then(() => {
+        
+        window.location.replace("/login")
+        
+          
+      })  
+      .catch((error) => {
+        console.log(error)
+  
+  
+      },[]);
+    };
+
   return (
   <div className = "root">
     <Navbar/>
@@ -15,6 +37,7 @@ export default function Home() {
       <Link to="/Create_Group">Link to Create_Group</Link><br/>
       <Link to="/join_group">Join a group</Link><br/>
       <Link to="/account_info_authentification">Link to Account_information</Link>
+      <button onClick={() => logout()} type="login" class = "login-bttn">Logout</button>
     </div>;
   </div>
   )
