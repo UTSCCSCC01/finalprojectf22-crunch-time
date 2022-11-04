@@ -57,8 +57,10 @@ class Register extends Component {
   //   }
   // }
   
-  fetchMsgs = () =>{
+  fetchMsgs = (e) =>{
+    e.preventDefault();
     const data = this.state;
+    console.log('state: ', data);
     fetch("/register",{
         method: 'POST', // or 'PUT'
         headers: {
@@ -69,7 +71,7 @@ class Register extends Component {
     })       
     .then((response) => response.json())
     .then((data) => {
-      window.location.replace("/")
+      window.location.replace("/");
         alert('Success:', data);
     })  
     .catch((error) => {
@@ -82,12 +84,14 @@ class Register extends Component {
   }
 
 
+ // <form action="http://localhost:3000/register" method = "POST" id="register-form">
+
   render() {
     return (
         <div class = "content"> <center>
             <h1>Register</h1>
             <h5>Glad you’re joining DropIN! Please enter your information below.</h5><br/>
-            <form action="http://localhost:3000/register" method = "POST" id="register-form">
+            <form id="register-form">
             
               <label for="firstName">First Name</label> 
               <input type="text" id="firstName" name="firstName" class="loginLabel" onChange={evt => this.updateFirstName(evt)}></input>

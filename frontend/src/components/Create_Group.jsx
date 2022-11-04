@@ -1,11 +1,23 @@
 import React, {Component, useState, useEffect, useInsertionEffect,} from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 //import Chat from './Chat';
 import Navbar from './navbar/navbar-logged-in.jsx';
 
+// a bit of a hack to allow programatically redirecting to a react-router
+// page and also pass in state
+const Redirector = ({submitted, nextState}) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (submitted) {
+      navigate('/chat', {state: nextState});
+    }
+  }, [submitted]);
+  return null;
+}
+
 class Create_Group extends Component {
-  state = {skillLevel: 0, group_name: "", loc: false, lat: 0.0, long: 0.0, value: 1, activities: [], activity: 0}
-    
+  state = {skillLevel: 0, group_name: "", loc: false, lat: 0.0, long: 0.0, value: 1, activities: [], activity: 0, submitted: false}
+
   sendReq = (event) => {
     event.preventDefault();
     const data = {
@@ -27,6 +39,8 @@ class Create_Group extends Component {
     .then((response) => response.json())
     .then((data) => {
         console.log('Success:', data);
+        // console.log(this.props, this.state);
+        this.setState({submitted: true});
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -142,9 +156,10 @@ class Create_Group extends Component {
                 <option value="2">Advanced</option>
             </select>
             <br/>
-            <Link to="/chat" state={{props: this.state.value}} >
-                <button type="submit" className="btn btn-primary "/*position-relative top-50 start-50"*/>Create Group</button>
-            </Link>
+            {/* <Link to="/chat" state={{props: this.state.value}} > */}
+            <Redirector submitted={this.state.submitted} nextState={{props: this.state.value}} />
+            <button type="submit" className="btn btn-primary "/*position-relative top-50 start-50"*/>Create Group</button>
+            {/* </Link> */}
         </form>
         </div>
         </div> 
