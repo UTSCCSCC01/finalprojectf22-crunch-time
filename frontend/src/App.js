@@ -15,6 +15,7 @@ import Account_information from './components/Account_information';
 import JoinGroup from './components/joinGroup'
 import Homepage from './components/homepage/homepage';
 import Contact_us from './components/contact_us';
+import About_Us from './components/about_us/about_us';
 
 function App() {
   const [selectedMode, setSelectedMode] = useState('open')
@@ -33,6 +34,7 @@ function App() {
         <Route path='/account_information' element={<Account_information />} />
         <Route path='/join_group' element={<JoinGroup />} />
         <Route path='/contact_us' element={<Contact_us />} />
+        <Route path='/about' element={<About_Us />} />
       </Routes>
     </BrowserRouter>
   );
