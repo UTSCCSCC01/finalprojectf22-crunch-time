@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS loggedInUsers;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS Activities;
 DROP TABLE IF EXISTS User_follows_activity;
+DROP TABLE IF EXISTS Questions;
 
 CREATE TABLE Example (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -33,7 +34,7 @@ CREATE TABLE Groups (
   group_name Text NOT NULL,
   latitude FLOAT DEFAULT NULL,
   longitude FLOAT DEFAULT NULL,
-  skill_level INTEGER CHECK (skill_level IN (0, 1, 2)),
+  skill_level INTEGER NOT NULL CHECK (skill_level IN (0, 1, 2)),
   FOREIGN KEY(activity_id) REFERENCES Activities(id)
 );
 
@@ -83,11 +84,11 @@ INSERT into Activities (name, type) VALUES ("Swimming", "Sport");
 INSERT into Activities (name, type) VALUES ("Cycling", "Sport");
 
 
-INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude) VALUES (1, 1, "Basketball", "Best basketball", 45, -80);
-INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude) VALUES (2, 2, "Chess", "Noobie chess", 44, -80);
-INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude) VALUES (3, 9, "Cycling", "Cycling maniacs", 43, -79);
-INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude) VALUES (4, 4, "Soccer", "Soccer bros", 10, 45);
-INSERT into Groups (group_id, activity_id, activity_name, group_name) VALUES (5, 3, "Counter-Strike", "CS:GO Pro team");
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level) VALUES (1, 1, "Basketball", "Best basketball", 45, -80, 2);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level) VALUES (2, 2, "Chess", "Noobie chess", 44, -80, 0);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level) VALUES (3, 9, "Cycling", "Cycling maniacs", 43, -79, 1);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level) VALUES (4, 4, "Soccer", "Soccer bros", 10, 45, 1);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, skill_level) VALUES (5, 3, "Counter-Strike", "CS:GO Pro team", 2);
 
 INSERT into User_in_group (user_id, group_id) VALUES (1, 1);
 INSERT into User_in_group (user_id, group_id) VALUES (2, 2);

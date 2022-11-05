@@ -149,7 +149,7 @@ def search():
 @app.route('/Create_Group', methods=['POST', 'GET'])
 def Create_Group():
     db = get_db()
-    user_id = request.json['user_id']
+    #user_id = request.json['user_id']
     if request.method == 'POST':
         data = request.get_json()
         for elem in data:

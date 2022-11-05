@@ -82,7 +82,7 @@ class Create_Group extends Component {
     .then((response) => response.json())
     .then((data) => {
         ReactSession.set("Group_Members", [ReactSession.get("firstName") + " " + ReactSession.get("lastName")])
-        ReactSession.set("groupName", [data['messages'][0]['group_id']])
+        // ReactSession.set("groupName", [data['messages'][0]['group_id']])
         // let endPoint = "http://localhost:5000"; 
         // let socket = io.connect(`${endPoint}`);
         // socket.emit("join", {userName:ReactSession.get("firstName") + " " + ReactSession.get("lastName"), id:1 })
@@ -155,7 +155,7 @@ class Create_Group extends Component {
         //     data['messages'] 
         // </div>
         <div className = "root">
-          <Navbar_Logout/>
+          { /* <Navbar_Logout/> */}
           {ReactSession.get("firstName") !== undefined &&
             <Navbar_Login/>
           }
@@ -163,7 +163,7 @@ class Create_Group extends Component {
         <div className="bg-image position-relative" /* Style="background: #E4A11B; height: 100vh" */>
         <form onSubmit={this.sendReq} className="mb-3">
           <div className="form-group mb-3">
-            <label htmlFor="activities">Activities</label>
+            <label htmlFor="activities">Activity</label>
             <select id="activities" name="activities" onChange={this.handleActivityChange}>
                 <option key={0} value={"0,NULL"}> Select an Activity </option>
               {this.state.activities.map((option) => {
@@ -173,7 +173,7 @@ class Create_Group extends Component {
                   </option>
                 );
               })}
-            </select>
+            </select><br/>
             <label htmlFor="msg">Group Name:</label>
             <input
               type="text"
@@ -216,7 +216,7 @@ class Create_Group extends Component {
           <div></div>
           }
           <label htmlFor="skill-level">Skill level:</label>
-            <select name="skill-level" id="skill-level" onChange={this.handleSkillLevelChange}>
+            <select name="skill-level" id="skill-level" onChange={this.handleSkillLevelChange} defaultValue={"0"}>
                 <option value="0">Beginner</option>
                 <option value="1">Intermediate</option>
                 <option value="2">Advanced</option>
