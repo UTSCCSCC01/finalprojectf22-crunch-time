@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import './homepage.css';
-import Navbar from '../navbar/navbar-not-logged-in.jsx';
-
+import { ReactSession } from 'react-client-session';
+import Navbar_Login from '../navbar/navbar-logged-in.jsx';
+import Navbar_Logout from '../navbar/navbar-not-logged-in.jsx';
 // Media
 import graphic from "../../media/magnifier.png";
 
@@ -10,8 +11,17 @@ import graphic from "../../media/magnifier.png";
 document.body.style = 'background: #F1F3FE;';
 
 export default function Homepage() {
+
   return <div className = "home-content">
-    <Navbar/>
+    {ReactSession.get("firstName") !== undefined &&
+            <Navbar_Login/>
+          
+    }
+    
+    {ReactSession.get("firstName") == undefined &&
+      <Navbar_Logout/>
+    
+    }
     <div className = "home-intro">
       <div className = "home-intro-text">
         <h1><b>Find other <span style = {{color: '#0C3ADE'}}>players</span>.<br/>Whenever, wherever.</b></h1>

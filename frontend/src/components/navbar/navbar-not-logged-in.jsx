@@ -4,7 +4,7 @@ import './navbar.css';
 // Media
 import graphic from "../../media/logo.png";
 
-const Navbar = () => {
+const Navbar_Logout = () => {
     return (<nav className = "nav">
         <a href = "/">
             <img alt = "logo" src = {graphic}></img>
@@ -15,7 +15,7 @@ const Navbar = () => {
                 <a href = "/about">About Us</a>
             </li>
             <li>
-                <a href = "/contact">Contact Us</a>
+                <a href = "/contact_us">Contact Us</a>
             </li>
             <li>
                 <a href = "/faq">FAQs</a>
@@ -29,4 +29,5 @@ const Navbar = () => {
         </ul>
     </nav>)
 }
-export default Navbar
+export default Navbar_Logout
+

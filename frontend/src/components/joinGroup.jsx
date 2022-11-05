@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import JoinGroupButton from "./joinGroupButton";
 
 class JoinGroup extends Component {
   state = { user_id: 1, groups: [], users: [] };
@@ -12,24 +13,8 @@ class JoinGroup extends Component {
       });
   }
 
-  joinGroup = (groupID) => (event) => {
-    event.preventDefault();
-    const data = {
-      user_id: this.state.user_id,
-      group_id: groupID
-    };
-    fetch("/join_group", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-      redirect: 'follow'
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({ ...data });
-      });
+  joinGroupCallback = () => {
+    this.fetchInfo();
   };
 
   componentDidMount() {
@@ -47,8 +32,8 @@ class JoinGroup extends Component {
         <p>
           <Link to="/home">Return to home</Link>
         </p>
-        <p>This is a temporary/test page until a proper way to access a "Join Group" link
-          and act as a user in a session is implemented.</p>
+        <p>This is a temporary/test page.</p>
+        {/*
         <label htmlFor="user-select">Act as user:</label>
         <select name="user-select" id="user-select" onChange={this.handleUserChange}>
           {this.state.users.map((user) => (
@@ -56,15 +41,13 @@ class JoinGroup extends Component {
               {user.email}
             </option>
           ))}
-        </select>
+          </select>*/}
         <h2>List of groups:</h2>
         <ul>
           {this.state.groups.map((group) => (
             <li key={group.group_id}>
               {group.group_name}
-              <button onClick={this.joinGroup(group.group_id)} type="button">
-                Join Group
-              </button>
+              <JoinGroupButton groupID={group.group_id} callback={this.joinGroupCallback} />
               <ul>
                 {group.users.map((user) => (
                   <li key={user.user_id}>
