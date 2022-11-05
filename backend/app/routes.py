@@ -107,16 +107,17 @@ def Create_Group():
             print(elem, type(data[elem]), data[elem])
         
         if (data["loc"]):
-            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude) VALUES (?, ?, ?, ?)', 
-            (data["group_name"], data['skillLevel'], data['lat'], data['long'],))
+            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude, activity_id, activity_name) VALUES (?, ?, ?, ?, ?, ?)', 
+            (data["group_name"], data['skillLevel'], data['lat'], data['long'], data['activity_id'], data['activity_name'],))
         else:
-            db.execute('INSERT INTO Groups (group_name, skill_level) VALUES (?, ?)', (data["group_name"], data['skillLevel'],))
+            db.execute('INSERT INTO Groups (group_name, skill_level, activity_id, activity_name) VALUES (?, ?, ?, ?)', 
+            (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'],))
         db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')
         db.commit()
     else:
-        activities = db.execute("SELECT (id, name) FROM Activities").fetchall()
-        return {}  
-    return {'activities': list(map(dict, activities))}
+        activities = db.execute("SELECT id, name FROM Activities").fetchall()
+        return {'activities': list(map(dict, activities))}  
+    return {}
 app.config['SECRET_KEY'] = 'mysecret'
 
 socketIo = SocketIO(app, cors_allowed_origins="*")

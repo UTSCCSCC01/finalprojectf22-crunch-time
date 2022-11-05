@@ -28,6 +28,7 @@ CREATE TABLE User_follows_activity (
 CREATE TABLE Groups (
   group_id INTEGER PRIMARY KEY AUTOINCREMENT, 
   activity_id INTEGER NOT NULL,
+  activity_name TEXT NOT NULL,
   size INTEGER DEFAULT 1000, 
   group_name Text NOT NULL,
   latitude FLOAT DEFAULT NULL,
@@ -75,11 +76,11 @@ INSERT into Activities (name, type) VALUES ("Swimming", "Sport");
 INSERT into Activities (name, type) VALUES ("Cycling", "Sport");
 
 
-INSERT into Groups (group_id, activity_id, group_name, latitude, longitude) VALUES (1, 1, "Best basketball", 45, -80);
-INSERT into Groups (group_id, activity_id, group_name, latitude, longitude) VALUES (2, 2, "Noobie chess", 44, -80);
-INSERT into Groups (group_id, activity_id, group_name, latitude, longitude) VALUES (3, 9, "Cycling maniacs", 43, -79);
-INSERT into Groups (group_id, activity_id, group_name, latitude, longitude) VALUES (4, 4, "Soccer bros", 10, 45);
-INSERT into Groups (group_id, activity_id, group_name) VALUES (5, 3, "CS:GO Pro team");
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude) VALUES (1, 1, "Basketball", "Best basketball", 45, -80);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude) VALUES (2, 2, "Chess", "Noobie chess", 44, -80);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude) VALUES (3, 9, "Cycling", "Cycling maniacs", 43, -79);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude) VALUES (4, 4, "Soccer", "Soccer bros", 10, 45);
+INSERT into Groups (group_id, activity_id, activity_name, group_name) VALUES (5, 3, "Counter-Strike", "CS:GO Pro team");
 
 INSERT into User_in_group (user_id, group_id) VALUES (1, 1);
 INSERT into User_in_group (user_id, group_id) VALUES (2, 2);

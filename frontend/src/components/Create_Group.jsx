@@ -16,10 +16,15 @@ const Redirector = ({submitted, nextState}) => {
 }
 
 class Create_Group extends Component {
-  state = {skillLevel: 0, group_name: "", loc: false, lat: 0.0, long: 0.0, value: 1, activities: [], activity: 0, submitted: false}
+  state = {skillLevel: 0, group_name: "", loc: false, lat: 0.0, long: 0.0, 
+  value: 1, activities: [], activity_id: 0, activity_name: "NULL", submitted: false}
 
   sendReq = (event) => {
     event.preventDefault();
+    if(this.state.activity_id==0) {
+      alert("Please select an activity");
+      return;
+    }
     const data = {
       username: 'example',
       skillLevel: this.state.skillLevel,
@@ -27,8 +32,10 @@ class Create_Group extends Component {
       loc: this.state.loc, 
       lat: this.state.lat, 
       long: this.state.long,
-      activity: this.state.activity
+      activity_id: this.state.activity_id,
+      activity_name: this.state.activity_name
     };
+    console.log(this.state.activity_id, this.state.activity_name)
     fetch("/Create_Group",{
         method: 'POST', // or 'PUT'
         headers: {
@@ -64,6 +71,16 @@ class Create_Group extends Component {
     this.setState({ skillLevel: parseInt(event.target.value) });
   };
 
+  handleActivityChange = (event) => { // 
+    const target = event.target;
+    const value = target.value.split(",");
+    this.setState({
+      activity_id: parseInt(value[0]),
+      activity_name: value[1]
+    }); 
+    
+  }
+
   handleChange = (event) => { // handles changes for multiple text input fields
     const target = event.target;
     const value = target.value;
@@ -95,14 +112,18 @@ class Create_Group extends Component {
         // </div>
         <div className = "root">
             <Navbar/>
+            <p>
+            <Link to="/home">Return to home</Link>
+            </p>
         <div className="bg-image position-relative" /* Style="background: #E4A11B; height: 100vh" */>
         <form onSubmit={this.sendReq} className="mb-3">
           <div className="form-group mb-3">
             <label htmlFor="activities">Activities</label>
-            <select id="activities" name="activities" onChange={this.handleChange}>
+            <select id="activities" name="activities" onChange={this.handleActivityChange}>
+                <option key={0} value={"0,NULL"}> Select an Activity </option>
               {this.state.activities.map((option) => {
                 return (
-                  <option key={option.id} value={option.name}>
+                  <option key={option.id} value={[option.id, option.name]}>
                     {option.name}
                   </option>
                 );
