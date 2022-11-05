@@ -22,14 +22,30 @@ app.config['SESSION_TYPE'] = 'filesystem'
 bcrypt = Bcrypt(app)
 CORS(app, supports_credentials=True)
 server_session = Session(app)
+#Stores all the usernames. Eventually each index will represent users in a group. Will make it a dictionary eventually
+users = {'username': []}
+
 #db.init_app(app)
 
 @app.route('/user', methods=['GET', 'POST'])
 def get_user():
-    print(len(session))
     if len(session) > 1 :
         return jsonify(session)
     return 'bad request!', 400
+
+@app.route('/user_in_group/<group_id>', methods=['GET'])
+def user_in_group(group_id):
+    user_id = session.get('user_id')
+    try:
+        user_id = int(user_id)
+        group_id = int(group_id)
+    except ValueError:
+        return 'malformed user or group IDs', 400
+    db = get_db()
+    res = db.execute('SELECT * FROM User_in_group WHERE user_id = ? AND group_id = ?',
+        (user_id, group_id))
+    return jsonify({'joined': not (res.fetchone() is None)})
+    
 
 
 @app.route('/example', methods=['GET', 'POST'])
@@ -59,13 +75,45 @@ def login():
             session['password'] = Password
             session['address'] = temp['address']
             return temp
-    return 'bad request!', 400
+
 
 
 @app.route("/logout", methods=["POST"])
 def logout_user():
-    print(session)
+    username = request.json['username']
+    if username in users['username']:
+        users['username'].remove(username)
+    print(users)
+    #send(users, broadcast=True)
     session.clear()
+    return "200"
+
+@app.route("/updateAccount", methods=["POST"])
+def updateAccount():
+
+    db = get_db()
+    FirstName = str(request.json['firstName'])
+    LastName = str(request.json['lastName']) 
+    Email = str(request.json['email'])
+    Password = str(request.json['password'])
+    Address = str(request.json['address'])
+    if request.method == 'POST':
+        db.execute('UPDATE Users SET firstName = (?), lastName = (?), address = (?) WHERE email = (?)', [FirstName, LastName, Address, Email])
+
+        db.commit()
+    return "200"
+
+@app.route("/deleteAccount", methods=["DELETE"])
+def deleteAccount():
+    db = get_db()
+    print(request.json)
+    Email = str(request.json['email'])
+    user_id = request.json['user_id']
+    print (request.method)
+    if request.method == 'DELETE':
+        db.execute('DELETE FROM users where email = (?)', [Email])
+        db.execute('DELETE FROM User_in_group where user_id = (?)', [user_id])
+        db.commit()
     return "200"
 
 
@@ -101,39 +149,45 @@ def search():
 @app.route('/Create_Group', methods=['POST', 'GET'])
 def Create_Group():
     db = get_db()
+    #user_id = request.json['user_id']
     if request.method == 'POST':
         data = request.get_json()
         for elem in data:
             print(elem, type(data[elem]), data[elem])
         
         if (data["loc"]):
-            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude) VALUES (?, ?, ?, ?)', 
-            (data["group_name"], data['skillLevel'], data['lat'], data['long'],))
+            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude, activity_id, activity_name) VALUES (?, ?, ?, ?, ?, ?)', 
+            (data["group_name"], data['skillLevel'], data['lat'], data['long'], data['activity_id'], data['activity_name'],))
         else:
-            db.execute('INSERT INTO Groups (group_name, skill_level) VALUES (?, ?)', (data["group_name"], data['skillLevel'],))
+            db.execute('INSERT INTO Groups (group_name, skill_level, activity_id, activity_name) VALUES (?, ?, ?, ?)', 
+            (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'],))
         db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')
         db.commit()
-        
-    return {'messages': [request.method]}
+    else:
+        activities = db.execute("SELECT id, name FROM Activities").fetchall()
+        return {'activities': list(map(dict, activities))}  
+    return {}
 app.config['SECRET_KEY'] = 'mysecret'
 
 socketIo = SocketIO(app, cors_allowed_origins="*")
 
 app.debug = True
 app.host = 'localhost'
-
 @socketIo.on("message")
 def handleMessage(msg):
-    print(msg)
     send(msg, broadcast=True)
     return None
 @socketIo.on('join')
 def on_join(data):
-    username = data['username']
-    room = data['room']
-    join_room(room)
-    send(username + ' has entered the room.', to=room)
+    # username = data['username']
 
+    if data['userName'] not in users['username']:
+        users['username'].append(data['userName'])
+    print(users)
+    send(users, broadcast=True)
+    # join_room(room)
+    #send(username + ' has entered the room.', to=room)
+    return None
 @socketIo.on('leave')
 def on_leave(data):
     username = data['username']
@@ -141,31 +195,75 @@ def on_leave(data):
     leave_room(room)
     send(username + ' has left the room.', to=room)
 
-
 @app.route('/account_information', methods=['GET', 'POST'])
 def account_information():
     db = get_db()
     if request.method == 'GET':
-        # if 'user' in session:
-        # user_id = session['user']
-        user_id = 1
-        messages = db.execute("SELECT * FROM users WHERE user_id = ?", (user_id,)).fetchall()
-        info = list(map(dict, messages))
-        group_id = db.execute("SELECT group_id FROM User_in_group WHERE user_id = ?", (user_id,)).fetchall()[0][0]
-        groups = db.execute("SELECT group_name FROM Groups WHERE group_id = ?", (group_id,)).fetchall()
-        info[0]['groups']=[]
-        for group in groups:
-            info[0]['groups'].append(group[0])
+        if 'user_id' in session:
+            user_id = session['user_id']
+            messages = db.execute("SELECT * FROM users WHERE user_id = ?", (user_id,)).fetchall()
+            info = list(map(dict, messages))
+            group_id = db.execute("SELECT group_id FROM User_in_group WHERE user_id = ?", (user_id,)).fetchall()
+            info[0]['groups']=[]
+            if len(group_id) > 0:
+                for i in range(len(group_id)):
+                    id = group_id[i][0]
+                    groups = db.execute("SELECT group_name FROM Groups WHERE group_id = ?", (id,)).fetchall()
+                    for group in groups:
+                        info[0]['groups'].append(group[0])
+                        if i < len(group_id) - 1:
+                            info[0]['groups'].append(', ')
     return {'messages': info}
+
+@app.route('/edit_info', methods=['GET', 'POST'])
+def edit_account():
+    db = get_db()
+    user_id = session['user_id']
+    if request.method == 'POST':
+        FirstName = str(request.json['FirstName'])
+        LastName = str(request.json['LastName']) 
+        Email = str(request.json['Email'])
+        Password = str(request.json['Password'])
+        Address = str(request.json['Address'])
+        if len(FirstName) > 0 :
+            session['firstName'] = FirstName
+            db.execute("UPDATE Users SET firstName = ? WHERE user_id = ?", (FirstName, user_id),)
+        if len(LastName) > 0 :
+            session['lastName'] = LastName
+            db.execute("UPDATE Users SET lastName = ? WHERE user_id = ?", (LastName, user_id),)
+        if len(Email) > 0 :
+            session['email'] = Email
+            db.execute("UPDATE Users SET email = ? WHERE user_id = ?", (Email, user_id),)
+        if len(Password) > 0 :
+            session['password'] = Password
+            db.execute("UPDATE Users SET password = ? WHERE user_id = ?", (Password, user_id),)
+        if len(Address) > 0 :
+            session['address'] = Address
+            db.execute("UPDATE Users SET address = ? WHERE user_id = ?", (Address, user_id),)
+        db.commit()
+        messages =  db.execute("SELECT * FROM users WHERE user_id = (?)", [user_id,]).fetchall()
+        temp = {'messages': list(map(dict, messages))}['messages'][0]
+        return temp
+
+@app.route('/account_info_authentification', methods=['GET', 'POST'])
+def account_info_authentifaction():
+    if request.method == 'POST':
+        Password = str(request.json['Password'])
+        if (Password==session['password']):
+            temp = {'password': True}
+        else:
+            temp = {'password': False}
+        return temp
 
 @app.route('/join_group', methods=['POST', 'GET'])
 def join_group():
     db = get_db()
-
     # record user joining the group into the database
     if request.method == 'POST':
         data = request.get_json()
-        user_id = data['user_id']
+        user_id = session.get('user_id')
+        if user_id is None:
+            return 'invalid user ID', 400
         group_id = data['group_id']
         db.execute('INSERT OR IGNORE INTO User_in_group (user_id, group_id) VALUES (?, ?)',
             (user_id, group_id))
@@ -182,6 +280,35 @@ def join_group():
         group['users'] = rows_to_dicts(users)
     all_users = db.execute('SELECT user_id, email FROM Users').fetchall()
     return {'groups': groups, 'users': rows_to_dicts(all_users)}
+
+@app.route('/view_group/<group_id>', methods=['GET'])
+def group_info(group_id):
+    try:
+        group_id = int(group_id)
+    except ValueError:
+        return 'group not found', 404
+    db = get_db()
+    group = db.execute('SELECT * FROM Groups WHERE group_id = ?', (group_id,)).fetchone()
+    if group is None:
+        return 'group not found', 404
+    group = dict(group)
+    members = db.execute('SELECT user_id, firstName, lastName FROM Users NATURAL JOIN User_in_group WHERE group_id = ?',
+        (group_id,)).fetchall()
+    group['members'] = rows_to_dicts(members)
+    return jsonify(group)
+    
+@app.route('/contact_us', methods=['POST', 'GET'])
+def contact_us():
+    db = get_db()
+    if request.method == 'POST':
+        firstName = str(request.json['FirstName'])
+        lastName = str(request.json['LastName'])
+        email= str(request.json['Email'])
+        message= str(request.json['Message'])
+        db.execute('INSERT INTO Questions (firstName, lastName, email, message) VALUES (?, ?, ?, ?)',
+            (firstName, lastName, email, message))
+        db.commit()
+    return {'messages':1}
 
 if __name__ == '__main__':
     

@@ -5,8 +5,19 @@ import { useLocation } from 'react-router-dom'
 import { ReactSession } from 'react-client-session';
 
 export default function Home() {
-  
- 
+  useEffect(() => {
+    try{
+      console.log(ReactSession.get("firstName") + " " + ReactSession.get("lastName"))
+    if(ReactSession.get("firstName")== undefined){
+      window.location.replace("/")
+    }
+  }
+  catch(e){
+    window.location.replace("/")
+  }
+
+
+  }, []);
 
   return (
   <div className = "root">

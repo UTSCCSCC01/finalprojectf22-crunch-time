@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import JoinGroupButton from "./joinGroupButton.jsx";
 import Navbar from './navbar/navbar-logged-in.jsx';
+import { ReactSession } from 'react-client-session';
 
 class Search extends Component {
+  
+
   //state = { groupName: "d", messages: [], lat: 0.0, long: 0.0, dist: 0.0 };
   constructor(props) {
     super(props);
@@ -14,6 +18,8 @@ class Search extends Component {
     this.getLocation = this.getLocation.bind(this);
     this.handleLoc = this.handleLoc.bind(this);
   }
+
+  
 
   fetchMsgs() {
     console.log('fetch');
@@ -46,6 +52,14 @@ class Search extends Component {
   };
 
   componentDidMount() {
+    try{
+      if(ReactSession.get("firstName")===undefined){
+        window.location.replace("/")
+      }
+    }
+    catch(e){
+      window.location.replace("/")
+    }
     this.fetchMsgs();
   }
 
@@ -83,7 +97,7 @@ class Search extends Component {
         <div className="container mt-3 mb-3">
           <h1>Search page</h1>
           <p>
-            <Link to="/">Return to home</Link>
+            <Link to="/home">Return to home</Link>
           </p>
           <form onSubmit={this.sendMsg} className="mb-3">
             <div className="form-group mb-3">
@@ -146,7 +160,10 @@ class Search extends Component {
           <ul className="list-group">
             {this.state.messages.map((msg) => (
               <li className="list-group-item" key={msg.group_id}>
-                {msg.group_name}
+                <Link to={"/view_group/"+ msg.group_id}>{msg.group_name}</Link>
+                <span style={{float:'right'}}><JoinGroupButton groupID={msg.group_id}/></span> <br/>
+                Activity: {msg.activity_name}
+                
               </li>
             ))}
           </ul>
