@@ -147,13 +147,15 @@ class Create_Group extends Component {
   render() {
   
    
-      <Navbar_Logout/>
+      
    
     return (
+      
         // <div> {this.fetchMsgs()}
         //     data['messages'] 
         // </div>
         <div className = "root">
+          <Navbar_Logout/>
           {ReactSession.get("firstName") !== undefined &&
             <Navbar_Login/>
           }

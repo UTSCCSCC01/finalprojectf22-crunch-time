@@ -15,7 +15,7 @@
 .container .faq-box {
     position: relative;
     width: 96%;
-    height: 20%;
+    /*height: 20%;*/
     background: #ffffff;
     float: left;
     margin: 2%;

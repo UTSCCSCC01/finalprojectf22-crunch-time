@@ -53,7 +53,7 @@ class Search extends Component {
 
   componentDidMount() {
     try{
-      if(ReactSession.get("firstName")== undefined){
+      if(ReactSession.get("firstName")===undefined){
         window.location.replace("/")
       }
     }
