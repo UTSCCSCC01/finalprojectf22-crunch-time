@@ -26,7 +26,6 @@ class Create_Group extends Component {
   //Will use client session instead of server session
   async  componentDidMount(){
     this.fetchActs();
-    //console.log(ReactSession.get("messages"))
     try{
       if(ReactSession.get("firstName")== undefined){
         window.location.replace("/")
@@ -71,7 +70,7 @@ class Create_Group extends Component {
       activity_id: this.state.activity_id,
       activity_name: this.state.activity_name
     };
-    console.log(this.state.activity_id, this.state.activity_name)
+    //console.log(this.state.activity_id, this.state.activity_name)
     fetch("/Create_Group",{
         method: 'POST', // or 'PUT'
         headers: {
@@ -82,10 +81,12 @@ class Create_Group extends Component {
     .then((response) => response.json())
     .then((data) => {
         ReactSession.set("Group_Members", [ReactSession.get("firstName") + " " + ReactSession.get("lastName")])
-        // ReactSession.set("groupName", [data['messages'][0]['group_id']])
-        // let endPoint = "http://localhost:5000"; 
-        // let socket = io.connect(`${endPoint}`);
-        // socket.emit("join", {userName:ReactSession.get("firstName") + " " + ReactSession.get("lastName"), id:1 })
+        //dictionary of all the groups the user is in, where key is group_id and value is array containg information for that 
+        let object = data['messages'][0]
+        let temp =  ReactSession.get("groupInfo")
+        console.log(data['messages'][0])
+        temp[object['group_id']] = object['group_name']
+        ReactSession.set("groupInfo", temp)
         this.setState({submitted: true});
     })
     .catch((error) => {
