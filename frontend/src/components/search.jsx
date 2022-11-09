@@ -53,7 +53,7 @@ class Search extends Component {
 
   componentDidMount() {
     try{
-      if(ReactSession.get("firstName")== undefined){
+      if(ReactSession.get("firstName")===undefined){
         window.location.replace("/")
       }
     }
@@ -97,7 +97,7 @@ class Search extends Component {
         <div className="container mt-3 mb-3">
           <h1>Search page</h1>
           <p>
-            <Link to="/">Return to home</Link>
+            <Link to="/home">Return to home</Link>
           </p>
           <form onSubmit={this.sendMsg} className="mb-3">
             <div className="form-group mb-3">
@@ -160,8 +160,10 @@ class Search extends Component {
           <ul className="list-group">
             {this.state.messages.map((msg) => (
               <li className="list-group-item" key={msg.group_id}>
-                <Link to={"/view_group/"+msg.group_id}>{msg.group_name}</Link>
-                <span style={{float:'right'}}><JoinGroupButton groupID={msg.group_id}/></span>
+                <Link to={"/view_group/"+ msg.group_id}>{msg.group_name}</Link>
+                <span style={{float:'right'}}><JoinGroupButton groupID={msg.group_id}/></span> <br/>
+                Activity: {msg.activity_name}
+                
               </li>
             ))}
           </ul>

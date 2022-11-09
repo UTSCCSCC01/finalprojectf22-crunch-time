@@ -95,7 +95,7 @@ def updateAccount():
     FirstName = str(request.json['firstName'])
     LastName = str(request.json['lastName']) 
     Email = str(request.json['email'])
-    Password = str(request.json['password'])
+    #Password = str(request.json['password'])
     Address = str(request.json['address'])
     if request.method == 'POST':
         db.execute('UPDATE Users SET firstName = (?), lastName = (?), address = (?) WHERE email = (?)', [FirstName, LastName, Address, Email])
@@ -149,23 +149,26 @@ def search():
 @app.route('/Create_Group', methods=['POST', 'GET'])
 def Create_Group():
     db = get_db()
-    user_id = request.json['user_id']
+    #user_id = request.json['user_id']
     if request.method == 'POST':
         data = request.get_json()
         for elem in data:
             print(elem, type(data[elem]), data[elem])
         
         if (data["loc"]):
-            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude) VALUES (?, ?, ?, ?)', 
-            (data["group_name"], data['skillLevel'], data['lat'], data['long'],))
+            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude, activity_id, activity_name) VALUES (?, ?, ?, ?, ?, ?)', 
+            (data["group_name"], data['skillLevel'], data['lat'], data['long'], data['activity_id'], data['activity_name'],))
         else:
-            db.execute('INSERT INTO Groups (group_name, skill_level) VALUES (?, ?)', (data["group_name"], data['skillLevel'],))
-        db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (?, LAST_INSERT_ROWID())',[user_id])
-        messages = db.execute('SELECT * From Groups WHERE group_id = (LAST_INSERT_ROWID()) ').fetchall()
-        db.commit()
-        
-
-    return {'messages': list(map(dict, messages))}
+            db.execute('INSERT INTO Groups (group_name, skill_level, activity_id, activity_name) VALUES (?, ?, ?, ?)', 
+            (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'],))
+        db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')
+        messages = db.execute("SELECT * FROM Groups WHERE group_id =  LAST_INSERT_ROWID()")   
+        db.commit()    
+        return {'messages': list(map(dict, messages))}
+    else:
+        activities = db.execute("SELECT id, name FROM Activities").fetchall()
+        return {'activities': list(map(dict, activities))}  
+    return {}
 app.config['SECRET_KEY'] = 'mysecret'
 
 socketIo = SocketIO(app, cors_allowed_origins="*")

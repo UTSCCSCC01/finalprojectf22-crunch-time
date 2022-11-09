@@ -3,19 +3,39 @@ DROP TABLE IF EXISTS Groups;
 DROP TABLE IF EXISTS User_in_group;
 DROP TABLE IF EXISTS loggedInUsers;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS Activities;
+DROP TABLE IF EXISTS User_follows_activity;
+DROP TABLE IF EXISTS Questions;
 
 CREATE TABLE Example (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   contents TEXT NOT NULL
 );
 
+CREATE TABLE Activities(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL UNIQUE,
+  type TEXT NOT NULL
+);
+
+CREATE TABLE User_follows_activity (
+  user_id INTEGER, 
+  activity_id INTEGER NOT NULL,
+  PRIMARY KEY(user_id, activity_id),
+  FOREIGN KEY(user_id) REFERENCES users(user_id), 
+  FOREIGN KEY(activity_id) REFERENCES Activities(id)
+);
+
 CREATE TABLE Groups (
   group_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+  activity_id INTEGER NOT NULL,
+  activity_name TEXT NOT NULL,
   size INTEGER DEFAULT 1000, 
   group_name Text NOT NULL,
   latitude FLOAT DEFAULT NULL,
   longitude FLOAT DEFAULT NULL,
-  skill_level INTEGER CHECK (skill_level IN (0, 1, 2))
+  skill_level INTEGER NOT NULL CHECK (skill_level IN (0, 1, 2)),
+  FOREIGN KEY(activity_id) REFERENCES Activities(id)
 );
 
 CREATE TABLE User_in_group (
@@ -53,11 +73,22 @@ INSERT into users (user_id, firstName, lastName, email, password, address) VALUE
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (4, "Ben", "Uncle", "ben@mail.com", "securepass", 'user4');
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (5, "Mike", "Flem", "mike@mail.com", "securepass", "user5");
 
-INSERT into Groups (group_id, group_name, latitude, longitude, skill_level) VALUES (1, "Best basketball", 45, -80, 2);
-INSERT into Groups (group_id, group_name, latitude, longitude, skill_level) VALUES (2, "Noobie chess", 44, -80, 0);
-INSERT into Groups (group_id, group_name, latitude, longitude, skill_level) VALUES (3, "Cycling maniacs", 43, -79, 1);
-INSERT into Groups (group_id, group_name, latitude, longitude, skill_level) VALUES (4, "Soccer bros", 10, 45, 1);
-INSERT into Groups (group_id, group_name, skill_level) VALUES (5, "CS:GO Pro team", 2);
+INSERT into Activities (name, type) VALUES ("Basketball", "Sport");
+INSERT into Activities (name, type) VALUES ("Chess", "Board");
+INSERT into Activities (name, type) VALUES ("Counter-Strike", "Digital");
+INSERT into Activities (name, type) VALUES ("Soccer", "Sport");
+INSERT into Activities (name, type) VALUES ("Smash Bros", "Digital");
+INSERT into Activities (name, type) VALUES ("D&D", "Board");
+INSERT into Activities (name, type) VALUES ("Pottery", "Crafts");
+INSERT into Activities (name, type) VALUES ("Swimming", "Sport");
+INSERT into Activities (name, type) VALUES ("Cycling", "Sport");
+
+
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level) VALUES (1, 1, "Basketball", "Best basketball", 45, -80, 2);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level) VALUES (2, 2, "Chess", "Noobie chess", 44, -80, 0);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level) VALUES (3, 9, "Cycling", "Cycling maniacs", 43, -79, 1);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level) VALUES (4, 4, "Soccer", "Soccer bros", 10, 45, 1);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, skill_level) VALUES (5, 3, "Counter-Strike", "CS:GO Pro team", 2);
 
 INSERT into User_in_group (user_id, group_id) VALUES (1, 1);
 INSERT into User_in_group (user_id, group_id) VALUES (2, 2);

@@ -34,7 +34,7 @@ class Account_info_authentification extends Component {
                 window.location.replace("/account_information");
             }
             else {
-              window.location.replace("/home");
+              throw new Error()
             }
         })  
         .catch((error) => {
