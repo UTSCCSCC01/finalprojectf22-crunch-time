@@ -8,7 +8,7 @@ class Login extends Component {
     Password: ''
   }
 
-  
+ 
   
   updateEmail(evt) {
     const val = evt.target.value;
@@ -16,7 +16,6 @@ class Login extends Component {
       Email: val
     });
   }
-
   updatePassword(evt) {
     const val = evt.target.value;
     this.setState({
@@ -56,6 +55,7 @@ class Login extends Component {
       ReactSession.set("password", data['password']);
       ReactSession.set("address", data['address']);
       ReactSession.set("user_id", data['user_id']);
+      //console.log(getGroup())
       ReactSession.set("messages", [])
       ReactSession.set("Group_Members",[])
       ReactSession.set("groupInfo",{})

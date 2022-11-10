@@ -1,8 +1,9 @@
-import React, { useState, useEffect,Component } from "react";
+import React, { useState, useEffect,Component, useRef } from "react";
 import { useLocation } from 'react-router-dom'
 import io from "socket.io-client";
 import Navbar from './navbar/navbar-logged-in.jsx';
 import { ReactSession } from 'react-client-session';
+import {useParams} from "react-router-dom"
 import {
   MDBContainer,
   MDBRow,
@@ -30,7 +31,10 @@ const Chat = () => {
   const forceUpdate = React.useCallback(() => updateState({}), []);
   const MINUTE_MS = 4000;
   const audio = new Audio(ringer);
+  let { groupID } = useParams();
+
   useEffect(() => {
+    console.log(groupID)
     try{
       if(ReactSession.get("firstName")== undefined){
         window.location.replace("/")
@@ -55,9 +59,9 @@ const Chat = () => {
   
   useEffect(() => {
 
-    if(ReactSession.get("Group_Members")  == undefined || ReactSession.get("Group_Members").length < 1){
-      window.location.replace("/Create_Group")
-    }
+    // if(ReactSession.get("Group_Members")  == undefined || ReactSession.get("Group_Members").length < 1){
+    //   window.location.replace("/Create_Group")
+    // }
 
     
     getMessages();

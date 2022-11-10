@@ -68,6 +68,7 @@ def login():
         temp = {'messages': list(map(dict, messages))}['messages']
         if len(temp) >  0 :
             temp = {'messages': list(map(dict, messages))}['messages'][0]
+            print(getInfo(temp['user_id']))
             session['user_id'] = temp['user_id']
             session['firstName'] = temp['firstName']
             session['lastName'] = temp['lastName']
@@ -76,7 +77,13 @@ def login():
             session['address'] = temp['address']
             return temp
 
-
+@app.route("/getInfo", methods=[])
+def getInfo(user_id):
+    db = get_db()
+    messages = ""
+    groups = db.execute('SELECT group_id FROM User_in_group WHERE user_id = (?)', [user_id]).fetchall()
+    db.commit()
+    return list(map(list, groups))
 
 @app.route("/logout", methods=["POST"])
 def logout_user():
@@ -115,6 +122,8 @@ def deleteAccount():
         db.execute('DELETE FROM User_in_group where user_id = (?)', [user_id])
         db.commit()
     return "200"
+
+
 
 
 
@@ -161,7 +170,7 @@ def Create_Group():
         else:
             db.execute('INSERT INTO Groups (group_name, skill_level, activity_id, activity_name) VALUES (?, ?, ?, ?)', 
             (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'],))
-        db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')
+        db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (?, LAST_INSERT_ROWID())', [data['user_id']])
         messages = db.execute("SELECT * FROM Groups WHERE group_id =  LAST_INSERT_ROWID()")   
         db.commit()    
         return {'messages': list(map(dict, messages))}
