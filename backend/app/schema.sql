@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS Activities;
 DROP TABLE IF EXISTS User_follows_activity;
 DROP TABLE IF EXISTS Questions;
+DROP TABLE IF EXISTS messages;
 
 CREATE TABLE Example (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -70,6 +71,8 @@ CREATE TABLE Questions (
 CREATE TABLE messages (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER NOT NULL,
+  group_id INTEGER NOT NULL,
+  user_name TEXT NOT NULL,
   time_stamp TEXT NOT NULL,
   context TEXT NOT NULL
 );

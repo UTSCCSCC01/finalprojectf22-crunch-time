@@ -10,7 +10,7 @@ function JoinGroupButton(props) {
         setJoined(data.joined);
       });
   }
-
+  
   function joinGroup(e) {
     e.preventDefault();
     if (joined == true){

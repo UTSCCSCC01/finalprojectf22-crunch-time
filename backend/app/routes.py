@@ -68,7 +68,6 @@ def login():
         temp = {'messages': list(map(dict, messages))}['messages']
         if len(temp) >  0 :
             temp = {'messages': list(map(dict, messages))}['messages'][0]
-            print(getInfo(temp['user_id']))
             session['user_id'] = temp['user_id']
             session['firstName'] = temp['firstName']
             session['lastName'] = temp['lastName']
@@ -77,13 +76,15 @@ def login():
             session['address'] = temp['address']
             return temp
 
-@app.route("/getInfo", methods=[])
-def getInfo(user_id):
+@app.route("/getGroupInfo", methods=["GET",  'POST'])
+def getGroupInfo():
     db = get_db()
-    messages = ""
-    groups = db.execute('SELECT group_id FROM User_in_group WHERE user_id = (?)', [user_id]).fetchall()
+    group_info = db.execute('SELECT user_name, context, time_stamp FROM messages WHERE user_id = (?) and group_id = (?)', 
+    [request.json['user_id'], request.json['groupID']]).fetchall()
     db.commit()
-    return list(map(list, groups))
+    return list(map(list, group_info))
+
+
 
 @app.route("/logout", methods=["POST"])
 def logout_user():
@@ -113,7 +114,6 @@ def updateAccount():
 @app.route("/deleteAccount", methods=["DELETE"])
 def deleteAccount():
     db = get_db()
-    print(request.json)
     Email = str(request.json['email'])
     user_id = request.json['user_id']
     print (request.method)
@@ -170,14 +170,13 @@ def Create_Group():
         else:
             db.execute('INSERT INTO Groups (group_name, skill_level, activity_id, activity_name) VALUES (?, ?, ?, ?)', 
             (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'],))
+            messages = db.execute("SELECT * FROM Groups WHERE group_id =  LAST_INSERT_ROWID()")   
         db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (?, LAST_INSERT_ROWID())', [data['user_id']])
-        messages = db.execute("SELECT * FROM Groups WHERE group_id =  LAST_INSERT_ROWID()")   
         db.commit()    
         return {'messages': list(map(dict, messages))}
     else:
         activities = db.execute("SELECT id, name FROM Activities").fetchall()
         return {'activities': list(map(dict, activities))}  
-    return {}
 app.config['SECRET_KEY'] = 'mysecret'
 
 socketIo = SocketIO(app, cors_allowed_origins="*")
@@ -186,7 +185,11 @@ app.debug = True
 app.host = 'localhost'
 @socketIo.on("message")
 def handleMessage(msg):
-    send(msg, broadcast=True)
+    db = get_db()
+    db.execute('INSERT INTO messages (user_id, group_id, user_name, time_stamp, context) VALUES (?, ?, ?, ?, ?)', 
+            (msg["user"][3], msg['groupID'], msg['user'][0], msg['user'][2], msg['user'][1]))
+    db.commit()       
+    send(msg, broadcast=True, room=msg["groupID"])
     return None
 @socketIo.on('join')
 def on_join(data):
@@ -194,17 +197,16 @@ def on_join(data):
 
     if data['userName'] not in users['username']:
         users['username'].append(data['userName'])
-    print(users)
-    send(users, broadcast=True)
-    # join_room(room)
-    #send(username + ' has entered the room.', to=room)
+    join_room(data['groupID'])
+    print(data)
+    send(users, broadcast=True, room=data['groupID'])
     return None
 @socketIo.on('leave')
 def on_leave(data):
     username = data['username']
     room = data['room']
     leave_room(room)
-    send(username + ' has left the room.', to=room)
+    send(username + ' has left the room.', room=room)
 
 @app.route('/account_information', methods=['GET', 'POST'])
 def account_information():

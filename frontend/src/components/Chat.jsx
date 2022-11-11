@@ -2,6 +2,8 @@ import React, { useState, useEffect,Component, useRef } from "react";
 import { useLocation } from 'react-router-dom'
 import io from "socket.io-client";
 import Navbar from './navbar/navbar-logged-in.jsx';
+import Sidebar from './sidebar/sidebar.jsx';
+
 import { ReactSession } from 'react-client-session';
 import {useParams} from "react-router-dom"
 import {
@@ -32,14 +34,44 @@ const Chat = () => {
   const MINUTE_MS = 4000;
   const audio = new Audio(ringer);
   let { groupID } = useParams();
+  const [isShown, setIsShown] = useState(false);
+  //Show or hide navbar
+  const handleClick = event => {
+    // 👇️ toggle shown state
+    setIsShown(current => !current);
+
+    // 👇️ or simply set it to true
+    // setIsShown(true);
+  };
+  // gets message history from database
+  const fetchMessages = () => {
+    let message_info = {
+      'user_id':ReactSession.get("user_id"), 
+      'groupID': groupID
+    };
+    fetch("/getGroupInfo",{
+      method: 'POST', // or 'PUT'
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message_info),
+    })       
+    .then((response) => response.json())
+    .then((data) => {
+      setMessages(data)
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    },[]);
+  }
 
   useEffect(() => {
-    console.log(groupID)
     try{
       if(ReactSession.get("firstName")== undefined){
         window.location.replace("/")
       }
-      socket.emit("join", {userName:userName, id:1 })
+      socket.emit("join", {userName:userName, groupID:groupID })
+      fetchMessages()
 
   }
   catch(e){
@@ -48,31 +80,18 @@ const Chat = () => {
 
 
   }, []);
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {  
-  //     socket.emit("join", {userName:userName, id:1 })
-  // }, MINUTE_MS);
-  
-  //   return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-  // }, [])
   
   useEffect(() => {
 
-    // if(ReactSession.get("Group_Members")  == undefined || ReactSession.get("Group_Members").length < 1){
-    //   window.location.replace("/Create_Group")
-    // }
 
     
     getMessages();
-    ReactSession.set("messages", messages)
 
 
   }, [messages.length]);
 
   useEffect(() => {
 
-    console.log(ReactSession.get("groupInfo"))
     audio.play()
 
 
@@ -81,6 +100,7 @@ const Chat = () => {
   const getMessages = () => {
 
     socket.on("message", msg => {
+      
         // let allMessages = messages;
         // allMessages.push(msg);
         // setMessages(allMessages);
@@ -90,8 +110,8 @@ const Chat = () => {
 
       }
         else{
+            console.log(msg)
             setMessages([...messages, msg['user']])
-            console.log(msg['user'])
             }
 
       });
@@ -102,6 +122,7 @@ const Chat = () => {
     
 
   };
+  
 
   //gets date message sent
   const getDate = () =>{
@@ -113,7 +134,6 @@ const Chat = () => {
           result += temp[i]
       }
     }
-    console.log(result)
     return result
   };
 
@@ -128,7 +148,7 @@ const Chat = () => {
 
     if (message !== "") {
       let date = getDate()
-      socket.emit("message",  {user:[userName, message, date]});
+      socket.emit("message",  {user:[userName, message, date, ReactSession.get("user_id")], groupID:groupID});
       setMessage("");
       //getMessages();
     } else {
@@ -137,7 +157,8 @@ const Chat = () => {
   };
   const handleKeyDown = (event) => {
       if (message !== "" && event.key === 'Enter') {
-        socket.emit("message",  {user:[userName, message,""]});
+        let date = getDate()
+        socket.emit("message",  {user:[userName, message, date, ReactSession.get("user_id")], groupID:groupID});
 
         setMessage("");
       } 
@@ -154,6 +175,7 @@ const Chat = () => {
     <div>
       <Navbar/>
       <MDBContainer fluid className="py-5" style={{ backgroundColor: "#eee"} }>
+
       <MDBRow>
         <MDBCol md="6" lg="5" xl="4" className="mb-4 mb-md-0">
           <h5 className="font-weight-bold mb-3 text-center text-lg-start">
@@ -188,7 +210,7 @@ const Chat = () => {
           </MDBCard>
         </MDBCol>
 
-        <MDBCol md="6" lg="7" xl="8">
+        <MDBCol md="3" lg="4" xl="5">
           <MDBTypography listUnStyled>
           {messages.length > 0 &&
               messages.map(msg => (
@@ -225,8 +247,26 @@ const Chat = () => {
 
           </MDBTypography>
         </MDBCol>
+      
+        <MDBCol md="3" lg="2" xl="1">
+          <button onClick={handleClick}>Click</button>
+
+          {/* 👇️ show elements on click */}
+          {isShown && (
+            <div>
+              <h2>Some content here</h2>
+            </div>
+          )}
+
+          {/* 👇️ show component on click */}
+          {isShown && <Sidebar />}
+        </MDBCol>
       </MDBRow>
+      
+
     </MDBContainer>
+   
+
 
       {/* <input value={message} name="message" onKeyDown={handleKeyDown} onChange={e => onChange(e) } /> */}
       {/* <button  >Send Message</button> */}
