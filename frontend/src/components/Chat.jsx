@@ -68,7 +68,7 @@ const Chat = () => {
 
   useEffect(() => {
 
-
+    console.log(ReactSession.get("groupInfo"))
     audio.play()
 
 
@@ -87,6 +87,7 @@ const Chat = () => {
       }
         else{
             setMessages([...messages, msg['user']])
+            console.log(msg['user'])
             }
 
       });
@@ -122,8 +123,8 @@ const Chat = () => {
   const onClick = () => {
 
     if (message !== "") {
-
-      socket.emit("message",  {user:[userName, message, getDate()]});
+      let date = getDate()
+      socket.emit("message",  {user:[userName, message, date]});
       setMessage("");
       //getMessages();
     } else {

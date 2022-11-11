@@ -26,7 +26,6 @@ class Create_Group extends Component {
   //Will use client session instead of server session
   async  componentDidMount(){
     this.fetchActs();
-    //console.log(ReactSession.get("messages"))
     try{
       if(ReactSession.get("firstName")== undefined){
         window.location.replace("/")
@@ -71,7 +70,7 @@ class Create_Group extends Component {
       activity_id: this.state.activity_id,
       activity_name: this.state.activity_name
     };
-    console.log(this.state.activity_id, this.state.activity_name)
+    //console.log(this.state.activity_id, this.state.activity_name)
     fetch("/Create_Group",{
         method: 'POST', // or 'PUT'
         headers: {
@@ -82,10 +81,12 @@ class Create_Group extends Component {
     .then((response) => response.json())
     .then((data) => {
         ReactSession.set("Group_Members", [ReactSession.get("firstName") + " " + ReactSession.get("lastName")])
-        ReactSession.set("groupName", [data['messages'][0]['group_id']])
-        // let endPoint = "http://localhost:5000"; 
-        // let socket = io.connect(`${endPoint}`);
-        // socket.emit("join", {userName:ReactSession.get("firstName") + " " + ReactSession.get("lastName"), id:1 })
+        //dictionary of all the groups the user is in, where key is group_id and value is array containg information for that 
+        let object = data['messages'][0]
+        let temp =  ReactSession.get("groupInfo")
+        console.log(data['messages'][0])
+        temp[object['group_id']] = object['group_name']
+        ReactSession.set("groupInfo", temp)
         this.setState({submitted: true});
     })
     .catch((error) => {
@@ -155,7 +156,7 @@ class Create_Group extends Component {
         //     data['messages'] 
         // </div>
         <div className = "root">
-          <Navbar_Logout/>
+          { /* <Navbar_Logout/> */}
           {ReactSession.get("firstName") !== undefined &&
             <Navbar_Login/>
           }
@@ -163,7 +164,7 @@ class Create_Group extends Component {
         <div className="bg-image position-relative" /* Style="background: #E4A11B; height: 100vh" */>
         <form onSubmit={this.sendReq} className="mb-3">
           <div className="form-group mb-3">
-            <label htmlFor="activities">Activities</label>
+            <label htmlFor="activities">Activity</label>
             <select id="activities" name="activities" onChange={this.handleActivityChange}>
                 <option key={0} value={"0,NULL"}> Select an Activity </option>
               {this.state.activities.map((option) => {
@@ -173,7 +174,7 @@ class Create_Group extends Component {
                   </option>
                 );
               })}
-            </select>
+            </select><br/>
             <label htmlFor="msg">Group Name:</label>
             <input
               type="text"
@@ -216,7 +217,7 @@ class Create_Group extends Component {
           <div></div>
           }
           <label htmlFor="skill-level">Skill level:</label>
-            <select name="skill-level" id="skill-level" onChange={this.handleSkillLevelChange}>
+            <select name="skill-level" id="skill-level" onChange={this.handleSkillLevelChange} defaultValue={"0"}>
                 <option value="0">Beginner</option>
                 <option value="1">Intermediate</option>
                 <option value="2">Advanced</option>

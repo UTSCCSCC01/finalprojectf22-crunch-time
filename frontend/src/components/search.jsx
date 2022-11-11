@@ -160,10 +160,10 @@ class Search extends Component {
           <ul className="list-group">
             {this.state.messages.map((msg) => (
               <li className="list-group-item" key={msg.group_id}>
-                {msg.group_name} <br/>
+                <Link to={"/view_group/"+ msg.group_id}>{msg.group_name}</Link>
+                <span style={{float:'right'}}><JoinGroupButton groupID={msg.group_id}/></span> <br/>
                 Activity: {msg.activity_name}
-                <Link to={"/view_group/"+msg.group_id}>{msg.group_name}</Link>
-                <span style={{float:'right'}}><JoinGroupButton groupID={msg.group_id}/></span>
+                
               </li>
             ))}
           </ul>

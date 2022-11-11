@@ -90,7 +90,7 @@ class Account_information extends Component {
         ReactSession.remove("password");
         ReactSession.remove("messages")
         ReactSession.remove("Group_Members")
-        ReactSession.remove("GroupName")
+        ReactSession.remove("groupInfo")
         ReactSession.remove("user_id");
 
         window.location.replace("/")
