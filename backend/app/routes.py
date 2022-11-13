@@ -148,10 +148,13 @@ def register():
 def search():
     db = get_db()
     if request.method == 'POST':
+        activity_id = int(request.form['activity_id'])
         if (request.form['loc'] == "true"):
-            messages = gsearch(db, request.form['groupName'], float(request.form['lat']), float(request.form['long']), float(request.form['dist']))
+            messages = gsearch(db, request.form['groupName'], float(request.form['lat']), float(request.form['long']), 
+            float(request.form['dist']), activity_id)
         else:
-            messages = db.execute("SELECT * FROM Groups WHERE group_name like ?", ["%" + request.form['groupName'] + "%"] ).fetchall()
+            messages = db.execute("SELECT * FROM Groups WHERE group_name like ? AND (? = 0 OR activity_id = ?)", 
+            ["%" + request.form['groupName'] + "%", activity_id, activity_id] ).fetchall()
         
     else:
         messages = db.execute('SELECT * FROM Groups').fetchall()
@@ -181,7 +184,16 @@ def Create_Group():
     else:
         activities = db.execute("SELECT id, name FROM Activities").fetchall()
         return {'activities': list(map(dict, activities))}  
-    return {}
+        
+
+@app.route('/get_acts', methods=['GET'])
+def get_acts():
+    db = get_db()
+    #user_id = request.json['user_id']
+    if request.method == 'GET':
+        activities = db.execute("SELECT id, name FROM Activities").fetchall()
+        return {'activities': list(map(dict, activities))} 
+        
 app.config['SECRET_KEY'] = 'mysecret'
 
 socketIo = SocketIO(app, cors_allowed_origins="*")

@@ -30,7 +30,9 @@ class Create_Group extends Component {
     value: 1, submitted: false
   };
   //Will use client session instead of server session
-  async  componentDidMount(){
+
+
+  async componentDidMount(){
     this.fetchActs();
     try{
       if(ReactSession.get("firstName")== undefined){
@@ -106,13 +108,9 @@ class Create_Group extends Component {
     },[]);
   }
 
- /*  componentDidMount() {
-    
-  } */
-
   fetchActs() {
-    console.log('fetch');
-    fetch("/Create_Group")
+    console.log('fetch acts');
+    fetch("/get_acts")
       .then((res) => res.json())
       .then((data) => {
         this.setState({ ...data });
@@ -130,7 +128,6 @@ class Create_Group extends Component {
       activity_id: parseInt(value[0]),
       activity_name: value[1]
     }); 
-    
   }
 
   handleChange = (event) => { // handles changes for multiple text input fields
@@ -164,10 +161,6 @@ class Create_Group extends Component {
 
   render() {
     return (
-      
-        // <div> {this.fetchMsgs()}
-        //     data['messages'] 
-        // </div>
         <div className = "root">
           { /* <Navbar_Logout/> */}
           {ReactSession.get("firstName") !== undefined &&
