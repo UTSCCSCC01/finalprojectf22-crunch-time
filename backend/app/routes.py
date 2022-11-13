@@ -173,11 +173,11 @@ def Create_Group():
         else:
             db.execute('INSERT INTO Groups (group_name, skill_level, activity_id, activity_name, size) VALUES (?, ?, ?, ?, ?)', 
             (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'], data['sizeLimit']))
-        messages = db.execute("SELECT * FROM Groups WHERE group_id =  LAST_INSERT_ROWID()") 
+        messages = db.execute("SELECT * FROM Groups WHERE group_id =  LAST_INSERT_ROWID()").fetchall()
         db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')  
         db.commit()
-        print(list(map(dict, messages)))
-        return {'messages': list(map(dict, messages))}
+        resp = {'messages': list(map(dict, messages))}
+        return jsonify(resp)
     else:
         activities = db.execute("SELECT id, name FROM Activities").fetchall()
         return {'activities': list(map(dict, activities))}  
