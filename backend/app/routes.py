@@ -44,7 +44,19 @@ def user_in_group(group_id):
     db = get_db()
     res = db.execute('SELECT * FROM User_in_group WHERE user_id = ? AND group_id = ?',
         (user_id, group_id))
-    return jsonify({'joined': not (res.fetchone() is None)})
+    res2 = db.execute('SELECT size FROM Groups WHERE group_id = ?',
+        (group_id,)).fetchone()
+    if res2 is None:
+        return 'unknown group ID', 404
+    else:
+        size = res2['size']
+    member_count = db.execute('SELECT COUNT(*) AS count FROM User_in_group WHERE group_id = ?',
+        (group_id,)).fetchone()['count']
+    
+    return jsonify({
+        'joined': not (res.fetchone() is None),
+        'full': member_count >= size
+    })
     
 
 
@@ -156,15 +168,16 @@ def Create_Group():
             print(elem, type(data[elem]), data[elem])
         
         if (data["loc"]):
-            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude, activity_id, activity_name) VALUES (?, ?, ?, ?, ?, ?)', 
-            (data["group_name"], data['skillLevel'], data['lat'], data['long'], data['activity_id'], data['activity_name'],))
+            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude, activity_id, activity_name, size) VALUES (?, ?, ?, ?, ?, ?, ?)', 
+            (data["group_name"], data['skillLevel'], data['lat'], data['long'], data['activity_id'], data['activity_name'], data['sizeLimit']))
         else:
-            db.execute('INSERT INTO Groups (group_name, skill_level, activity_id, activity_name) VALUES (?, ?, ?, ?)', 
-            (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'],))
-        db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')
-        messages = db.execute("SELECT * FROM Groups WHERE group_id =  LAST_INSERT_ROWID()")   
-        db.commit()    
-        return {'messages': list(map(dict, messages))}
+            db.execute('INSERT INTO Groups (group_name, skill_level, activity_id, activity_name, size) VALUES (?, ?, ?, ?, ?)', 
+            (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'], data['sizeLimit']))
+        messages = db.execute("SELECT * FROM Groups WHERE group_id =  LAST_INSERT_ROWID()").fetchall()
+        db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')  
+        db.commit()
+        resp = {'messages': list(map(dict, messages))}
+        return jsonify(resp)
     else:
         activities = db.execute("SELECT id, name FROM Activities").fetchall()
         return {'activities': list(map(dict, activities))}  
@@ -267,6 +280,18 @@ def join_group():
         if user_id is None:
             return 'invalid user ID', 400
         group_id = data['group_id']
+        # check if group is full
+        res = db.execute('SELECT size FROM Groups WHERE group_id = ?',
+            (group_id,)).fetchone()
+        if res is None:
+            return 'unknown group ID', 404
+        else:
+            size = res['size']
+        member_count = db.execute('SELECT COUNT(*) AS count FROM User_in_group WHERE group_id = ?',
+            (group_id,)).fetchone()['count']
+        if member_count >= size:
+            return 'group is full', 400
+        # add to group
         db.execute('INSERT OR IGNORE INTO User_in_group (user_id, group_id) VALUES (?, ?)',
             (user_id, group_id))
         db.commit()

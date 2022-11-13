@@ -21,8 +21,14 @@ const Redirector = ({submitted, nextState}) => {
 }
 
 class Create_Group extends Component {
-  state = {skillLevel: 0, group_name: "", loc: false, lat: 0.0, long: 0.0, 
-  value: 1, activities: [], activity_id: 0, activity_name: "NULL",value: 1, submitted: false};
+  state = {
+    skillLevel: 0,
+    group_name: "",
+    loc: false, lat: 0.0, long: 0.0,
+    activities: [], activity_id: 0, activity_name: "NULL",
+    sizeLimit: 1000,
+    value: 1, submitted: false
+  };
   //Will use client session instead of server session
   async  componentDidMount(){
     this.fetchActs();
@@ -60,6 +66,11 @@ class Create_Group extends Component {
       alert("Please select an activity");
       return;
     }
+    let sizeLimit = parseInt(this.state.sizeLimit);
+    if (!sizeLimit || sizeLimit > 1000) {
+      alert("The group size limit must be between 1 and 1000.");
+      return;
+    }
     const data = {
       user_id:ReactSession.get("user_id"),
       skillLevel: this.state.skillLevel,
@@ -68,7 +79,8 @@ class Create_Group extends Component {
       lat: this.state.lat, 
       long: this.state.long,
       activity_id: this.state.activity_id,
-      activity_name: this.state.activity_name
+      activity_name: this.state.activity_name,
+      sizeLimit: sizeLimit
     };
     //console.log(this.state.activity_id, this.state.activity_name)
     fetch("/Create_Group",{
@@ -131,6 +143,11 @@ class Create_Group extends Component {
     });
   }
 
+  handleSizeLimitChange = (event) => {
+    const cleaned = event.target.value.replace(/\D/g, '');
+    this.setState({sizeLimit: cleaned});
+  }
+
   handleLoc = () => { // handles the location checkbox
     this.setState({
       loc: !this.state.loc
@@ -146,10 +163,6 @@ class Create_Group extends Component {
   }
 
   render() {
-  
-   
-      
-   
     return (
       
         // <div> {this.fetchMsgs()}
@@ -217,16 +230,25 @@ class Create_Group extends Component {
           <div></div>
           }
           <label htmlFor="skill-level">Skill level:</label>
-            <select name="skill-level" id="skill-level" onChange={this.handleSkillLevelChange} defaultValue={"0"}>
-                <option value="0">Beginner</option>
-                <option value="1">Intermediate</option>
-                <option value="2">Advanced</option>
-            </select>
-            <br/>
-            {/* <Link to="/chat" state={{props: this.state.value}} > */}
-            <Redirector submitted={this.state.submitted} nextState={{props: this.state.value}} />
-            <button type="submit" className="btn btn-primary "/*position-relative top-50 start-50"*/>Create Group</button>
-            {/* </Link> */}
+          <select name="skill-level" id="skill-level" onChange={this.handleSkillLevelChange} defaultValue={"0"}>
+              <option value="0">Beginner</option>
+              <option value="1">Intermediate</option>
+              <option value="2">Advanced</option>
+          </select>
+          <br />
+          <label htmlFor="size-limit">Size limit:</label>
+          <input
+            type="text"
+            id="size-limit"
+            name="size-limit"
+            value={this.state.sizeLimit}
+            onChange={this.handleSizeLimitChange}
+          />
+          <br />
+          {/* <Link to="/chat" state={{props: this.state.value}} > */}
+          <Redirector submitted={this.state.submitted} nextState={{props: this.state.value}} />
+          <button type="submit" className="btn btn-primary "/*position-relative top-50 start-50"*/>Create Group</button>
+          {/* </Link> */}
         </form>
         </div>
         </div> 

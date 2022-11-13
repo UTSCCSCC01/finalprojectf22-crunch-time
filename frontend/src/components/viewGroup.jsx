@@ -14,6 +14,7 @@ function ViewGroup(props) {
   const [groupName, setGroupName] = useState('');
   const [skillLevel, setSkillLevel] = useState(-1);
   const [members, setMembers] = useState([]);
+  const [size, setSize] = useState(0);
   let { groupID } = useParams();
 
   function fetchInfo() {
@@ -23,6 +24,7 @@ function ViewGroup(props) {
         setGroupName(data.group_name);
         setSkillLevel(data.skill_level);
         setMembers(data.members);
+        setSize(data.size);
       });
   }
   
@@ -33,7 +35,7 @@ function ViewGroup(props) {
       <Navbar />
       <div className="container mt-3 mb-3">
         <h1 >{groupName + ' - ' + skill_levels[skillLevel]}</h1>
-        <h2>Members ({members.length})</h2>
+        <h2>Members ({members.length}/{size})</h2>
         <ul>
           {members.map((user) => (
             <li key={user.user_id}>
