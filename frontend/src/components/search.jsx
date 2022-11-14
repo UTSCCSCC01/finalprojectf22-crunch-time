@@ -156,7 +156,7 @@ class Search extends Component {
             <button className="btn btn-primary" type="submit">
               Find
             </button>
-            <Link to={"/chat/"+ 1}>1</Link>
+            <Link to={"/chat/"+ 1}></Link>
           </form>
           <h2>List of found groups:</h2>
           <ul className="list-group">

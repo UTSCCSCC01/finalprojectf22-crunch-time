@@ -79,8 +79,8 @@ def login():
 @app.route("/getGroupInfo", methods=["GET",  'POST'])
 def getGroupInfo():
     db = get_db()
-    group_info = db.execute('SELECT user_name, context, time_stamp FROM messages WHERE user_id = (?) and group_id = (?)', 
-    [request.json['user_id'], request.json['groupID']]).fetchall()
+    group_info = db.execute('SELECT user_name, context, time_stamp FROM messages WHERE group_id = (?)', 
+    [request.json['groupID']]).fetchall()
     db.commit()
     return list(map(list, group_info))
 
