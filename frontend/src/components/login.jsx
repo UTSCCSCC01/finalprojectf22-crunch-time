@@ -1,6 +1,10 @@
 import React, { Component, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ReactSession } from 'react-client-session';
+import './login.css';
+
+// Media
+import graphic from "../media/logo.png";
 
 class Login extends Component {
  state = {
@@ -82,20 +86,29 @@ class Login extends Component {
   render() {
 
     return (
-        <div class = "content"><center>
+        <div class = "login-content"><center>
+          <div class = "nav-logo">
+            <a href = "/home">
+              <img class = "graphic" alt = "logo" src = {graphic}/>
+            </a>
+          </div>
+          <br/>
+          <form id="login-form" class = "login-form">
             <h1>Welcome back!</h1>
-            <form id="login-form">
-                <label for="email">Email</label>
-                <input type="text" id="email" name="email" class="loginLabel" onChange={evt => this.updateEmail(evt)}/>
-                <br/>
+            <br/>
+            <label for="email">Email</label>
+            <br/>
+            <input type="text" id="email" name="email" class="loginLabel" onChange={evt => this.updateEmail(evt)}/>
+            <br/><br/>
                         
-                <label for="Password">Password</label>
-                <input type="text" id="password" name="password" class="loginLabel" onChange={evt => this.updatePassword(evt)}/>
-                <br/>
+            <label for="Password">Password</label>
+            <br/>
+            <input type="text" id="password" name="password" class="loginLabel" onChange={evt => this.updatePassword(evt)}/>
+            <br/>
 
-                <button onClick = {this.fetchMsgs} type="login" class = "login-bttn">Login</button>
-                <h5>Don't have an account yet? <Link to="/register">Register</Link></h5>
-            </form></center>
+            <button onClick = {this.fetchMsgs} type= "login" class = "login-bttn">Login</button>
+            <h6>Don't have an account yet? <Link to="/register">Sign up.</Link></h6>
+          </form></center>
         </div>
     );
   }
