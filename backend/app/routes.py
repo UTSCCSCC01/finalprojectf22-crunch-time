@@ -349,6 +349,35 @@ def contact_us():
         db.commit()
     return {'messages':1}
 
+@app.route('/add_friend/<friend_id>', methods=['POST'])
+def add_friend(friend_id):
+    db = get_db()
+    user_id = session.get('user_id')
+    db.execute('INSERT INTO friendLists (user_id, friend_id) VALUES (?, ?)', (user_id, friend_id,))
+    db.commit()
+    return {'messages': 1} 
+
+@app.route('/remove_friend/<friend_id>', methods=['DELETE'])
+def remove_friend(friend_id):
+    db = get_db()
+    user_id = session.get('user_id')
+    db.execute('DELETE FROM friendLists WHERE user_id = ? AND friend_id = ?', (user_id, friend_id,))
+    db.commit()
+    return {'messages': 1}
+
+@app.route('/friend_list/<user_id>', methods=['GET'])
+def friend_list(user_id):
+    db = get_db()
+    friend_list = []
+    friends = db.execute('SELECT friend_id FROM friendLists WHERE user_id = ?',
+        (user_id,)).fetchall()
+    for i in range(len(friends)):
+        friend_info = db.execute('SELECT user_id, firstName, lastName FROM Users WHERE user_id = ?',
+        (friends[i][0],)).fetchall()
+        friend_info = dict(friend_info[0])
+        friend_list.append(friend_info)
+    return {'friends': friend_list}
+
 if __name__ == '__main__':
     
     socketIo.run(app)
