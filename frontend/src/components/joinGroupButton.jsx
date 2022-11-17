@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 
 function JoinGroupButton(props) {
   const [joined, setJoined] = useState(true);
+  const [full, setFull] = useState(true);
 
   function fetchJoined() {
     fetch("/user_in_group/" + props.groupID)
       .then((res) => res.json())
       .then((data) => {
         setJoined(data.joined);
+        setFull(data.full);
       });
   }
   
@@ -54,9 +56,11 @@ function JoinGroupButton(props) {
     <>
       <button
         className="btn btn-primary"
+
+        disabled={full}
         onClick={joinGroup}
       >
-        {joined ? 'Chat With Group' : 'Join Group'}
+        {joined ? 'Chat With Group' : (full ? 'Full' : 'Join Group')}
       </button>
     </>
   );

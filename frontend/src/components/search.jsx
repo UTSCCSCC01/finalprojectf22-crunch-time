@@ -11,16 +11,15 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      groupName: "", messages: [], loc: false, lat: 0.0, long: 0.0, dist: 0.0 
+      groupName: "", messages: [], loc: false, lat: 0.0, long: 0.0, dist: 0.0, activities: [], activity_id: 0, activity_name: "NULL"
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.getLocation = this.getLocation.bind(this);
     this.handleLoc = this.handleLoc.bind(this);
+    this.handleActivityChange = this.handleActivityChange.bind(this);
   }
-
   
-
   fetchMsgs() {
     console.log('fetch');
     fetch("/search")
@@ -36,6 +35,7 @@ class Search extends Component {
     formData.set("groupName", this.state.groupName);
     formData.set("lat", this.state.lat);
     formData.set("loc", this.state.loc);
+    formData.set("activity_id", this.state.activity_id);
     if (this.state.loc) {
       formData.set("long", this.state.long);
       formData.set("dist", this.state.dist);
@@ -61,7 +61,26 @@ class Search extends Component {
     catch(e){
       window.location.replace("/")
     }
+    this.fetchActs();
     this.fetchMsgs();
+  }
+
+  fetchActs() {
+    console.log('fetch acts');
+    fetch("/get_acts")
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ ...data });
+      });
+  }
+
+  handleActivityChange = (event) => { 
+    const target = event.target;
+    const value = target.value.split(",");
+    this.setState({
+      activity_id: parseInt(value[0]),
+      activity_name: value[1]
+    }); 
   }
 
   handleChange(event) {
@@ -101,6 +120,19 @@ class Search extends Component {
             <Link to="/home">Return to home</Link>
           </p>
           <form onSubmit={this.sendMsg} className="mb-3">
+          <div className="form-group mb-3">
+          <label htmlFor="activities">Activity</label>
+            <select id="activities" name="activities" onChange={this.handleActivityChange}>
+                <option key={0} value={"0,NULL"}>Any Activity</option>
+              {this.state.activities.map((option) => {
+                return (
+                  <option key={option.id} value={[option.id, option.name]}>
+                    {option.name}
+                  </option>
+                );
+              })}
+            </select>
+            </div>
             <div className="form-group mb-3">
               <label htmlFor="msg">Group:</label>
               <input
@@ -165,7 +197,6 @@ class Search extends Component {
                 <Link to={"/view_group/"+ msg.group_id}>{msg.group_name}</Link>
                 <span style={{float:'right'}}><JoinGroupButton groupID={msg.group_id}/></span> <br/>
                 Activity: {msg.activity_name}
-                
               </li>
             ))}
           </ul>

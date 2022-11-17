@@ -1,0 +1,31 @@
+.login-content {
+    margin: 2% 8% 8% 8%;
+}
+
+.login-form {
+    margin-top: 5%;
+}
+
+.login-bttn {
+    background-color: #000000;
+    color: white;
+    padding: 1% 2%;
+    text-align: center;
+    display: inline-block;
+    border-radius: 10px;
+    margin: 2%;
+}
+
+.nav-logo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.graphic {
+    height: 46px;
+    width: 153px;
+    float: left;
+}

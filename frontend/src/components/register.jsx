@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import {withRouter} from 'react-router-dom';
+import './login.css';
+
+// Media
+import graphic from "../media/logo.png";
 
 class Register extends Component {
  
@@ -88,34 +92,44 @@ class Register extends Component {
 
   render() {
     return (
-        <div class = "content"> <center>
+        <div class = "login-content"> <center>
+          <div class = "nav-logo">
+            <a href = "/home">
+              <img class = "graphic" alt = "logo" src = {graphic}/>
+            </a>
+          </div>
             <h1>Register</h1>
-            <h5>Glad you’re joining DropIN! Please enter your information below.</h5><br/>
+            <h5>Glad you’re joining DropIN! Please enter your information below.</h5>
+            <br/>
             <form id="register-form">
             
               <label for="firstName">First Name</label> 
+              <br/>
               <input type="text" id="firstName" name="firstName" class="loginLabel" onChange={evt => this.updateFirstName(evt)}></input>
               <br/>
               <br/>
 
               <label for="lastName">Last Name</label>
+              <br/>
               <input type="text" id="lastName" name="lastName" class="loginLabel" onChange={evt => this.updateLastName(evt)}></input>
               <br/>
               <br/>
 
               <label for="email">Email</label>
+              <br/>
               <input type="text" id="email" name="email" class="loginLabel" onChange={evt => this.updateEmail(evt)}></input>
               <br/>
               <br/>
               
               <label for="password">Password</label>
+              <br/>
               <input type="text" id="password" name="password" class="loginLabel" onChange={evt => this.updatePassword(evt)}></input>
               <br/>
               <br/>
 
               <label for="address">Address</label>
-              <input type="text" id="address" name="address" class="loginLabel" onChange={evt => this.updateAddress(evt)}></input>
               <br/>
+              <input type="text" id="address" name="address" class="loginLabel" onChange={evt => this.updateAddress(evt)}></input>
               <br/>
 
               <button type="register" class="login-bttn" onClick = {this.fetchMsgs}>Register</button>
