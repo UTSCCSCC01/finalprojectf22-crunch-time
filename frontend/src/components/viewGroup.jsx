@@ -28,6 +28,20 @@ function ViewGroup(props) {
       });
   }
   
+  function addfriend(e, friendID){
+    e.preventDefault();
+    fetch("/add_friend/" + friendID,{
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        
+        body: JSON.stringify(friendID),
+    })
+    alert("Add friend")
+      window.location.reload()
+   } 
+  
   useEffect(fetchInfo, []);
 
   return (
@@ -40,6 +54,7 @@ function ViewGroup(props) {
           {members.map((user) => (
             <li key={user.user_id}>
               {user.firstName + ' ' + user.lastName}
+              <button onClick={(e)=> addfriend(e, user.user_id)}>Add friend</button>
             </li>
           ))}
         </ul>
