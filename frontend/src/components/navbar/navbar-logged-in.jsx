@@ -58,6 +58,9 @@ const Navbar_Login = () => {
                 <a href = "/search">Search</a>
             </li>
             <li>
+                <a href = {"/friend_list/"+ReactSession.get("user_id")}>Friend list</a>
+            </li>
+            <li>
                 <a href  onClick={() => logout()}>Logout</a>
             </li>
         </ul>
