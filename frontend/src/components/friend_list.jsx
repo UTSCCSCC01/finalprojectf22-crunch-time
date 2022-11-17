@@ -35,13 +35,13 @@ function friend_list(props) {
   return (
     <div className="root">
       <Navbar />
-      <div className="container mt-3 mb-3">
+      <div className="content">
         <h1 >{'Friend list'}</h1>
         <div className='item-container'>
           {friends.map((friend) => (
              <li key={friend.user_id}>
                {friend.firstName + ' ' + friend.lastName}
-               <button onClick={(e)=> unfriend(e, friend.user_id)}>Unfriend</button>
+               <button onClick={(e)=> unfriend(e, friend.user_id)} class ="unfriend-bttn">Unfriend</button>
             </li>
           ))}
         </div>
