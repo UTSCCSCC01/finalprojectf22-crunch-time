@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from './navbar/navbar-logged-in.jsx';
+import './friend_list.css';
 
 function friend_list(props) {
   const [friends, setFriends] = useState([]);
