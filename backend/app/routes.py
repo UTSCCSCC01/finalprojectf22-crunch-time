@@ -88,6 +88,14 @@ def login():
             session['address'] = temp['address']
             return temp
 
+@app.route("/getGroupInfo", methods=["GET",  'POST'])
+def getGroupInfo():
+    db = get_db()
+    group_info = db.execute('SELECT user_name, context, time_stamp FROM messages WHERE group_id = (?)', 
+    [request.json['groupID']]).fetchall()
+    db.commit()
+    return list(map(list, group_info))
+
 
 
 @app.route("/logout", methods=["POST"])
@@ -118,7 +126,6 @@ def updateAccount():
 @app.route("/deleteAccount", methods=["DELETE"])
 def deleteAccount():
     db = get_db()
-    print(request.json)
     Email = str(request.json['email'])
     user_id = request.json['user_id']
     print (request.method)
@@ -127,6 +134,8 @@ def deleteAccount():
         db.execute('DELETE FROM User_in_group where user_id = (?)', [user_id])
         db.commit()
     return "200"
+
+
 
 
 
@@ -164,7 +173,6 @@ def search():
 @app.route('/Create_Group', methods=['POST', 'GET'])
 def Create_Group():
     db = get_db()
-    #user_id = request.json['user_id']
     if request.method == 'POST':
         data = request.get_json()
         for elem in data:
@@ -174,10 +182,11 @@ def Create_Group():
             db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude, activity_id, activity_name, size) VALUES (?, ?, ?, ?, ?, ?, ?)', 
             (data["group_name"], data['skillLevel'], data['lat'], data['long'], data['activity_id'], data['activity_name'], data['sizeLimit']))
         else:
-            db.execute('INSERT INTO Groups (group_name, skill_level, activity_id, activity_name, size) VALUES (?, ?, ?, ?, ?)', 
-            (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'], data['sizeLimit']))
+
+            db.execute('INSERT INTO Groups (group_name, skill_level, activity_id, activity_name, size, group_creator) VALUES (?, ?, ?, ?, ?, ?)', 
+            (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'], data['sizeLimit'], data['user_id']))
         messages = db.execute("SELECT * FROM Groups WHERE group_id =  LAST_INSERT_ROWID()").fetchall()
-        db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (1, LAST_INSERT_ROWID())')  
+        db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (?, LAST_INSERT_ROWID())', [data['user_id']])  
         db.commit()
         resp = {'messages': list(map(dict, messages))}
         return jsonify(resp)
@@ -202,7 +211,11 @@ app.debug = True
 app.host = 'localhost'
 @socketIo.on("message")
 def handleMessage(msg):
-    send(msg, broadcast=True)
+    db = get_db()
+    db.execute('INSERT INTO messages (user_id, group_id, user_name, time_stamp, context) VALUES (?, ?, ?, ?, ?)', 
+            (msg["user"][3], msg['groupID'], msg['user'][0], msg['user'][2], msg['user'][1]))
+    db.commit()       
+    send(msg, broadcast=True, room=msg["groupID"])
     return None
 @socketIo.on('join')
 def on_join(data):
@@ -210,17 +223,16 @@ def on_join(data):
 
     if data['userName'] not in users['username']:
         users['username'].append(data['userName'])
-    print(users)
-    send(users, broadcast=True)
-    # join_room(room)
-    #send(username + ' has entered the room.', to=room)
+    join_room(data['groupID'])
+    print(data)
+    send(users, broadcast=True, room=data['groupID'])
     return None
 @socketIo.on('leave')
 def on_leave(data):
     username = data['username']
     room = data['room']
     leave_room(room)
-    send(username + ' has left the room.', to=room)
+    send(username + ' has left the room.', room=room)
 
 @app.route('/account_information', methods=['GET', 'POST'])
 def account_information():

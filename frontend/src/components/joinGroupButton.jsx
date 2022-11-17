@@ -12,30 +12,40 @@ function JoinGroupButton(props) {
         setFull(data.full);
       });
   }
-
+  
   function joinGroup(e) {
     e.preventDefault();
-    if (window.confirm('Are you sure you want to join this group?')) {
-      const data = {
-        group_id: props.groupID
-      };
-      fetch("/join_group", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      })
-        .then((res) => {
-          if (res.status == 200) {
-            if (props.callback) props.callback();
-            else fetchJoined();
-          } else {
-            alert('An error has occurred. Please inform the web devs.');
-          }
-        })
-        .catch((err) => {console.log(err);});
+    if (joined == true){
+      //localStorage.setItem( props.groupID, props.groupID);
+      window.location.replace("/chat/"+ props.groupID)
     }
+    else{
+      if (window.confirm('Are you sure you want to join this group?')) {
+        const data = {
+          group_id: props.groupID
+        };
+        fetch("/join_group", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        })
+          .then((res) => {
+            if (res.status == 200) {
+              if (props.callback) props.callback();
+              else fetchJoined();
+            } else {
+              alert('An error has occurred. Please inform the web devs.');
+            }
+          })
+          .catch((err) => {console.log(err);});
+      }
+    }
+  }
+
+  function chat(e) {
+    
   }
 
   useEffect(() => {
@@ -46,10 +56,11 @@ function JoinGroupButton(props) {
     <>
       <button
         className="btn btn-primary"
-        disabled={joined || full}
+
+        disabled={full}
         onClick={joinGroup}
       >
-        {joined ? 'Joined' : (full ? 'Full' : 'Join Group')}
+        {joined ? 'Chat With Group' : (full ? 'Full' : 'Join Group')}
       </button>
     </>
   );

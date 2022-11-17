@@ -9,12 +9,14 @@ import io from "socket.io-client";
 
 // a bit of a hack to allow programatically redirecting to a react-router
 // page and also pass in state
-const Redirector = ({submitted, nextState}) => {
-  const navigate = useNavigate();
+const Redirector = ({submitted, groupID, nextState}) => {
+const navigate = useNavigate();
   useEffect(() => {
+    console.log(groupID.props)
+
     if (submitted) {
       
-      navigate('/chat', {state: nextState});
+      navigate('/chat/' + groupID.props, {state: nextState});
     }
   }, [submitted]);
   return null;
@@ -27,7 +29,8 @@ class Create_Group extends Component {
     loc: false, lat: 0.0, long: 0.0,
     activities: [], activity_id: 0, activity_name: "NULL",
     sizeLimit: 1000,
-    value: 1, submitted: false
+    value: 1, submitted: false, 
+    groupID: -1
   };
   //Will use client session instead of server session
 
@@ -95,12 +98,8 @@ class Create_Group extends Component {
     .then((response) => response.json())
     .then((data) => {
         ReactSession.set("Group_Members", [ReactSession.get("firstName") + " " + ReactSession.get("lastName")])
-        //dictionary of all the groups the user is in, where key is group_id and value is array containg information for that 
         let object = data['messages'][0]
-        let temp =  ReactSession.get("groupInfo")
-        console.log(data['messages'][0])
-        temp[object['group_id']] = object['group_name']
-        ReactSession.set("groupInfo", temp)
+        this.setState({groupID: object['group_id']})
         this.setState({submitted: true});
     })
     .catch((error) => {
@@ -239,8 +238,8 @@ class Create_Group extends Component {
           />
           <br />
           {/* <Link to="/chat" state={{props: this.state.value}} > */}
-          <Redirector submitted={this.state.submitted} nextState={{props: this.state.value}} />
-          <button type="submit" className="btn btn-primary "/*position-relative top-50 start-50"*/>Create Group</button>
+          <Redirector submitted={this.state.submitted} groupID = {{props: this.state.groupID}} nextState={{props: this.state.value}} />
+            <button type="submit" className="btn btn-primary "/*position-relative top-50 start-50"*/>Create Group</button>
           {/* </Link> */}
         </form>
         </div>
