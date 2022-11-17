@@ -27,7 +27,11 @@ const sidebar = () => {
   }
   
   useEffect(fetchInfo, []);
-  console.log(allMembers)
+
+  const handleClick = (event) => {
+   console.log(event)
+  };
+  
   return (
     <div style={{ display: 'flex', height: '50vh', overflow: 'scroll initial' }}>
       <CDBSidebar textColor="#fff" class="btn btn-dark">
@@ -40,12 +44,10 @@ const sidebar = () => {
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
           {allMembers.map((user) => (
-                        <NavLink exact to="/" activeClassName="activeClicked">
 
-            <li key={user.user_id}>
-            <CDBSidebarMenuItem icon="columns">{user.firstName + ' ' + user.lastName}</CDBSidebarMenuItem>
+            <li key={user.user_id} onClick={() =>handleClick(user.user_id)}> 
+            <CDBSidebarMenuItem icon="columns" >{user.firstName + ' ' + user.lastName}</CDBSidebarMenuItem>
             </li>
-            </NavLink>
 
           ))}
           </CDBSidebarMenu>

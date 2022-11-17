@@ -22,7 +22,7 @@ let endPoint = "http://localhost:5000";
 let socket = io.connect(`${endPoint}`);
 const Chat = () => {
 
-  const [messages, setMessages] = useState(ReactSession.get("messages"));
+  const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const userName= (ReactSession.get("firstName") + " " + ReactSession.get("lastName"))
   const [, updateState] = React.useState();

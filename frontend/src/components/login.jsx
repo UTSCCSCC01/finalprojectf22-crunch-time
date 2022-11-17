@@ -56,9 +56,9 @@ class Login extends Component {
       ReactSession.set("address", data['address']);
       ReactSession.set("user_id", data['user_id']);
       //console.log(getGroup())
-      ReactSession.set("messages", [])
+      //ReactSession.set("messages", [])
       ReactSession.set("Group_Members",[])
-      ReactSession.set("groupInfo",{})
+      //ReactSession.set("groupInfo",{})
 
       window.location.replace("/home");
       
