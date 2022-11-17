@@ -52,6 +52,7 @@ class Search extends Component {
   };
 
   componentDidMount() {
+
     try{
       if(ReactSession.get("firstName")===undefined){
         window.location.replace("/")
@@ -187,6 +188,7 @@ class Search extends Component {
             <button className="btn btn-primary" type="submit">
               Find
             </button>
+            <Link to={"/chat/"+ 1}></Link>
           </form>
           <h2>List of found groups:</h2>
           <ul className="list-group">

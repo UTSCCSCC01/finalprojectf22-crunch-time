@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS Activities;
 DROP TABLE IF EXISTS User_follows_activity;
 DROP TABLE IF EXISTS Questions;
+DROP TABLE IF EXISTS messages;
 
 CREATE TABLE Example (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -65,6 +66,15 @@ CREATE TABLE Questions (
   lastName TEXT NOT NULL,
   email TEXT NOT NULL,
   message TEXT NOT NULL
+);
+
+CREATE TABLE messages (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  group_id INTEGER NOT NULL,
+  user_name TEXT NOT NULL,
+  time_stamp TEXT NOT NULL,
+  context TEXT NOT NULL
 );
 
 INSERT into users (user_id, firstName, lastName, email, password, address) VALUES (1, "Ken", "Nim", "Ken@mail.com", "securepass", "user1");

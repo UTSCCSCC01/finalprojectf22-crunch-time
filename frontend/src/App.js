@@ -38,7 +38,7 @@ function App() {
         <Route path='/search' element={<Search />} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/Chat' element={<Chat />} />
+        <Route path='/Chat/:groupID' element={<Chat />} />
         <Route path='/Chat2' element={<Chat2 />} />
         <Route path='/account_information' element={<Account_information />} />
         <Route path='/join_group' element={<JoinGroup />} />
