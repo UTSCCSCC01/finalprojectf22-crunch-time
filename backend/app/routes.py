@@ -184,7 +184,7 @@ def Create_Group():
         else:
 
             db.execute('INSERT INTO Groups (group_name, skill_level, activity_id, activity_name, size, group_creator) VALUES (?, ?, ?, ?, ?, ?)', 
-            (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'], data['sizeLimit']), data['user_id'])
+            (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'], data['sizeLimit'], data['user_id']))
         messages = db.execute("SELECT * FROM Groups WHERE group_id =  LAST_INSERT_ROWID()").fetchall()
         db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (?, LAST_INSERT_ROWID())', [data['user_id']])  
         db.commit()
