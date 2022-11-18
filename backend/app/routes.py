@@ -390,6 +390,13 @@ def friend_list(user_id):
         friend_list.append(friend_info)
     return {'friends': friend_list}
 
+@app.route('/kick_user/<user_id>/<group_id>', methods=['DELETE'])
+def kick_user(user_id, group_id):
+    db = get_db()
+    db.execute('DELETE FROM User_in_group WHERE user_id = ? AND group_id = ?', (user_id, group_id,))
+    db.commit()
+    return {'messages': 1}
+
 if __name__ == '__main__':
     
     socketIo.run(app)

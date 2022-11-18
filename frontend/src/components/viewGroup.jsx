@@ -41,6 +41,20 @@ function ViewGroup(props) {
     alert("Add friend")
       window.location.reload()
    } 
+
+   function kickUser(e, user_id, group_id){
+    e.preventDefault();
+    fetch("/kick_user/" + user_id + group_id,{
+        method: 'DELETE', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        
+        
+    })
+    alert("Kick User?")
+      window.location.reload()
+   } 
   
   useEffect(fetchInfo, []);
 
@@ -55,7 +69,8 @@ function ViewGroup(props) {
             <li key={user.user_id}>
               {user.firstName + ' ' + user.lastName}
               <button onClick={(e)=> addfriend(e, user.user_id)}>Add friend</button>
-            </li>
+              <button onClick={(e)=> kickUser(e, user.user_id, groupID)}>Kick User</button>             
+            </li> 
           ))}
         </ul>
         <h2>Actions</h2>
