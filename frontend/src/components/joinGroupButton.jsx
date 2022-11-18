@@ -57,7 +57,7 @@ function JoinGroupButton(props) {
       <button
         className="btn btn-primary"
 
-        disabled={full}
+        disabled={full && !joined}
         onClick={joinGroup}
       >
         {joined ? 'Chat With Group' : (full ? 'Full' : 'Join Group')}

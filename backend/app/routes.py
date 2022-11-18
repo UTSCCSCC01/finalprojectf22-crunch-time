@@ -412,6 +412,7 @@ def kick_user(user_id, group_id):
     else:
         return {'messages': 1}
     return {'messages': 1}
+    
 @app.route('/is_friend/<user_id>', methods=['GET'])
 def is_friend(user_id):
     cur_user_id = session.get('user_id')
