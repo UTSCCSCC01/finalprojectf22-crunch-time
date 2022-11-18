@@ -1,0 +1,99 @@
+.logged-in-content {
+    margin: 2% 8% 30% 8%;
+}
+
+.logged-in-intro {
+    margin: 4% 0% 0% 0%;
+}
+
+.view-bttn {
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 3% 8% 3% 8%;
+    border-color: #ffffff;
+}
+
+.view-bttn a, .friend-view-bttn a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.view-bttn a:hover, .friend-view-bttn a:hover {
+    color: #FFC960;
+}
+
+.profile-view-bttn {
+    background-color: #FFC960;
+    color: #000000;
+    border-radius: 10px;
+    padding: 1.5% 3.5% 1.5% 3.5%;
+    border-color: #000000;
+}
+
+.profile-view-bttn a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.profile-view-bttn a:hover {
+    color: #0C3ADE;
+}
+
+.friend-view-bttn {
+    background-color: #001663;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 3% 8% 3% 8%;
+    border-color: #ffffff;
+}
+
+.home-container {
+    position: relative;
+    display: block;
+    margin: 4% 0% 10% 0%;
+}
+
+.container .redirect-box {
+    position: relative;
+    width: 27.5%;
+    height: 25vh;
+    background: #000000;
+    float: left;
+    overflow: hidden;
+    border-radius: 10px;
+    padding: 3%;
+    margin: 0% 4% 2% 0%;
+}
+
+.container .redirect-box h2, .container .friend-box h2 {
+    color: #ffffff;
+}
+
+.container .profile-box {
+    position: relative;
+    width: 59%;
+    height: 25vh;
+    background: #FFC960;
+    float: left;
+    overflow: hidden;
+    border-radius: 10px;
+    padding: 3%;
+    margin: 0% 4% 2% 0%;
+}
+
+.container .container .profile-box {
+    color: #000000;
+}
+
+.container .friend-box {
+    position: relative;
+    width: 27.5%;
+    height: 25vh;
+    background: #001663;
+    float: left;
+    overflow: hidden;
+    border-radius: 10px;
+    padding: 3%;
+    margin: 0% 4% 2% 0%;
+}
