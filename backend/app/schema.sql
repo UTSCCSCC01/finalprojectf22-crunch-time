@@ -19,7 +19,7 @@ CREATE TABLE Activities(
 );
 
 CREATE TABLE User_follows_activity (
-  user_id INTEGER, 
+  user_id INTEGER NOT NULL, 
   activity_id INTEGER NOT NULL,
   PRIMARY KEY(user_id, activity_id),
   FOREIGN KEY(user_id) REFERENCES users(user_id), 
