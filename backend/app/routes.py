@@ -449,6 +449,15 @@ def profile_info(user_id):
         'mutualFriends': rows_to_dicts(mutual_friends)
     })
 
+@app.route('/leave_group/<group_id>', methods=['DELETE'])
+def leave_group(group_id):
+    db = get_db()
+    current_user = session.get('user_id')
+
+    db.execute('DELETE FROM User_in_group WHERE user_id = ? AND group_id = ?', (current_user, group_id,))
+    db.commit()
+    return {'messages': 1}
+
 if __name__ == '__main__':
     
     socketIo.run(app)

@@ -158,7 +158,19 @@ const Chat = () => {
       }
   };
   
-  
+  function leaveGroup(e, group_id) {
+    e.preventDefault();
+    fetch("/leave_group/" + group_id, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    if(window.confirm('Are you sure you want to leave this group?')) {
+      window.location.replace("/home")
+    }
+      
+  }
 
   return (
     
@@ -243,6 +255,8 @@ const Chat = () => {
               {/* 👇️ show component on click */}
               {isShown && <Sidebar />}
               </div>
+              <br/>
+              <button className="btn btn-secondary" onClick={(e)=> leaveGroup(e, groupID)}>Leave group</button>
             </MDBCol>
         </MDBRow>
       </MDBContainer>
