@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from './navbar/navbar-logged-in.jsx';
 import './friend_list.css';
+import { Link } from "react-router-dom";
+import { ReactSession } from 'react-client-session';
 
 function friend_list(props) {
   const [friends, setFriends] = useState([]);
@@ -29,7 +31,17 @@ function friend_list(props) {
     alert("Removed friend")
       window.location.reload()
 } 
-
+  function chatFriend(friendID){
+    let temp = [friendID.toString(), ]
+    let res = ""
+    if(friendID.toString() < ReactSession.get('user_id').toString()){
+      res +=  friendID.toString() + "-"+ ReactSession.get('user_id').toString()
+    } 
+    else{
+      res += ReactSession.get('user_id').toString() + "-" + friendID.toString()
+    }   
+    window.location.replace("/chat_friend/" +  res )
+  }
   useEffect(fetchInfo, []);
 
   return (
@@ -42,6 +54,8 @@ function friend_list(props) {
              <li key={friend.user_id}>
                {friend.firstName + ' ' + friend.lastName}
                <button onClick={(e)=> unfriend(e, friend.user_id)} class ="unfriend-bttn">Unfriend</button>
+               <button type="button" class="chat-bttn" onClick={()=> chatFriend(friend.user_id)}>Chat</button>
+
             </li>
           ))}
         </div>

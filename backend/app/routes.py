@@ -96,6 +96,15 @@ def getGroupInfo():
     db.commit()
     return list(map(list, group_info))
 
+@app.route("/get_Friend_Message", methods=["GET",  'POST'])
+def get_Friend_Message():
+    db = get_db()
+    print(request.json)
+    group_info = db.execute('SELECT sender_user_name, context, time_stamp FROM friend_messages WHERE (sender_id = (?) and receiver_Id = (?)) OR (sender_id = (?) and receiver_Id = (?))',
+    [request.json['sender_Id'], request.json['receiver_Id'], request.json['receiver_Id'], request.json['sender_Id'] ]).fetchall()
+    db.commit()
+    print(list(map(list, group_info)))
+    return list(map(list, group_info))
 
 
 @app.route("/logout", methods=["POST"])
@@ -212,9 +221,18 @@ app.host = 'localhost'
 @socketIo.on("message")
 def handleMessage(msg):
     db = get_db()
-    db.execute('INSERT INTO messages (user_id, group_id, user_name, time_stamp, context) VALUES (?, ?, ?, ?, ?)', 
-            (msg["user"][3], msg['groupID'], msg['user'][0], msg['user'][2], msg['user'][1]))
-    db.commit()       
+    # between group messages
+    if(len(msg['user']) == 4):
+        
+        db.execute('INSERT INTO messages (user_id, group_id, user_name, time_stamp, context) VALUES (?, ?, ?, ?, ?)', 
+                (msg["user"][3], msg['groupID'], msg['user'][0], msg['user'][2], msg['user'][1]))
+        db.commit()     
+    # messages between friends
+    else:
+        print(msg)
+        db.execute('INSERT INTO friend_messages (sender_id, receiver_id, sender_user_name, time_stamp, context) VALUES (?, ?, ?, ?, ?)', 
+                (msg["user"][3], msg["user"][4], msg['user'][0], msg['user'][2], msg['user'][1]))
+        db.commit()   
     send(msg, broadcast=True, room=msg["groupID"])
     return None
 @socketIo.on('join')
@@ -224,7 +242,6 @@ def on_join(data):
     if data['userName'] not in users['username']:
         users['username'].append(data['userName'])
     join_room(data['groupID'])
-    print(data)
     send(users, broadcast=True, room=data['groupID'])
     return None
 @socketIo.on('leave')
