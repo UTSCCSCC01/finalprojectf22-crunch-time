@@ -131,3 +131,6 @@ INSERT into friendLists (user_id, friend_id) VALUES (2, 5);
 INSERT into friendLists (user_id, friend_id) VALUES (3, 1);
 INSERT into friendLists (user_id, friend_id) VALUES (4, 3);
 INSERT into friendLists (user_id, friend_id) VALUES (5, 2);
+
+INSERT into User_follows_activity (user_id, activity_id) VALUES (1, 1);
+INSERT into User_follows_activity (user_id, activity_id) VALUES (1, 2);

@@ -390,6 +390,40 @@ def friend_list(user_id):
         friend_list.append(friend_info)
     return {'friends': friend_list}
 
+@app.route('/profile_info/<user_id>', methods=['GET'])
+def profile_info(user_id):
+    cur_user_id = session.get('user_id')
+    if cur_user_id is None:
+        return 'need to be logged in', 401
+    db = get_db()
+    u = db.execute('SELECT * FROM Users WHERE user_id = ?', (user_id,)).fetchone()
+    if u is None:
+        return 'user not found', 404
+    friend_count = db.execute(
+        'SELECT COUNT(*) AS count FROM friendLists WHERE user_id = ?', (user_id,)
+    ).fetchone()['count']
+    interests = db.execute(
+        'SELECT a.name AS name FROM User_follows_activity u '
+        'JOIN Activities a ON u.activity_id = a.id '
+        'WHERE u.user_id = ?',
+        (user_id,)
+    ).fetchall()
+    mutual_friends = db.execute(
+        'SELECT u.user_id AS userID, u.firstName AS firstName, u.lastName AS lastName '
+        'FROM friendLists theirs '
+        'JOIN friendLists mine ON theirs.friend_id = mine.friend_id '
+        'JOIN Users u ON mine.friend_id = u.user_id '
+        'WHERE theirs.user_id = ? AND mine.user_id = ?',
+        (user_id, cur_user_id)
+    ).fetchall()
+    return jsonify({
+        'firstName': u['firstName'],
+        'lastName': u['lastName'],
+        'friendCount': friend_count,
+        'interests': list(map(lambda r: r['name'], interests)),
+        'mutualFriends': rows_to_dicts(mutual_friends)
+    })
+
 if __name__ == '__main__':
     
     socketIo.run(app)
