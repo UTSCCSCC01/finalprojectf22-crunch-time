@@ -44,7 +44,7 @@ function ViewGroup(props) {
 
    function kickUser(e, user_id, group_id){
     e.preventDefault();
-    fetch("/kick_user/" + user_id + group_id,{
+    fetch("/kick_user/" + user_id + '/' + group_id,{
         method: 'DELETE', 
         headers: {
             'Content-Type': 'application/json',

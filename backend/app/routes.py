@@ -393,8 +393,15 @@ def friend_list(user_id):
 @app.route('/kick_user/<user_id>/<group_id>', methods=['DELETE'])
 def kick_user(user_id, group_id):
     db = get_db()
+    current_user = session.get('user_id')
+    #group_owner = db.execute('SELECT group_creator FROM Group WHERE group_id = ?', (group_id,)).fetchone()
+    #creator = group_owner['group_creator']
+    
+    #if(creator == current_user):
     db.execute('DELETE FROM User_in_group WHERE user_id = ? AND group_id = ?', (user_id, group_id,))
     db.commit()
+    #else:
+     #   return 404
     return {'messages': 1}
 
 if __name__ == '__main__':
