@@ -23,6 +23,8 @@ import Contact_us from './components/contact_us';
 import About_Us from './components/about_us/about_us';
 import Friend_list from './components/friend_list';
 import Chat_friend from './components/Chat_friend';
+import Profile from './components/profile';
+import User_search from './components/user_search';
 import { ReactSession } from 'react-client-session';
 function App() {
   const [count, setCount] = useState('');
@@ -38,6 +40,7 @@ function App() {
         <Route path='/example' element={<Example />} />
         <Route path='/Create_Group' element={<Create_Group />} />
         <Route path='/search' element={<Search />} />
+        <Route path='/user_search' element={<User_search />} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
         <Route path='/Chat/:groupID' element={<Chat />} />
@@ -52,7 +55,7 @@ function App() {
         <Route path='/about' element={<About_Us />} />
         <Route path='/friend_list/:user_id' element={<Friend_list />} />
         <Route path='/Chat_friend/:groupID' element={<Chat_friend />} />
-
+        <Route path='/profile/:userID' element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );

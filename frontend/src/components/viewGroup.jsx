@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import JoinGroupButton from "./joinGroupButton";
 import Navbar from './navbar/navbar-logged-in.jsx';
+import FriendButton from "./friendButton";
 
 const skill_levels = {
   '-1': '',
@@ -28,7 +29,7 @@ function ViewGroup(props) {
       });
   }
   
-  function addfriend(e, friendID){
+  /*function addfriend(e, friendID){
     e.preventDefault();
     fetch("/add_friend/" + friendID,{
         method: 'POST', // or 'PUT'
@@ -40,7 +41,7 @@ function ViewGroup(props) {
     })
     alert("Add friend")
       window.location.reload()
-   } 
+   } */
   
   useEffect(fetchInfo, []);
 
@@ -53,8 +54,11 @@ function ViewGroup(props) {
         <ul>
           {members.map((user) => (
             <li key={user.user_id}>
-              {user.firstName + ' ' + user.lastName}
-              <button onClick={(e)=> addfriend(e, user.user_id)}>Add friend</button>
+              <Link to={"/profile/" + user.user_id}>{
+                user.firstName + ' ' + user.lastName}
+              </Link>
+              {/*<button onClick={(e)=> addfriend(e, user.user_id)}>Add friend</button>*/}
+              <FriendButton friendID={user.user_id} />
             </li>
           ))}
         </ul>
