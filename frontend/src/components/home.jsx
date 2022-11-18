@@ -26,7 +26,7 @@ export default function Home() {
     <div className="container mt-3 mb-3">
       
       <h1>Welcome {ReactSession.get("firstName")}</h1>
-      <Link to="/example">Link to example route</Link><br/>
+      <Link to="/user_search">Link to user search</Link><br/>
       <Link to="/search">Link to group search</Link><br/>
       <Link to="/Create_Group">Link to Create_Group</Link><br/>
       <Link to="/join_group">Join a group</Link><br/>

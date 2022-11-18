@@ -186,10 +186,20 @@ def tracking(user_id):
     if request.method == 'GET':
         user_id = int(user_id)
         activities = db.execute("SELECT activity_id FROM User_follows_activity WHERE user_id = ?", [user_id]).fetchall()
-        return {'tracked_activities': list(activities)} 
+        return {'tracked_activities': list(map(dict, activities))} 
     elif request.method == 'POST':
         user_id = int(user_id)
         return
+
+@app.route('/get_matching_users/<activity_id>/<user_id>', methods=['GET'])
+def get_matching_users(activity_id, user_id):
+    db = get_db()
+    if request.method == 'GET':
+        user_id = int(user_id)
+        activity_id = int(activity_id)
+        users = db.execute("""SELECT user_id, firstName, lastName FROM Users NATURAL JOIN User_follows_activity
+            WHERE activity_id = ? and user_id != ?""", [activity_id, user_id,]).fetchall()
+        return {'users': list(map(dict, users))} 
         
 app.config['SECRET_KEY'] = 'mysecret'
 

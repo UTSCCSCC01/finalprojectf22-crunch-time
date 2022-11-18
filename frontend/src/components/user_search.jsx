@@ -10,16 +10,14 @@ class User_search extends Component {
         this.state = {
             user_id: 0, users: [], tracked_activities: [], activities: [], activity_id: 0, activity_name: "NULL"
         };
-
+        
         this.handleTrackingChange = this.handleTrackingChange.bind(this);
         this.handleActivityChange = this.handleActivityChange.bind(this);
+        this.fetchUsers = this.fetchUsers.bind(this);
     }
 
     sendTracking = (event) => {
-        event.preventDefault();
         const formData = new FormData();
-        formData.set("activity_id", this.state.activity_id);
-        console.log(this.state.groupName, this.state.loc, this.state.lat, this.state.long, this.state.dist);
         fetch("/search", {
             method: "POST",
             body: formData,
@@ -32,11 +30,9 @@ class User_search extends Component {
 
     componentDidMount() {
         try {
-            if (ReactSession.get("firstName") === undefined) {
+            if (ReactSession.get("firstName") === undefined | ReactSession.get("user_id") === undefined) {
                 window.location.replace("/")
-            } else {
-                this.setState({user_id: parseInt(ReactSession.get("user_id"))});
-            }
+            } 
         }
         catch (e) {
             window.location.replace("/")
@@ -55,21 +51,34 @@ class User_search extends Component {
     }
 
     fetchTracked() {
-        console.log('fetch');
-        fetch("/get_tracked")
+        console.log('fetch tracking/' + ReactSession.get("user_id"));
+        fetch("/tracking/" + ReactSession.get("user_id"))
             .then((res) => res.json())
             .then((data) => {
                 this.setState({ ...data });
             });
     }
 
-    handleActivityChange = (event) => {
+    fetchUsers(act_id) {
+        console.log('fetch users');
+        fetch("/get_matching_users/" + act_id + "/" + ReactSession.get("user_id"))
+            .then((res) => res.json())
+            .then((data) => {
+                this.setState({ ...data });
+            });
+    }
+
+    handleActivityChange (event) {
         const target = event.target;
         const value = target.value.split(",");
+        const id = parseInt(value[0])
+        const name = value[1]
+        console.log("setting act ", id)
         this.setState({
-            activity_id: parseInt(value[0]),
-            activity_name: value[1]
+            activity_id: id,
+            activity_name: name
         });
+        this.fetchUsers(id);
     }
 
     handleTrackingChange(event) {
@@ -95,7 +104,7 @@ class User_search extends Component {
                             <ul class="checkbox" id="tracked_activities" name="tracked_activities" onChange={this.handleTrackingChange}>
                             {this.state.activities.map((item) => {
                                 return (
-                                <li key={item.id}><input type="checkbox" id={item.id} value={[option.id, option.name]} /><label for={item.id}>{item.name}</label></li>
+                                <li key={item.id}><input type="checkbox" id={item.id} value={item.activity_id} /><label for={item.id}>{item.name}</label></li>
                                 );
                             })}
                             </ul>
@@ -104,7 +113,6 @@ class User_search extends Component {
                             </button>
                         </div>
                     </form>
-
                     <select id="activities" name="activities" onChange={this.handleActivityChange}>
                         <option key={0} value={"0,NULL"}> Select an Activity </option>
                         {this.state.activities.map((option) => {
@@ -115,22 +123,28 @@ class User_search extends Component {
                             );
                         })}
                     </select>
-
+                    <h2>List of found users:</h2>
+                    <ul className="list-group">
+                        {this.state.users.map((user) => (
+                            <li className="list-group-item" key={user.user_id}>
+                                User: {user.firstName} {user.lastName}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
         );
     }
-    /*
-                    <h2>List of found groups:</h2>
-                    <ul className="list-group">
-                        {this.state.messages.map((msg) => (
+    /*<ul className="list-group">
+                        {this.state.users.map((user) => (
                             <li className="list-group-item" key={msg.group_id}>
                                 <Link to={"/view_group/" + msg.group_id}>{msg.group_name}</Link>
                                 <span style={{ float: 'right' }}><JoinGroupButton groupID={msg.group_id} /></span> <br />
                                 Activity: {msg.activity_name}
                             </li>
                         ))}
-                    </ul>*/
+                    </ul>
+                    */
 }
 
 export default User_search;
