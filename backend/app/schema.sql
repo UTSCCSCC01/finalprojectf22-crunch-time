@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS Activities;
 DROP TABLE IF EXISTS User_follows_activity;
 DROP TABLE IF EXISTS Questions;
+DROP TABLE IF EXISTS friendLists;
 DROP TABLE IF EXISTS messages;
 
 CREATE TABLE Example (
@@ -70,6 +71,14 @@ CREATE TABLE Questions (
   message TEXT NOT NULL
 );
 
+CREATE TABLE friendLists (
+  user_id INTEGER,
+  friend_id INTEGER,
+  PRIMARY KEY(user_id, friend_id),
+  FOREIGN KEY(user_id) REFERENCES Users(user_id), 
+  FOREIGN KEY(friend_id) REFERENCES Users(friend_id)
+);
+
 CREATE TABLE messages (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER,
@@ -109,3 +118,14 @@ INSERT into User_in_group (user_id, group_id) VALUES (2, 2);
 INSERT into User_in_group (user_id, group_id) VALUES (3, 3);
 INSERT into User_in_group (user_id, group_id) VALUES (4, 4);
 INSERT into User_in_group (user_id, group_id) VALUES (5, 5);
+
+INSERT into friendLists (user_id, friend_id) VALUES (1, 2);
+INSERT into friendLists (user_id, friend_id) VALUES (1, 3);
+INSERT into friendLists (user_id, friend_id) VALUES (2, 1);
+INSERT into friendLists (user_id, friend_id) VALUES (2, 5);
+INSERT into friendLists (user_id, friend_id) VALUES (3, 1);
+INSERT into friendLists (user_id, friend_id) VALUES (4, 3);
+INSERT into friendLists (user_id, friend_id) VALUES (5, 2);
+
+INSERT into User_in_group (user_id, group_id) VALUES (5, 5);
+

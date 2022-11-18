@@ -4,7 +4,7 @@ import Navbar_Login from './navbar/navbar-logged-in.jsx';
 import Navbar_Logout from './navbar/navbar-not-logged-in.jsx';
 import { ReactSession } from 'react-client-session';
 import io from "socket.io-client";
-
+import './create_group.css';
 
 
 // a bit of a hack to allow programatically redirecting to a react-router
@@ -160,16 +160,20 @@ class Create_Group extends Component {
 
   render() {
     return (
+      <div className = "create-group-content">
         <div className = "root">
           { /* <Navbar_Logout/> */}
           {ReactSession.get("firstName") !== undefined &&
             <Navbar_Login/>
           }
-         
+        <div className = "create-group-intro">
+          <h1>Create group</h1>
+        </div>
+        <br/>
         <div className="bg-image position-relative" /* Style="background: #E4A11B; height: 100vh" */>
         <form onSubmit={this.sendReq} className="mb-3">
           <div className="form-group mb-3">
-            <label htmlFor="activities">Activity</label>
+            <label htmlFor="activities">Activity: &ensp;</label>
             <select id="activities" name="activities" onChange={this.handleActivityChange}>
                 <option key={0} value={"0,NULL"}> Select an Activity </option>
               {this.state.activities.map((option) => {
@@ -179,7 +183,7 @@ class Create_Group extends Component {
                   </option>
                 );
               })}
-            </select><br/>
+            </select><br/><br/>
             <label htmlFor="msg">Group Name:</label>
             <input
               type="text"
@@ -190,11 +194,12 @@ class Create_Group extends Component {
             />
           </div>
           <input type="checkbox" name="loc" id="loc" checked={this.state.loc} onChange={this.handleLoc} />
-          <label htmlFor="loc"> Include Location</label>
+          <label htmlFor="loc"> &ensp; Include Location</label>
           
           { this.state.loc?
           <div>
             <div className="form-group mb-3">
+              <br/>
               <label htmlFor="lat">Latitude:</label>
               <input
                 type="number"
@@ -214,21 +219,23 @@ class Create_Group extends Component {
                 onChange={this.handleChange}
               />
             </div>
-          <button type="button" className="btn btn-primary" onClick={this.getLocation}>
-            Use My Location
-          </button>
+            <button type="button" className="btn-primary" onClick={this.getLocation}>
+              Use My Location
+            </button>
+            <br/><br/>
           </div>
           :
           <div></div>
           }
-          <label htmlFor="skill-level">Skill level:</label>
+          <br/>
+          <label htmlFor="skill-level">Skill level: &ensp;</label>
           <select name="skill-level" id="skill-level" onChange={this.handleSkillLevelChange} defaultValue={"0"}>
               <option value="0">Beginner</option>
               <option value="1">Intermediate</option>
               <option value="2">Advanced</option>
           </select>
-          <br />
-          <label htmlFor="size-limit">Size limit:</label>
+          <br/>
+          <label htmlFor="size-limit">Size limit: &ensp;</label>
           <input
             type="text"
             id="size-limit"
@@ -236,14 +243,15 @@ class Create_Group extends Component {
             value={this.state.sizeLimit}
             onChange={this.handleSizeLimitChange}
           />
-          <br />
+          <br/><br/><br/>
           {/* <Link to="/chat" state={{props: this.state.value}} > */}
           <Redirector submitted={this.state.submitted} groupID = {{props: this.state.groupID}} nextState={{props: this.state.value}} />
-            <button type="submit" className="btn btn-primary "/*position-relative top-50 start-50"*/>Create Group</button>
+            <button type="submit" className="btn-primary "/*position-relative top-50 start-50"*/>Create Group</button>
           {/* </Link> */}
         </form>
         </div>
         </div> 
+      </div>
     );
   }
 }
