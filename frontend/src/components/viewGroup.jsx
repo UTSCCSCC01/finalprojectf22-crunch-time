@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import JoinGroupButton from "./joinGroupButton";
 import Navbar from './navbar/navbar-logged-in.jsx';
 import FriendButton from "./friendButton";
+import { ReactSession } from 'react-client-session';
 
 const skill_levels = {
   '-1': '',
@@ -11,12 +12,14 @@ const skill_levels = {
   '2': 'Advanced'
 };
 
-function Kick(props) {
+function ViewGroup(props) {
   const [groupName, setGroupName] = useState('');
   const [skillLevel, setSkillLevel] = useState(-1);
   const [members, setMembers] = useState([]);
   const [size, setSize] = useState(0);
+  const[group_creator, setGroupCreator] = useState(0);
   let { groupID } = useParams();
+  
 
 
   function fetchInfo() {
@@ -27,6 +30,7 @@ function Kick(props) {
         setSkillLevel(data.skill_level);
         setMembers(data.members);
         setSize(data.size);
+        setGroupCreator(data.group_creator)
       });
   }
   
@@ -59,6 +63,9 @@ function Kick(props) {
    
   
   useEffect(fetchInfo, []);
+   
+  
+
 
   return (
     <div className="root">
@@ -74,7 +81,7 @@ function Kick(props) {
               </Link>
               {/*<button onClick={(e)=> addfriend(e, user.user_id)}>Add friend</button>*/}
               <FriendButton friendID={user.user_id} />
-              <button className = "btn btn-secondary" onClick={(e)=> kickUser(e, user.user_id, groupID)}>Kick User</button>
+              {group_creator == ReactSession.get("user_id") ? <button className = "btn btn-secondary" onClick={(e)=> kickUser(e, user.user_id, groupID)}>Kick User</button> : null}
             </li>
           ))}
         </ul>
@@ -87,4 +94,4 @@ function Kick(props) {
   }
 
 
-export default Kick;
+export default ViewGroup;
