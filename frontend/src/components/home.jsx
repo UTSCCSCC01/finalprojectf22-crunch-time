@@ -34,7 +34,7 @@ export default function Home() {
             <div className = "profile-box">
               <h2>Profile</h2>
               <br/>
-              <button type = "view" class = "profile-view-bttn"><Link to={"/friend_list/"+ReactSession.get("user_id")}>View</Link></button>
+              <button type = "view" class = "profile-view-bttn"><Link to={"/profile/"+ReactSession.get("user_id")}>View</Link></button>
             </div>
             <div className = "friend-box">
               <h2>Friend list</h2>
@@ -50,12 +50,12 @@ export default function Home() {
               <button type = "view" class = "view-bttn"><Link to="/Create_Group">View</Link></button>
             </div>
             <div className = "redirect-box">
-              <h2>Search for groups</h2>
+              <h2>Search for group</h2>
               <br/>
               <button type = "view" class = "view-bttn"><Link to="/search">View</Link></button>
             </div>
             <div className = "redirect-box">
-              <h2>FAQ</h2>
+              <h2>Search for user</h2>
               <br/>
               <button type = "view" class = "view-bttn"><Link to="/faq">View</Link></button>
             </div>
