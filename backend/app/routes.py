@@ -57,17 +57,6 @@ def user_in_group(group_id):
         'joined': not (res.fetchone() is None),
         'full': member_count >= size
     })
-    
-
-
-@app.route('/example', methods=['GET', 'POST'])
-def example():
-    db = get_db()
-    if request.method == 'POST':
-        db.execute('INSERT INTO Example (contents) VALUES (?)', (request.form['message'],))
-        db.commit()
-    messages = db.execute('SELECT * FROM Example').fetchall()
-    return {'messages': list(map(dict, messages))}
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -194,7 +183,6 @@ def Create_Group():
         activities = db.execute("SELECT id, name FROM Activities").fetchall()
         return {'activities': list(map(dict, activities))}  
         
-
 @app.route('/get_acts', methods=['GET'])
 def get_acts():
     db = get_db()
@@ -202,6 +190,27 @@ def get_acts():
     if request.method == 'GET':
         activities = db.execute("SELECT id, name FROM Activities").fetchall()
         return {'activities': list(map(dict, activities))} 
+
+@app.route('/tracking/<user_id>', methods=['GET', 'POST'])
+def tracking(user_id):
+    db = get_db()
+    if request.method == 'GET':
+        user_id = int(user_id)
+        activities = db.execute("SELECT activity_id FROM User_follows_activity WHERE user_id = ?", [user_id]).fetchall()
+        return {'tracked_activities': list(map(dict, activities))} 
+    elif request.method == 'POST':
+        user_id = int(user_id)
+        return
+
+@app.route('/get_matching_users/<activity_id>/<user_id>', methods=['GET'])
+def get_matching_users(activity_id, user_id):
+    db = get_db()
+    if request.method == 'GET':
+        user_id = int(user_id)
+        activity_id = int(activity_id)
+        users = db.execute("""SELECT user_id, firstName, lastName FROM Users NATURAL JOIN User_follows_activity
+            WHERE activity_id = ? and user_id != ?""", [activity_id, user_id,]).fetchall()
+        return {'users': list(map(dict, users))} 
         
 app.config['SECRET_KEY'] = 'mysecret'
 
