@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import JoinGroupButton from "./joinGroupButton";
 import Navbar from './navbar/navbar-logged-in.jsx';
 import FriendButton from "./friendButton";
+import { ReactSession } from 'react-client-session';
 
 const skill_levels = {
   '-1': '',
@@ -16,7 +17,10 @@ function ViewGroup(props) {
   const [skillLevel, setSkillLevel] = useState(-1);
   const [members, setMembers] = useState([]);
   const [size, setSize] = useState(0);
+  const[group_creator, setGroupCreator] = useState(0);
   let { groupID } = useParams();
+  
+
 
   function fetchInfo() {
     fetch("/view_group/" + groupID)
@@ -26,6 +30,7 @@ function ViewGroup(props) {
         setSkillLevel(data.skill_level);
         setMembers(data.members);
         setSize(data.size);
+        setGroupCreator(data.group_creator)
       });
   }
   
@@ -42,8 +47,25 @@ function ViewGroup(props) {
     alert("Add friend")
       window.location.reload()
    } */
+   function kickUser(e, user_id, group_id){
+    e.preventDefault();
+    fetch("/kick_user/" + user_id + '/' + group_id,{
+        method: 'DELETE', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        
+        
+    })
+    alert("Kick User?")
+      window.location.reload()
+   } 
+   
   
   useEffect(fetchInfo, []);
+   
+  
+
 
   return (
     <div className="root">
@@ -59,6 +81,7 @@ function ViewGroup(props) {
               </Link>
               {/*<button onClick={(e)=> addfriend(e, user.user_id)}>Add friend</button>*/}
               <FriendButton friendID={user.user_id} />
+              {group_creator == ReactSession.get("user_id") ? <button className = "btn btn-secondary" onClick={(e)=> kickUser(e, user.user_id, groupID)}>Kick User</button> : null}
             </li>
           ))}
         </ul>
@@ -68,6 +91,7 @@ function ViewGroup(props) {
     </div>
   );
 
-}
+  }
+
 
 export default ViewGroup;
