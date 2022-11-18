@@ -390,6 +390,22 @@ def friend_list(user_id):
         friend_list.append(friend_info)
     return {'friends': friend_list}
 
+@app.route('/is_friend/<user_id>', methods=['GET'])
+def is_friend(user_id):
+    cur_user_id = session.get('user_id')
+    if cur_user_id is None:
+        return 'need to be logged in', 401
+    # can't friend yourself
+    if int(cur_user_id) == int(user_id):
+        return jsonify({'isFriend': None})
+    db = get_db()
+    res = db.execute(
+        'SELECT EXISTS(SELECT * FROM friendLists '
+        'WHERE user_id = ? AND friend_id = ?) as isFriend',
+        (cur_user_id, user_id)
+    ).fetchone()
+    return jsonify({'isFriend': res['isFriend']})
+
 @app.route('/profile_info/<user_id>', methods=['GET'])
 def profile_info(user_id):
     cur_user_id = session.get('user_id')

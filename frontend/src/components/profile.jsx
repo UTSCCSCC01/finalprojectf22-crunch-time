@@ -1,13 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "./navbar/navbar-logged-in.jsx";
-
-const skill_levels = {
-  "-1": "",
-  "0": "Beginner",
-  "1": "Intermediate",
-  "2": "Advanced",
-};
+import FriendButton from "./friendButton.jsx";
 
 function Profile(props) {
   const [name, setName] = useState("");
@@ -63,6 +57,8 @@ function Profile(props) {
             ))}
           </ul>
         )}
+
+        <FriendButton friendID={userID} />
       </div>
     </div>
   );
