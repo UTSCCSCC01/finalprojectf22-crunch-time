@@ -57,17 +57,6 @@ def user_in_group(group_id):
         'joined': not (res.fetchone() is None),
         'full': member_count >= size
     })
-    
-
-
-@app.route('/example', methods=['GET', 'POST'])
-def example():
-    db = get_db()
-    if request.method == 'POST':
-        db.execute('INSERT INTO Example (contents) VALUES (?)', (request.form['message'],))
-        db.commit()
-    messages = db.execute('SELECT * FROM Example').fetchall()
-    return {'messages': list(map(dict, messages))}
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -194,7 +183,6 @@ def Create_Group():
         activities = db.execute("SELECT id, name FROM Activities").fetchall()
         return {'activities': list(map(dict, activities))}  
         
-
 @app.route('/get_acts', methods=['GET'])
 def get_acts():
     db = get_db()
@@ -202,6 +190,27 @@ def get_acts():
     if request.method == 'GET':
         activities = db.execute("SELECT id, name FROM Activities").fetchall()
         return {'activities': list(map(dict, activities))} 
+
+@app.route('/tracking/<user_id>', methods=['GET', 'POST'])
+def tracking(user_id):
+    db = get_db()
+    if request.method == 'GET':
+        user_id = int(user_id)
+        activities = db.execute("SELECT activity_id FROM User_follows_activity WHERE user_id = ?", [user_id]).fetchall()
+        return {'tracked_activities': list(map(dict, activities))} 
+    elif request.method == 'POST':
+        user_id = int(user_id)
+        return
+
+@app.route('/get_matching_users/<activity_id>/<user_id>', methods=['GET'])
+def get_matching_users(activity_id, user_id):
+    db = get_db()
+    if request.method == 'GET':
+        user_id = int(user_id)
+        activity_id = int(activity_id)
+        users = db.execute("""SELECT user_id, firstName, lastName FROM Users NATURAL JOIN User_follows_activity
+            WHERE activity_id = ? and user_id != ?""", [activity_id, user_id,]).fetchall()
+        return {'users': list(map(dict, users))} 
         
 app.config['SECRET_KEY'] = 'mysecret'
 
@@ -389,6 +398,56 @@ def friend_list(user_id):
         friend_info = dict(friend_info[0])
         friend_list.append(friend_info)
     return {'friends': friend_list}
+
+@app.route('/is_friend/<user_id>', methods=['GET'])
+def is_friend(user_id):
+    cur_user_id = session.get('user_id')
+    if cur_user_id is None:
+        return 'need to be logged in', 401
+    # can't friend yourself
+    if int(cur_user_id) == int(user_id):
+        return jsonify({'isFriend': None})
+    db = get_db()
+    res = db.execute(
+        'SELECT EXISTS(SELECT * FROM friendLists '
+        'WHERE user_id = ? AND friend_id = ?) as isFriend',
+        (cur_user_id, user_id)
+    ).fetchone()
+    return jsonify({'isFriend': res['isFriend']})
+
+@app.route('/profile_info/<user_id>', methods=['GET'])
+def profile_info(user_id):
+    cur_user_id = session.get('user_id')
+    if cur_user_id is None:
+        return 'need to be logged in', 401
+    db = get_db()
+    u = db.execute('SELECT * FROM Users WHERE user_id = ?', (user_id,)).fetchone()
+    if u is None:
+        return 'user not found', 404
+    friend_count = db.execute(
+        'SELECT COUNT(*) AS count FROM friendLists WHERE user_id = ?', (user_id,)
+    ).fetchone()['count']
+    interests = db.execute(
+        'SELECT a.name AS name FROM User_follows_activity u '
+        'JOIN Activities a ON u.activity_id = a.id '
+        'WHERE u.user_id = ?',
+        (user_id,)
+    ).fetchall()
+    mutual_friends = db.execute(
+        'SELECT u.user_id AS userID, u.firstName AS firstName, u.lastName AS lastName '
+        'FROM friendLists theirs '
+        'JOIN friendLists mine ON theirs.friend_id = mine.friend_id '
+        'JOIN Users u ON mine.friend_id = u.user_id '
+        'WHERE theirs.user_id = ? AND mine.user_id = ?',
+        (user_id, cur_user_id)
+    ).fetchall()
+    return jsonify({
+        'firstName': u['firstName'],
+        'lastName': u['lastName'],
+        'friendCount': friend_count,
+        'interests': list(map(lambda r: r['name'], interests)),
+        'mutualFriends': rows_to_dicts(mutual_friends)
+    })
 
 if __name__ == '__main__':
     

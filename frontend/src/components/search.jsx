@@ -33,10 +33,10 @@ class Search extends Component {
     event.preventDefault();
     const formData = new FormData();
     formData.set("groupName", this.state.groupName);
-    formData.set("lat", this.state.lat);
     formData.set("loc", this.state.loc);
     formData.set("activity_id", this.state.activity_id);
     if (this.state.loc) {
+      formData.set("lat", this.state.lat);
       formData.set("long", this.state.long);
       formData.set("dist", this.state.dist);
     }
@@ -201,7 +201,7 @@ class Search extends Component {
             ))}
           </ul>
       </div>
-     </div> 
+     </div>
     );
   }
 }

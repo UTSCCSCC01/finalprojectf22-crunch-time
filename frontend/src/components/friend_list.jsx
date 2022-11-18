@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Navbar from './navbar/navbar-logged-in.jsx';
 import './friend_list.css';
 
@@ -39,9 +39,11 @@ function friend_list(props) {
         <h1 >{'Friend list'}</h1>
         <div className='item-container'>
           {friends.map((friend) => (
-             <li key={friend.user_id}>
-               {friend.firstName + ' ' + friend.lastName}
-               <button onClick={(e)=> unfriend(e, friend.user_id)} class ="unfriend-bttn">Unfriend</button>
+            <li key={friend.user_id}>
+              <Link to={"/profile/" + friend.user_id}>
+                {friend.firstName + ' ' + friend.lastName}
+              </Link>
+              <button onClick={(e)=> unfriend(e, friend.user_id)} class ="unfriend-bttn">Unfriend</button>
             </li>
           ))}
         </div>

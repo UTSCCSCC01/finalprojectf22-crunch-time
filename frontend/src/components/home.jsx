@@ -57,7 +57,7 @@ export default function Home() {
             <div className = "redirect-box">
               <h2>Search for user</h2>
               <br/>
-              <button type = "view" class = "view-bttn"><Link to="/faq">View</Link></button>
+              <button type = "view" class = "view-bttn"><Link to="/user_search">View</Link></button>
             </div>
           </div>
         </div>
