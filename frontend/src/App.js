@@ -22,6 +22,7 @@ import Account_info_authentification from './components/account_info_authentific
 import Contact_us from './components/contact_us';
 import About_Us from './components/about_us/about_us';
 import Friend_list from './components/friend_list';
+import User_search from './components/user_search';
 import { ReactSession } from 'react-client-session';
 function App() {
   const [count, setCount] = useState('');
@@ -37,6 +38,7 @@ function App() {
         <Route path='/example' element={<Example />} />
         <Route path='/Create_Group' element={<Create_Group />} />
         <Route path='/search' element={<Search />} />
+        <Route path='/user_search' element={<User_search />} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
         <Route path='/Chat/:groupID' element={<Chat />} />
