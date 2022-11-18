@@ -107,11 +107,16 @@ INSERT into Activities (name, type) VALUES ("Swimming", "Sport");
 INSERT into Activities (name, type) VALUES ("Cycling", "Sport");
 
 
--- INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level) VALUES (1, 1, "Basketball", "Best basketball", 45, -80, 2);
--- INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level) VALUES (2, 2, "Chess", "Noobie chess", 44, -80, 0);
--- INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level) VALUES (3, 9, "Cycling", "Cycling maniacs", 43, -79, 1);
--- INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level) VALUES (4, 4, "Soccer", "Soccer bros", 10, 45, 1);
--- INSERT into Groups (group_id, activity_id, activity_name, group_name, skill_level) VALUES (5, 3, "Counter-Strike", "CS:GO Pro team", 2);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level, group_creator)
+  VALUES (1, 1, "Basketball", "Best basketball", 45, -80, 2, 1);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level, group_creator)
+  VALUES (2, 2, "Chess", "Noobie chess", 44, -80, 0, 2);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level, group_creator)
+  VALUES (3, 9, "Cycling", "Cycling maniacs", 43, -79, 1, 3);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, latitude, longitude, skill_level, group_creator)
+  VALUES (4, 4, "Soccer", "Soccer bros", 10, 45, 1, 4);
+INSERT into Groups (group_id, activity_id, activity_name, group_name, skill_level, group_creator)
+  VALUES (5, 3, "Counter-Strike", "CS:GO Pro team", 2, 5);
 
 INSERT into User_in_group (user_id, group_id) VALUES (1, 1);
 INSERT into User_in_group (user_id, group_id) VALUES (2, 2);
@@ -126,6 +131,3 @@ INSERT into friendLists (user_id, friend_id) VALUES (2, 5);
 INSERT into friendLists (user_id, friend_id) VALUES (3, 1);
 INSERT into friendLists (user_id, friend_id) VALUES (4, 3);
 INSERT into friendLists (user_id, friend_id) VALUES (5, 2);
-
-INSERT into User_in_group (user_id, group_id) VALUES (5, 5);
-
