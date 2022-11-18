@@ -41,8 +41,6 @@ export default function Home() {
               <br/>
               <button type = "view" class = "friend-view-bttn"><Link to={"/friend_list/"+ReactSession.get("user_id")}>View</Link></button>
             </div>
-          </div>
-          <div className = "home-container">
             <h3>Quick access</h3>
             <div className = "redirect-box">
               <h2>Create group</h2>
