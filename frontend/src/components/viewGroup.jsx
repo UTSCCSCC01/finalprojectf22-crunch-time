@@ -11,13 +11,13 @@ const skill_levels = {
   '2': 'Advanced'
 };
 
-function ViewGroup(props) {
+function Kick(props) {
   const [groupName, setGroupName] = useState('');
   const [skillLevel, setSkillLevel] = useState(-1);
   const [members, setMembers] = useState([]);
   const [size, setSize] = useState(0);
   let { groupID } = useParams();
-}
+
 
   function fetchInfo() {
     fetch("/view_group/" + groupID)
@@ -74,7 +74,7 @@ function ViewGroup(props) {
               </Link>
               {/*<button onClick={(e)=> addfriend(e, user.user_id)}>Add friend</button>*/}
               <FriendButton friendID={user.user_id} />
-              <button onClick={(e)=> kickUser(e, user.user_id, groupID)}>Kick User</button>
+              <button className = "btn btn-secondary" onClick={(e)=> kickUser(e, user.user_id, groupID)}>Kick User</button>
             </li>
           ))}
         </ul>
@@ -84,7 +84,7 @@ function ViewGroup(props) {
     </div>
   );
 
+  }
 
 
-
-export default ViewGroup;
+export default Kick;
