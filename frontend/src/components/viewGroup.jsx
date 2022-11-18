@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import JoinGroupButton from "./joinGroupButton";
 import Navbar from './navbar/navbar-logged-in.jsx';
 
@@ -53,7 +53,9 @@ function ViewGroup(props) {
         <ul>
           {members.map((user) => (
             <li key={user.user_id}>
-              {user.firstName + ' ' + user.lastName}
+              <Link to={"/profile/" + user.user_id}>{
+                user.firstName + ' ' + user.lastName}
+              </Link>
               <button onClick={(e)=> addfriend(e, user.user_id)}>Add friend</button>
             </li>
           ))}
