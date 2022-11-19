@@ -80,7 +80,7 @@ function ViewGroup(props) {
         <h2>Actions</h2>
         <JoinGroupButton groupID={groupID} callback={fetchInfo} />
         {members.map((user) => (
-        <ul>
+        <ul className = "leave-list">
           <li key={user.user_id}>
             {user.user_id == ReactSession.get("user_id") ? <button className = "leave-bttn" onClick={(e)=> leaveGroup(e, groupID)}>Leave Group</button> : null}
           </li>
