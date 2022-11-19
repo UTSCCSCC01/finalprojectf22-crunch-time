@@ -19,6 +19,7 @@ class JoinGroup extends Component {
 
   componentDidMount() {
     this.fetchInfo();
+
   }
 
   handleUserChange = (event) => {
@@ -26,6 +27,7 @@ class JoinGroup extends Component {
   };
 
   render() {
+
     return (
       <div className="container mt-3 mb-3">
         <h1>Join Group</h1>
