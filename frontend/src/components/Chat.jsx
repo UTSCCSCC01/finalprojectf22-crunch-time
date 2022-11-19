@@ -158,7 +158,19 @@ const Chat = () => {
       }
   };
   
-  
+  function leaveGroup(e, group_id) {
+    e.preventDefault();
+    fetch("/leave_group/" + group_id, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    if(window.confirm('Are you sure you want to leave this group?')) {
+      window.location.replace("/home")
+    }
+      
+  }
 
   return (
     
@@ -232,39 +244,6 @@ const Chat = () => {
             <MDBCol md="2" lg="2" xl="2">
             <div className=" sticky" style={{transform: "translateZ(0px)",  top:"0", position: "sticky"}}>
 
-        <MDBCol md="6" lg="7" xl="8">
-          <MDBTypography listUnStyled>
-          {messages.length > 0 &&
-              messages.map(msg => (
-           <li className="d-flex justify-content-between mb-4">
-              
-              <MDBCard  >
-                <MDBCardHeader className="d-flex justify-content-between p-3">
-                {/* <img
-                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                alt="avatar"
-                className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-                width="40"
-              /> */}
-                  <h6 className="fw-bold mb-0">{msg[0]}       </h6> <h6 className="text-secondary"> &nbsp;{msg[2]}</h6>
-                  <h6 className="text-muted small mb-0">
-                  </h6>
-                </MDBCardHeader>
-                <MDBCardBody>
-                  <p className="mb-0">
-                   {msg[1]}
-                  </p>
-                </MDBCardBody>
-              </MDBCard>
-            </li>
-        ))}
-            
-        
-            
-            <li className="bg-white mb-3">
-              <MDBTextArea  value={message} name="message" onKeyDown={handleKeyDown} onChange={e => onChange(e)}   id="textAreaExample" rows={4} />
-            </li>
-            <button type="button" class="btn btn-primary" onClick={() => onClick()} >Send</button>
               <button className="btn btn-secondary" onClick={handleClick}>Member List</button>
 
               {/* 👇️ show elements on click */}
@@ -276,6 +255,8 @@ const Chat = () => {
               {/* 👇️ show component on click */}
               {isShown && <Sidebar />}
               </div>
+              <br/>
+              <button className="leave-bttn" onClick={(e)=> leaveGroup(e, groupID)}>Leave group</button>
             </MDBCol>
         </MDBRow>
       </MDBContainer>
@@ -283,5 +264,3 @@ const Chat = () => {
   );
 };
 export default Chat;
-
-

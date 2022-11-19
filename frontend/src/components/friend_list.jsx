@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from './navbar/navbar-logged-in.jsx';
 import './friend_list.css';
-import { Link } from "react-router-dom";
 import { ReactSession } from 'react-client-session';
 
 function friend_list(props) {
@@ -56,6 +55,7 @@ function friend_list(props) {
                 {friend.firstName + ' ' + friend.lastName}
               </Link>
               <button onClick={(e)=> unfriend(e, friend.user_id)} class ="unfriend-bttn">Unfriend</button>
+              <button onClick={(e)=> chatFriend(friend.user_id)} class ="chat-bttn">Chat</button>
             </li>
           ))}
         </div>
