@@ -22,6 +22,7 @@ import Account_info_authentification from './components/account_info_authentific
 import Contact_us from './components/contact_us';
 import About_Us from './components/about_us/about_us';
 import Friend_list from './components/friend_list';
+import Chat_friend from './components/Chat_friend';
 import Profile from './components/profile';
 import User_search from './components/user_search';
 import { ReactSession } from 'react-client-session';
@@ -53,6 +54,7 @@ function App() {
         <Route path='/contact_us' element={<Contact_us />} />
         <Route path='/about' element={<About_Us />} />
         <Route path='/friend_list/:user_id' element={<Friend_list />} />
+        <Route path='/Chat_friend/:groupID' element={<Chat_friend />} />
         <Route path='/profile/:userID' element={<Profile />} />
       </Routes>
     </BrowserRouter>
