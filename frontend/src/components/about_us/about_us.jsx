@@ -43,7 +43,7 @@ export default function About_Us() {
             <div class="container">
                 <h2>Denis D.</h2>
                 <p class="title">Developer</p>
-                <p>4th Year Computer Science Major</p>
+                <p>4th Year Computer Science Specialist</p>
                 <p><a href="https://www.linkedin.com/in/denis-dekhtyarenko-522a90210/?originalSubdomain=ca"><button class = "button">Contact</button></a></p>
             </div>
             </div>
