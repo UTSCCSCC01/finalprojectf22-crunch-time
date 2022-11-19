@@ -117,7 +117,7 @@ class Create_Group extends Component {
   render() {
   
    
-      <Navbar_Logout/>
+      //<Navbar_Logout/>
    
     return (
         // <div> {this.fetchMsgs()}
