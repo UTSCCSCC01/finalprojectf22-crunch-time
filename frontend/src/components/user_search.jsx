@@ -46,7 +46,7 @@ class User_search extends Component {
         event.preventDefault();
         var list = [];
         this.state.tracked_activities.forEach(element => {
-            list.push(element.activity_id);
+            list.push(element.id);
         });
         const data = {
             tracked_activities: list
@@ -92,7 +92,7 @@ class User_search extends Component {
     handleTrackingChange(event) {
         const target = event.target;
         const value = parseInt(target.value);
-        const has = this.state.tracked_activities.some(v => v.activity_id == value)
+        const has = this.state.tracked_activities.some(v => v.id == value)
         if(has) {
             this.removeTracked(value);
         } else {
@@ -102,13 +102,13 @@ class User_search extends Component {
 
     addTracked(value) {
         this.setState(previousState => ({
-            tracked_activities: [...previousState.tracked_activities, {activity_id: value}]
+            tracked_activities: [...previousState.tracked_activities, {id: value}]
         }));
       }
     
     removeTracked(value) {
         this.setState({tracked_activities: this.state.tracked_activities.filter(function(act) { 
-            return act.activity_id !== value
+            return act.id !== value
         })});
     }
 
@@ -125,8 +125,8 @@ class User_search extends Component {
                             <ul class="checkbox" id="tracked_activities">
                             {this.state.activities.map((item) => {
                                 return (
-                                <li key={item.activity_id}><input type="checkbox" onChange={this.handleTrackingChange} id={item.activity_id}
-                                    value={item.activity_id} checked={this.state.tracked_activities.some(v => v.activity_id == item.activity_id)}/><label for={item.activity_id}>{item.name}</label></li>
+                                <li key={item.id}><input type="checkbox" onChange={this.handleTrackingChange} id={item.id}
+                                    value={item.id} checked={this.state.tracked_activities.some(v => v.id == item.id)}/><label for={item.id}>{item.name}</label></li>
                                 );
                             })}
                             </ul>
@@ -139,7 +139,7 @@ class User_search extends Component {
                         <option key={0} value={"0,NULL"}> All activities </option>
                         {this.state.activities.map((option) => {
                             return (
-                                <option key={option.activity_id} value={[option.activity_id, option.name]}>
+                                <option key={option.id} value={[option.id, option.name]}>
                                     {option.name}
                                 </option>
                             );

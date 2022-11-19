@@ -262,7 +262,7 @@ def get_acts():
     db = get_db()
     #user_id = request.json['user_id']
     if request.method == 'GET':
-        activities = db.execute("SELECT activity_id, name FROM Activities").fetchall()
+        activities = db.execute("SELECT id, name FROM Activities").fetchall()
         return {'activities': list(map(dict, activities))} 
 
 @app.route('/tracking/<user_id>', methods=['GET', 'POST'])
@@ -293,7 +293,7 @@ def get_matching_users(activity_id, user_id):
         user_id = int(user_id)
         activity_id = int(activity_id)
         users = db.execute("""SELECT distinct user_id, firstName, lastName, Activities.name as activity_name
-            FROM (Users NATURAL JOIN User_follows_activity) JOIN Activities ON Activities.activity_id = User_follows_activity.activity_id 
+            FROM (Users NATURAL JOIN User_follows_activity) JOIN Activities ON Activities.id = User_follows_activity.activity_id 
             WHERE (0 = ? or User_follows_activity.activity_id = ?)  and User_follows_activity.user_id != ?""", [activity_id, activity_id, user_id,]).fetchall()
             
         return {'users': list(map(dict, users))} 
