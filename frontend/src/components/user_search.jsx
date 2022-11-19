@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 import JoinGroupButton from "./joinGroupButton.jsx";
 import Navbar from './navbar/navbar-logged-in.jsx';
@@ -8,25 +8,15 @@ class User_search extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user_id: 0, users: [], tracked_activities: [], activities: [], activity_id: 0, activity_name: "NULL"
+            users: [],  activities: [], activity_id: 0, activity_name: "NULL", tracked_activities: []
         };
-        
         this.handleTrackingChange = this.handleTrackingChange.bind(this);
         this.handleActivityChange = this.handleActivityChange.bind(this);
         this.fetchUsers = this.fetchUsers.bind(this);
+        this.addTracked = this.addTracked.bind(this);
+        this.removeTracked = this.removeTracked.bind(this);
+        this.sendTracking = this.sendTracking.bind(this);
     }
-
-    sendTracking = (event) => {
-        const formData = new FormData();
-        fetch("/search", {
-            method: "POST",
-            body: formData,
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                this.setState({ ...data });
-            });
-    };
 
     componentDidMount() {
         try {
@@ -37,8 +27,10 @@ class User_search extends Component {
         catch (e) {
             window.location.replace("/")
         }
-        this.fetchActs();
         this.fetchTracked();
+        this.fetchActs();
+        this.fetchUsers(0);
+        console.log(this.state.tracked_activities)
     }
 
     fetchActs() {
@@ -50,8 +42,26 @@ class User_search extends Component {
             });
     }
 
+    sendTracking = (event) => {
+        event.preventDefault();
+        var list = [];
+        this.state.tracked_activities.forEach(element => {
+            list.push(element.activity_id);
+        });
+        const data = {
+            tracked_activities: list
+        };
+        console.log(JSON.stringify(data));
+        fetch("/tracking/" + ReactSession.get("user_id"), {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            }, 
+            body: JSON.stringify(data)
+        }).then((res) => res.json())
+    };
+
     fetchTracked() {
-        console.log('fetch tracking/' + ReactSession.get("user_id"));
         fetch("/tracking/" + ReactSession.get("user_id"))
             .then((res) => res.json())
             .then((data) => {
@@ -60,7 +70,6 @@ class User_search extends Component {
     }
 
     fetchUsers(act_id) {
-        console.log('fetch users');
         fetch("/get_matching_users/" + act_id + "/" + ReactSession.get("user_id"))
             .then((res) => res.json())
             .then((data) => {
@@ -73,7 +82,6 @@ class User_search extends Component {
         const value = target.value.split(",");
         const id = parseInt(value[0])
         const name = value[1]
-        console.log("setting act ", id)
         this.setState({
             activity_id: id,
             activity_name: name
@@ -83,12 +91,25 @@ class User_search extends Component {
 
     handleTrackingChange(event) {
         const target = event.target;
-        const value = target.value;
-        const name = target.name;
+        const value = parseInt(target.value);
+        const has = this.state.tracked_activities.some(v => v.activity_id == value)
+        if(has) {
+            this.removeTracked(value);
+        } else {
+            this.addTracked(value);
+        }
+    }
 
-        this.setState({
-            [name]: value
-        });
+    addTracked(value) {
+        this.setState(previousState => ({
+            tracked_activities: [...previousState.tracked_activities, {activity_id: value}]
+        }));
+      }
+    
+    removeTracked(value) {
+        this.setState({tracked_activities: this.state.tracked_activities.filter(function(act) { 
+            return act.activity_id !== value
+        })});
     }
 
     render() {
@@ -101,10 +122,11 @@ class User_search extends Component {
                     <form onSubmit={this.sendTracking} className="mb-3">
                         <div className="form-group mb-3">
                             <label htmlFor="tracked_activities">Activity</label>
-                            <ul class="checkbox" id="tracked_activities" name="tracked_activities" onChange={this.handleTrackingChange}>
+                            <ul class="checkbox" id="tracked_activities">
                             {this.state.activities.map((item) => {
                                 return (
-                                <li key={item.id}><input type="checkbox" id={item.id} value={item.activity_id} /><label for={item.id}>{item.name}</label></li>
+                                <li key={item.activity_id}><input type="checkbox" onChange={this.handleTrackingChange} id={item.activity_id}
+                                    value={item.activity_id} checked={this.state.tracked_activities.some(v => v.activity_id == item.activity_id)}/><label for={item.activity_id}>{item.name}</label></li>
                                 );
                             })}
                             </ul>
@@ -114,10 +136,10 @@ class User_search extends Component {
                         </div>
                     </form>
                     <select id="activities" name="activities" onChange={this.handleActivityChange}>
-                        <option key={0} value={"0,NULL"}> Select an Activity </option>
+                        <option key={0} value={"0,NULL"}> All activities </option>
                         {this.state.activities.map((option) => {
                             return (
-                                <option key={option.id} value={[option.id, option.name]}>
+                                <option key={option.activity_id} value={[option.activity_id, option.name]}>
                                     {option.name}
                                 </option>
                             );
@@ -126,8 +148,9 @@ class User_search extends Component {
                     <h2>List of found users:</h2>
                     <ul className="list-group">
                         {this.state.users.map((user) => (
-                            <li className="list-group-item" key={user.user_id}>
-                                User: {user.firstName} {user.lastName}
+                            <li className="list-group-item" key={[user.user_id, user.activity_name]}>
+                                User: {user.firstName} {user.lastName}<br/>
+                                Activity: {user.activity_name}
                             </li>
                         ))}
                     </ul>
@@ -135,16 +158,6 @@ class User_search extends Component {
             </div>
         );
     }
-    /*<ul className="list-group">
-                        {this.state.users.map((user) => (
-                            <li className="list-group-item" key={msg.group_id}>
-                                <Link to={"/view_group/" + msg.group_id}>{msg.group_name}</Link>
-                                <span style={{ float: 'right' }}><JoinGroupButton groupID={msg.group_id} /></span> <br />
-                                Activity: {msg.activity_name}
-                            </li>
-                        ))}
-                    </ul>
-                    */
 }
 
 export default User_search;

@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, g, send_from_directory
 from . import app
 from app.db import get_db
 import sqlite3 as sql
-from flask import g
 from app.user import User
 from flask_socketio import SocketIO, join_room, leave_room, send
 from flask_sqlalchemy import SQLAlchemy
@@ -263,19 +262,29 @@ def get_acts():
     db = get_db()
     #user_id = request.json['user_id']
     if request.method == 'GET':
-        activities = db.execute("SELECT id, name FROM Activities").fetchall()
+        activities = db.execute("SELECT activity_id, name FROM Activities").fetchall()
         return {'activities': list(map(dict, activities))} 
 
 @app.route('/tracking/<user_id>', methods=['GET', 'POST'])
 def tracking(user_id):
     db = get_db()
+    user_id = int(user_id)
     if request.method == 'GET':
-        user_id = int(user_id)
-        activities = db.execute("SELECT activity_id FROM User_follows_activity WHERE user_id = ?", [user_id]).fetchall()
-        return {'tracked_activities': list(map(dict, activities))} 
+        tracked_activities = db.execute("SELECT activity_id FROM User_follows_activity WHERE user_id = ?", [user_id]).fetchall()
+        return {'tracked_activities': list(map(dict, tracked_activities))} 
     elif request.method == 'POST':
-        user_id = int(user_id)
-        return
+        print(request.method)
+        try:
+            data = request.get_json()
+        except Exception as e: 
+            print(e)
+            return ("failed json", 500)
+        db.execute("DELETE FROM User_follows_activity WHERE user_id = ?", [user_id])
+        for act_id in data["tracked_activities"]:
+            db.execute("INSERT into User_follows_activity (user_id, activity_id) VALUES (?, ?)", [user_id, act_id])
+            print("added ", act_id)
+        db.commit()
+        return ("success", 200)
 
 @app.route('/get_matching_users/<activity_id>/<user_id>', methods=['GET'])
 def get_matching_users(activity_id, user_id):
@@ -283,8 +292,10 @@ def get_matching_users(activity_id, user_id):
     if request.method == 'GET':
         user_id = int(user_id)
         activity_id = int(activity_id)
-        users = db.execute("""SELECT user_id, firstName, lastName FROM Users NATURAL JOIN User_follows_activity
-            WHERE activity_id = ? and user_id != ?""", [activity_id, user_id,]).fetchall()
+        users = db.execute("""SELECT distinct user_id, firstName, lastName, Activities.name as activity_name
+            FROM (Users NATURAL JOIN User_follows_activity) JOIN Activities ON Activities.activity_id = User_follows_activity.activity_id 
+            WHERE (0 = ? or User_follows_activity.activity_id = ?)  and User_follows_activity.user_id != ?""", [activity_id, activity_id, user_id,]).fetchall()
+            
         return {'users': list(map(dict, users))} 
         
 app.config['SECRET_KEY'] = 'mysecret'
