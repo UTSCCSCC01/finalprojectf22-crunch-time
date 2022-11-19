@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { ReactSession } from 'react-client-session';
 import Navbar from './navbar/navbar-logged-in.jsx';
+import './account_info_authentification.css';
 
 class Account_info_authentification extends Component {
 
@@ -34,7 +35,7 @@ class Account_info_authentification extends Component {
                 window.location.replace("/account_information");
             }
             else {
-              window.location.replace("/home");
+              throw new Error()
             }
         })  
         .catch((error) => {
@@ -50,11 +51,12 @@ class Account_info_authentification extends Component {
       return (
         <div className = "root">
         <Navbar/>
-        <div class = "content">
+        <div class = "content"><center>
             <h5>Please enter your password</h5><br/>
             <form>
 
               <label for="password">Password</label>
+              <br/>
               <input type="text" id="password" name="password" class="loginLabel" onChange={evt => this.updatePassword(evt)}></input>
               <br/>
               <br/>
@@ -62,6 +64,7 @@ class Account_info_authentification extends Component {
               <button type="submit" class="login-bttn" onClick = {this.fetchMsgs}>submit</button>
 
             </form>
+            </center>
         </div>
         </div>
       );

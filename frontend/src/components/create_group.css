@@ -1,0 +1,15 @@
+.create-group-content {
+    margin: 2% 8% 8% 8%;
+}
+
+.create-group-intro {
+    margin: 4% 0% 2% 0%;
+}
+
+.btn-primary {
+    background-color: #0C3ADE;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 1% 2% 1% 2%;
+    border: none;
+}

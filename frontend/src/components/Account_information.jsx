@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { ReactSession } from 'react-client-session';
 import Navbar from './navbar/navbar-logged-in.jsx';
+import './account_info_authentification.css';
 
 class Account_information extends Component {
 
@@ -90,7 +91,7 @@ class Account_information extends Component {
         ReactSession.remove("password");
         ReactSession.remove("messages")
         ReactSession.remove("Group_Members")
-        ReactSession.remove("GroupName")
+        ReactSession.remove("groupInfo")
         ReactSession.remove("user_id");
 
         window.location.replace("/")
@@ -108,18 +109,20 @@ class Account_information extends Component {
     render() {
       return (
         <div className = "root">
-        <Navbar/>
+        <Navbar/><center>
         <div className="container mt-3 mb-3">
-          <h1>Account information</h1>
+        <h1>Account Information</h1>
           <p>
             <Link to="/home">Return to home</Link>
           </p>
+          
+          
           <form onSubmit={this.sendMsg} className="mb-3">
 
             
 
             <div className="form-group mb-3">
-                <h2>First Name</h2>
+                <h2>First Name</h2> 
                 <input
                   type="text"
                   className="form-control"
@@ -194,9 +197,10 @@ class Account_information extends Component {
             <button className="btn btn-danger" type="submit" onClick={this.deleteAccount}>
                 Delete Account
             </button>
-          </form>         
+          </form>     
+        </div> 
+        </center>
         </div>
-      </div>
       );
     }
   }

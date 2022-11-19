@@ -1,0 +1,16 @@
+.leave-bttn {
+    background-color: #A40000;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 0.75% 2% 0.75% 2%;
+    border: none;
+}
+
+.leave-bttn:hover {
+    background-color: #900202;
+}
+
+.leave-list {
+    list-style: none;
+    margin-left: -2em;
+}

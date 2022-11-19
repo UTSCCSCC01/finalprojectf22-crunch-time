@@ -44,18 +44,19 @@ def user_in_group(group_id):
     db = get_db()
     res = db.execute('SELECT * FROM User_in_group WHERE user_id = ? AND group_id = ?',
         (user_id, group_id))
-    return jsonify({'joined': not (res.fetchone() is None)})
+    res2 = db.execute('SELECT size FROM Groups WHERE group_id = ?',
+        (group_id,)).fetchone()
+    if res2 is None:
+        return 'unknown group ID', 404
+    else:
+        size = res2['size']
+    member_count = db.execute('SELECT COUNT(*) AS count FROM User_in_group WHERE group_id = ?',
+        (group_id,)).fetchone()['count']
     
-
-
-@app.route('/example', methods=['GET', 'POST'])
-def example():
-    db = get_db()
-    if request.method == 'POST':
-        db.execute('INSERT INTO Example (contents) VALUES (?)', (request.form['message'],))
-        db.commit()
-    messages = db.execute('SELECT * FROM Example').fetchall()
-    return {'messages': list(map(dict, messages))}
+    return jsonify({
+        'joined': not (res.fetchone() is None),
+        'full': member_count >= size
+    })
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -76,6 +77,23 @@ def login():
             session['address'] = temp['address']
             return temp
 
+@app.route("/getGroupInfo", methods=["GET",  'POST'])
+def getGroupInfo():
+    db = get_db()
+    group_info = db.execute('SELECT user_name, context, time_stamp FROM messages WHERE group_id = (?)', 
+    [request.json['groupID']]).fetchall()
+    db.commit()
+    return list(map(list, group_info))
+
+@app.route("/get_Friend_Message", methods=["GET",  'POST'])
+def get_Friend_Message():
+    db = get_db()
+    print(request.json)
+    group_info = db.execute('SELECT sender_user_name, context, time_stamp FROM friend_messages WHERE (sender_id = (?) and receiver_Id = (?)) OR (sender_id = (?) and receiver_Id = (?))',
+    [request.json['sender_Id'], request.json['receiver_Id'], request.json['receiver_Id'], request.json['sender_Id'] ]).fetchall()
+    db.commit()
+    print(list(map(list, group_info)))
+    return list(map(list, group_info))
 
 
 @app.route("/logout", methods=["POST"])
@@ -95,7 +113,7 @@ def updateAccount():
     FirstName = str(request.json['firstName'])
     LastName = str(request.json['lastName']) 
     Email = str(request.json['email'])
-    Password = str(request.json['password'])
+    #Password = str(request.json['password'])
     Address = str(request.json['address'])
     if request.method == 'POST':
         db.execute('UPDATE Users SET firstName = (?), lastName = (?), address = (?) WHERE email = (?)', [FirstName, LastName, Address, Email])
@@ -106,7 +124,6 @@ def updateAccount():
 @app.route("/deleteAccount", methods=["DELETE"])
 def deleteAccount():
     db = get_db()
-    print(request.json)
     Email = str(request.json['email'])
     user_id = request.json['user_id']
     print (request.method)
@@ -115,6 +132,8 @@ def deleteAccount():
         db.execute('DELETE FROM User_in_group where user_id = (?)', [user_id])
         db.commit()
     return "200"
+
+
 
 
 
@@ -136,10 +155,13 @@ def register():
 def search():
     db = get_db()
     if request.method == 'POST':
+        activity_id = int(request.form['activity_id'])
         if (request.form['loc'] == "true"):
-            messages = gsearch(db, request.form['groupName'], float(request.form['lat']), float(request.form['long']), float(request.form['dist']))
+            messages = gsearch(db, request.form['groupName'], float(request.form['lat']), float(request.form['long']), 
+            float(request.form['dist']), activity_id)
         else:
-            messages = db.execute("SELECT * FROM Groups WHERE group_name like ?", ["%" + request.form['groupName'] + "%"] ).fetchall()
+            messages = db.execute("SELECT * FROM Groups WHERE group_name like ? AND (? = 0 OR activity_id = ?)", 
+            ["%" + request.form['groupName'] + "%", activity_id, activity_id] ).fetchall()
         
     else:
         messages = db.execute('SELECT * FROM Groups').fetchall()
@@ -149,23 +171,56 @@ def search():
 @app.route('/Create_Group', methods=['POST', 'GET'])
 def Create_Group():
     db = get_db()
-    user_id = request.json['user_id']
     if request.method == 'POST':
         data = request.get_json()
         for elem in data:
             print(elem, type(data[elem]), data[elem])
         
         if (data["loc"]):
-            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude) VALUES (?, ?, ?, ?)', 
-            (data["group_name"], data['skillLevel'], data['lat'], data['long'],))
+            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude, activity_id, activity_name, size) VALUES (?, ?, ?, ?, ?, ?, ?)', 
+            (data["group_name"], data['skillLevel'], data['lat'], data['long'], data['activity_id'], data['activity_name'], data['sizeLimit']))
         else:
-            db.execute('INSERT INTO Groups (group_name, skill_level) VALUES (?, ?)', (data["group_name"], data['skillLevel'],))
-        db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (?, LAST_INSERT_ROWID())',[user_id])
-        messages = db.execute('SELECT * From Groups WHERE group_id = (LAST_INSERT_ROWID()) ').fetchall()
-        db.commit()
-        
 
-    return {'messages': list(map(dict, messages))}
+            db.execute('INSERT INTO Groups (group_name, skill_level, activity_id, activity_name, size, group_creator) VALUES (?, ?, ?, ?, ?, ?)', 
+            (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'], data['sizeLimit'], data['user_id']))
+        messages = db.execute("SELECT * FROM Groups WHERE group_id =  LAST_INSERT_ROWID()").fetchall()
+        db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (?, LAST_INSERT_ROWID())', [data['user_id']])  
+        db.commit()
+        resp = {'messages': list(map(dict, messages))}
+        return jsonify(resp)
+    else:
+        activities = db.execute("SELECT id, name FROM Activities").fetchall()
+        return {'activities': list(map(dict, activities))}  
+        
+@app.route('/get_acts', methods=['GET'])
+def get_acts():
+    db = get_db()
+    #user_id = request.json['user_id']
+    if request.method == 'GET':
+        activities = db.execute("SELECT id, name FROM Activities").fetchall()
+        return {'activities': list(map(dict, activities))} 
+
+@app.route('/tracking/<user_id>', methods=['GET', 'POST'])
+def tracking(user_id):
+    db = get_db()
+    if request.method == 'GET':
+        user_id = int(user_id)
+        activities = db.execute("SELECT activity_id FROM User_follows_activity WHERE user_id = ?", [user_id]).fetchall()
+        return {'tracked_activities': list(map(dict, activities))} 
+    elif request.method == 'POST':
+        user_id = int(user_id)
+        return
+
+@app.route('/get_matching_users/<activity_id>/<user_id>', methods=['GET'])
+def get_matching_users(activity_id, user_id):
+    db = get_db()
+    if request.method == 'GET':
+        user_id = int(user_id)
+        activity_id = int(activity_id)
+        users = db.execute("""SELECT user_id, firstName, lastName FROM Users NATURAL JOIN User_follows_activity
+            WHERE activity_id = ? and user_id != ?""", [activity_id, user_id,]).fetchall()
+        return {'users': list(map(dict, users))} 
+        
 app.config['SECRET_KEY'] = 'mysecret'
 
 socketIo = SocketIO(app, cors_allowed_origins="*")
@@ -174,7 +229,20 @@ app.debug = True
 app.host = 'localhost'
 @socketIo.on("message")
 def handleMessage(msg):
-    send(msg, broadcast=True)
+    db = get_db()
+    # between group messages
+    if(len(msg['user']) == 4):
+        
+        db.execute('INSERT INTO messages (user_id, group_id, user_name, time_stamp, context) VALUES (?, ?, ?, ?, ?)', 
+                (msg["user"][3], msg['groupID'], msg['user'][0], msg['user'][2], msg['user'][1]))
+        db.commit()     
+    # messages between friends
+    else:
+        print(msg)
+        db.execute('INSERT INTO friend_messages (sender_id, receiver_id, sender_user_name, time_stamp, context) VALUES (?, ?, ?, ?, ?)', 
+                (msg["user"][3], msg["user"][4], msg['user'][0], msg['user'][2], msg['user'][1]))
+        db.commit()   
+    send(msg, broadcast=True, room=msg["groupID"])
     return None
 @socketIo.on('join')
 def on_join(data):
@@ -182,17 +250,15 @@ def on_join(data):
 
     if data['userName'] not in users['username']:
         users['username'].append(data['userName'])
-    print(users)
-    send(users, broadcast=True)
-    # join_room(room)
-    #send(username + ' has entered the room.', to=room)
+    join_room(data['groupID'])
+    send(users, broadcast=True, room=data['groupID'])
     return None
 @socketIo.on('leave')
 def on_leave(data):
     username = data['username']
     room = data['room']
     leave_room(room)
-    send(username + ' has left the room.', to=room)
+    send(username + ' has left the room.', room=room)
 
 @app.route('/account_information', methods=['GET', 'POST'])
 def account_information():
@@ -264,6 +330,18 @@ def join_group():
         if user_id is None:
             return 'invalid user ID', 400
         group_id = data['group_id']
+        # check if group is full
+        res = db.execute('SELECT size FROM Groups WHERE group_id = ?',
+            (group_id,)).fetchone()
+        if res is None:
+            return 'unknown group ID', 404
+        else:
+            size = res['size']
+        member_count = db.execute('SELECT COUNT(*) AS count FROM User_in_group WHERE group_id = ?',
+            (group_id,)).fetchone()['count']
+        if member_count >= size:
+            return 'group is full', 400
+        # add to group
         db.execute('INSERT OR IGNORE INTO User_in_group (user_id, group_id) VALUES (?, ?)',
             (user_id, group_id))
         db.commit()
@@ -308,6 +386,108 @@ def contact_us():
             (firstName, lastName, email, message))
         db.commit()
     return {'messages':1}
+
+@app.route('/add_friend/<friend_id>', methods=['POST'])
+def add_friend(friend_id):
+    db = get_db()
+    user_id = session.get('user_id')
+    db.execute('INSERT INTO friendLists (user_id, friend_id) VALUES (?, ?)', (user_id, friend_id,))
+    db.commit()
+    return {'messages': 1} 
+
+@app.route('/remove_friend/<friend_id>', methods=['DELETE'])
+def remove_friend(friend_id):
+    db = get_db()
+    user_id = session.get('user_id')
+    db.execute('DELETE FROM friendLists WHERE user_id = ? AND friend_id = ?', (user_id, friend_id,))
+    db.commit()
+    return {'messages': 1}
+
+@app.route('/friend_list/<user_id>', methods=['GET'])
+def friend_list(user_id):
+    db = get_db()
+    friend_list = []
+    friends = db.execute('SELECT friend_id FROM friendLists WHERE user_id = ?',
+        (user_id,)).fetchall()
+    for i in range(len(friends)):
+        friend_info = db.execute('SELECT user_id, firstName, lastName FROM Users WHERE user_id = ?',
+        (friends[i][0],)).fetchall()
+        friend_info = dict(friend_info[0])
+        friend_list.append(friend_info)
+    return {'friends': friend_list}
+
+@app.route('/kick_user/<user_id>/<group_id>', methods=['DELETE'])
+def kick_user(user_id, group_id):
+    db = get_db()
+    current_user = session.get('user_id')
+    group_owner = db.execute('SELECT group_creator FROM Groups WHERE group_id = ?', (group_id,)).fetchone()
+    creator = group_owner['group_creator']
+    
+    if(creator == current_user):
+        db.execute('DELETE FROM User_in_group WHERE user_id = ? AND group_id = ?', (user_id, group_id,))
+        db.commit()
+    else:
+        return {'messages': 1}
+    return {'messages': 1}
+    
+@app.route('/is_friend/<user_id>', methods=['GET'])
+def is_friend(user_id):
+    cur_user_id = session.get('user_id')
+    if cur_user_id is None:
+        return 'need to be logged in', 401
+    # can't friend yourself
+    if int(cur_user_id) == int(user_id):
+        return jsonify({'isFriend': None})
+    db = get_db()
+    res = db.execute(
+        'SELECT EXISTS(SELECT * FROM friendLists '
+        'WHERE user_id = ? AND friend_id = ?) as isFriend',
+        (cur_user_id, user_id)
+    ).fetchone()
+    return jsonify({'isFriend': res['isFriend']})
+
+@app.route('/profile_info/<user_id>', methods=['GET'])
+def profile_info(user_id):
+    cur_user_id = session.get('user_id')
+    if cur_user_id is None:
+        return 'need to be logged in', 401
+    db = get_db()
+    u = db.execute('SELECT * FROM Users WHERE user_id = ?', (user_id,)).fetchone()
+    if u is None:
+        return 'user not found', 404
+    friend_count = db.execute(
+        'SELECT COUNT(*) AS count FROM friendLists WHERE user_id = ?', (user_id,)
+    ).fetchone()['count']
+    interests = db.execute(
+        'SELECT a.name AS name FROM User_follows_activity u '
+        'JOIN Activities a ON u.activity_id = a.id '
+        'WHERE u.user_id = ?',
+        (user_id,)
+    ).fetchall()
+    mutual_friends = db.execute(
+        'SELECT u.user_id AS userID, u.firstName AS firstName, u.lastName AS lastName '
+        'FROM friendLists theirs '
+        'JOIN friendLists mine ON theirs.friend_id = mine.friend_id '
+        'JOIN Users u ON mine.friend_id = u.user_id '
+        'WHERE theirs.user_id = ? AND mine.user_id = ?',
+        (user_id, cur_user_id)
+    ).fetchall()
+    return jsonify({
+        'firstName': u['firstName'],
+        'lastName': u['lastName'],
+        'friendCount': friend_count,
+        'interests': list(map(lambda r: r['name'], interests)),
+        'mutualFriends': rows_to_dicts(mutual_friends)
+    })
+
+@app.route('/leave_group/<group_id>', methods=['DELETE'])
+def leave_group(group_id):
+    db = get_db()
+    current_user = session.get('user_id')
+
+    db.execute('DELETE FROM User_in_group WHERE user_id = ? AND group_id = ?', (current_user, group_id,))
+    db.commit()
+    return {'messages': 1}
 
 if __name__ == '__main__':
     
