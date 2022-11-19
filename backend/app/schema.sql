@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS User_follows_activity;
 DROP TABLE IF EXISTS Questions;
 
 CREATE TABLE Activities(
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  activity_id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL UNIQUE,
   type TEXT NOT NULL
 );
@@ -78,6 +78,7 @@ INSERT into Activities (name, type) VALUES ("Swimming", "Sport");
 INSERT into Activities (name, type) VALUES ("Cycling", "Sport");
 
 INSERT into User_follows_activity (user_id, activity_id) VALUES (1, 1);
+INSERT into User_follows_activity (user_id, activity_id) VALUES (1, 2);
 INSERT into User_follows_activity (user_id, activity_id) VALUES (2, 3);
 INSERT into User_follows_activity (user_id, activity_id) VALUES (2, 2);
 INSERT into User_follows_activity (user_id, activity_id) VALUES (3, 5);
