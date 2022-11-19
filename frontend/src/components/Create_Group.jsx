@@ -30,7 +30,8 @@ class Create_Group extends Component {
     activities: [], activity_id: 0, activity_name: "NULL",
     sizeLimit: 1000,
     value: 1, submitted: false, 
-    groupID: -1
+    groupID: -1,
+    groupPic: null
   };
   //Will use client session instead of server session
 
@@ -54,15 +55,10 @@ class Create_Group extends Component {
 //       })       
 //     .then((response) => response.json())
 //     .then(() => {
-  
-        
 //     })  
 //     .catch((error) => {
 //       window.location.replace("/home")
-
-
 //     },[]);
-
 //  }
 
   sendReq = (event) => {
@@ -85,15 +81,16 @@ class Create_Group extends Component {
       long: this.state.long,
       activity_id: this.state.activity_id,
       activity_name: this.state.activity_name,
-      sizeLimit: sizeLimit
+      sizeLimit: sizeLimit,
+      groupPic: this.state.groupPic
     };
-    //console.log(this.state.activity_id, this.state.activity_name)
+    let formData = new FormData();
+    for (let key in data) {
+      formData.append(key, data[key]);
+    }
     fetch("/Create_Group",{
         method: 'POST', // or 'PUT'
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        body: formData,
     })       
     .then((response) => response.json())
     .then((data) => {
@@ -127,6 +124,12 @@ class Create_Group extends Component {
       activity_id: parseInt(value[0]),
       activity_name: value[1]
     }); 
+  }
+
+  handleGroupPicChange = (event) => {
+    this.setState({
+      groupPic: event.target.files[0]
+    });
   }
 
   handleChange = (event) => { // handles changes for multiple text input fields
@@ -243,6 +246,15 @@ class Create_Group extends Component {
             name="size-limit"
             value={this.state.sizeLimit}
             onChange={this.handleSizeLimitChange}
+          />
+          <br/>
+          <label htmlFor="group-pic">Upload group picture (JPG, PNG, or GIF only): &ensp;</label>
+          <input
+            className="form-control"
+            type="file"
+            id="group-pic"
+            name="group-pic"
+            onChange={this.handleGroupPicChange}
           />
           <br/><br/><br/>
           {/* <Link to="/chat" state={{props: this.state.value}} > */}
