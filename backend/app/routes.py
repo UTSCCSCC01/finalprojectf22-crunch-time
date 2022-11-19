@@ -270,7 +270,7 @@ def tracking(user_id):
     db = get_db()
     user_id = int(user_id)
     if request.method == 'GET':
-        tracked_activities = db.execute("SELECT activity_id FROM User_follows_activity WHERE user_id = ?", [user_id]).fetchall()
+        tracked_activities = db.execute("SELECT activity_id as id FROM User_follows_activity WHERE user_id = ?", [user_id]).fetchall()
         return {'tracked_activities': list(map(dict, tracked_activities))} 
     elif request.method == 'POST':
         print(request.method)

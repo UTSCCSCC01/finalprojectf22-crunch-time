@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
-import JoinGroupButton from "./joinGroupButton.jsx";
+import FriendButton from "./friendButton.jsx";
 import Navbar from './navbar/navbar-logged-in.jsx';
 import { ReactSession } from 'react-client-session';
 
@@ -58,7 +58,7 @@ class User_search extends Component {
                 'Content-Type': 'application/json',
             }, 
             body: JSON.stringify(data)
-        }).then((res) => res.json())
+        });
     };
 
     fetchTracked() {
@@ -121,7 +121,7 @@ class User_search extends Component {
                     <p><Link to="/home">Return to home</Link></p>
                     <form onSubmit={this.sendTracking} className="mb-3">
                         <div className="form-group mb-3">
-                            <label htmlFor="tracked_activities">Activity</label>
+                            <label htmlFor="tracked_activities">Track activities:</label>
                             <ul class="checkbox" id="tracked_activities">
                             {this.state.activities.map((item) => {
                                 return (
@@ -150,7 +150,8 @@ class User_search extends Component {
                         {this.state.users.map((user) => (
                             <li className="list-group-item" key={[user.user_id, user.activity_name]}>
                                 User: {user.firstName} {user.lastName}<br/>
-                                Activity: {user.activity_name}
+                                Activity: {user.activity_name} 
+                                <span style={{float:'right'}}><FriendButton friendID={user.user_id}/></span> <br/>
                             </li>
                         ))}
                     </ul>
