@@ -31,8 +31,9 @@ CREATE TABLE Groups (
   latitude FLOAT DEFAULT NULL,
   longitude FLOAT DEFAULT NULL,
   skill_level INTEGER NOT NULL CHECK (skill_level IN (0, 1, 2)),
-  group_creator INTEGER NOT NULL, 
-  FOREIGN KEY(activity_id) REFERENCES Activities(id)
+  group_creator INTEGER NOT NULL,
+  group_pic_filename TEXT,
+  FOREIGN KEY(activity_id) REFERENCES Activities(id),
   FOREIGN KEY(group_creator) REFERENCES Users(user_id)
 );
 
@@ -130,6 +131,3 @@ INSERT into friendLists (user_id, friend_id) VALUES (2, 5);
 INSERT into friendLists (user_id, friend_id) VALUES (3, 1);
 INSERT into friendLists (user_id, friend_id) VALUES (4, 3);
 INSERT into friendLists (user_id, friend_id) VALUES (5, 2);
-
-INSERT into User_follows_activity (user_id, activity_id) VALUES (1, 1);
-INSERT into User_follows_activity (user_id, activity_id) VALUES (1, 2);

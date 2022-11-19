@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, send_from_directory
 from . import app
 from app.db import get_db
 import sqlite3 as sql
@@ -10,6 +10,7 @@ from flask_bcrypt import Bcrypt
 from flask_cors import CORS, cross_origin
 from flask_session import Session
 import json
+import os
 from app.utils import rows_to_dicts
 from app.groups import search as gsearch
 
@@ -24,6 +25,8 @@ CORS(app, supports_credentials=True)
 server_session = Session(app)
 #Stores all the usernames. Eventually each index will represent users in a group. Will make it a dictionary eventually
 users = {'username': []}
+
+ALLOWED_IMG_EXTS = ['png', 'gif', 'jpg', 'jpeg', 'jpe']
 
 #db.init_app(app)
 
@@ -44,18 +47,20 @@ def user_in_group(group_id):
     db = get_db()
     res = db.execute('SELECT * FROM User_in_group WHERE user_id = ? AND group_id = ?',
         (user_id, group_id))
-    res2 = db.execute('SELECT size FROM Groups WHERE group_id = ?',
+    res2 = db.execute('SELECT size, group_creator FROM Groups WHERE group_id = ?',
         (group_id,)).fetchone()
     if res2 is None:
         return 'unknown group ID', 404
     else:
         size = res2['size']
+        creator = res2['group_creator']
     member_count = db.execute('SELECT COUNT(*) AS count FROM User_in_group WHERE group_id = ?',
         (group_id,)).fetchone()['count']
     
     return jsonify({
         'joined': not (res.fetchone() is None),
-        'full': member_count >= size
+        'full': member_count >= size,
+        'isCreator': user_id == creator
     })
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -157,32 +162,93 @@ def search():
     else:
         messages = db.execute('SELECT * FROM Groups').fetchall()
     return {'messages': list(map(dict, messages))}
-    
+
+def save_group_pic(db, file, group_id):
+    filename = file.filename
+    extension = filename.rsplit('.', 1)[1].lower()
+    filename_to_save = "%d.%s" % (group_id, extension)
+    file.save(os.path.join(app.config['GROUP_PICS_DIR'], filename_to_save))
+    db.execute(
+        'UPDATE Groups SET group_pic_filename = ? WHERE group_id = ?',
+        (filename_to_save, group_id)
+    )
     
 @app.route('/Create_Group', methods=['POST', 'GET'])
 def Create_Group():
     db = get_db()
     if request.method == 'POST':
-        data = request.get_json()
+        data = request.form
         for elem in data:
             print(elem, type(data[elem]), data[elem])
+        group_pic_set = 'groupPic' in request.files
+        if group_pic_set:
+            file = request.files['groupPic']
+            filename = file.filename
+            if '.' not in filename or \
+                filename.rsplit('.', 1)[1].lower() not in ALLOWED_IMG_EXTS:
+                return 'Invalid file for group picture', 400
         
         if (data["loc"]):
-            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude, activity_id, activity_name, size) VALUES (?, ?, ?, ?, ?, ?, ?)', 
-            (data["group_name"], data['skillLevel'], data['lat'], data['long'], data['activity_id'], data['activity_name'], data['sizeLimit']))
+            db.execute('INSERT INTO Groups (group_name, skill_level, latitude, longitude, activity_id, activity_name, size, group_creator) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 
+            (data["group_name"], data['skillLevel'], data['lat'], data['long'], data['activity_id'], data['activity_name'], data['sizeLimit'], data['user_id']))
         else:
-
             db.execute('INSERT INTO Groups (group_name, skill_level, activity_id, activity_name, size, group_creator) VALUES (?, ?, ?, ?, ?, ?)', 
             (data["group_name"], data['skillLevel'], data['activity_id'], data['activity_name'], data['sizeLimit'], data['user_id']))
         messages = db.execute("SELECT * FROM Groups WHERE group_id =  LAST_INSERT_ROWID()").fetchall()
         db.execute('INSERT INTO User_in_group (user_id, group_id) VALUES (?, LAST_INSERT_ROWID())', [data['user_id']])  
+        
+        if group_pic_set:
+            save_group_pic(db, file, messages[0]['group_id'])
+
         db.commit()
         resp = {'messages': list(map(dict, messages))}
         return jsonify(resp)
     else:
         activities = db.execute("SELECT id, name FROM Activities").fetchall()
-        return {'activities': list(map(dict, activities))}  
-        
+        return {'activities': list(map(dict, activities))}
+
+@app.route('/group_pic/<group_id>', methods=['GET'])
+def group_pic(group_id):
+    db = get_db()
+    res = db.execute(
+        'SELECT group_pic_filename FROM Groups WHERE group_id = ?',
+        (group_id,)
+    ).fetchone()
+    if res is None:
+        return 'Group not found', 404
+    filename = res['group_pic_filename']
+    if not filename:
+        return 'No group picture set', 404
+    return send_from_directory(app.config['GROUP_PICS_DIR'], filename)
+
+@app.route('/set_group_pic', methods=['POST'])
+def set_group_pic():
+    group_id = request.form['groupID']
+    if not group_id:
+        return 'Invalid group ID', 400
+    db = get_db()
+    # verify that user owns the group
+    res = db.execute(
+        'SELECT group_creator FROM Groups WHERE group_id = ?',
+        (group_id,)
+    ).fetchone()
+    if res is None:
+        return 'Invalid group ID', 400
+    if res['group_creator'] != session.get('user_id'):
+        return 'You are not the group creator', 403
+
+    if 'groupPic' not in request.files:
+        return 'No group pic part found in request', 400
+    file = request.files['groupPic']
+    filename = file.filename
+    if '.' not in filename or \
+        filename.rsplit('.', 1)[1].lower() not in ALLOWED_IMG_EXTS:
+        return 'Invalid file for group picture', 400
+    
+    save_group_pic(db, file, int(group_id))
+    db.commit()
+    return '', 200
+
 @app.route('/get_acts', methods=['GET'])
 def get_acts():
     db = get_db()
