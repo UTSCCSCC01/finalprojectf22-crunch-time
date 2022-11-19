@@ -4,7 +4,7 @@ import io from "socket.io-client";
 import Navbar from './navbar/navbar-logged-in.jsx';
 import Sidebar from './sidebar/sidebar.jsx';
 import { ReactSession } from 'react-client-session';
-import {useParams} from "react-router-dom"
+import {useParams, useSearchParams  } from "react-router-dom"
 import {
   MDBContainer,
   MDBRow,
@@ -17,20 +17,22 @@ import {
   MDBTextArea,
   MDBCardHeader,
 } from "mdb-react-ui-kit";
-import ringer from "../media/DiscordEnter.mp3";
 let endPoint = "http://localhost:5000";
 let socket = io.connect(`${endPoint}`);
-const Chat = () => {
+const Chat_friend = () => {
 
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const userName= (ReactSession.get("firstName") + " " + ReactSession.get("lastName"))
-  const [, updateState] = React.useState();
-  const forceUpdate = React.useCallback(() => updateState({}), []);
-  const audio = new Audio(ringer);
+  
   let { groupID } = useParams();
+  let temp_arr = groupID.split("-").filter(e => e !=  ReactSession.get("user_id"));
+  const receiver_Id =  temp_arr[0]
+
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isShown, setIsShown] = useState(false);
- 
+  const [friends, setFriends] = useState([]);
+
   //Show or hide navbar
   const handleClick = event => {
     // 👇️ toggle shown state
@@ -42,10 +44,11 @@ const Chat = () => {
   // gets message history from database
   const fetchMessages = () => {
     let message_info = {
-      'user_id':ReactSession.get("user_id"), 
-      'groupID': groupID
+      'sender_Id':ReactSession.get("user_id"), 
+      'receiver_Id': receiver_Id
     };
-    fetch("/getGroupInfo",{
+
+    fetch("/get_Friend_Message",{
       method: 'POST', // or 'PUT'
       headers: {
           'Content-Type': 'application/json',
@@ -61,13 +64,33 @@ const Chat = () => {
     },[]);
   }
 
+  const fetchFriends = () => {
+    fetch("/friend_list/" + ReactSession.get("user_id"))
+      .then((res) => res.json())
+      .then((data) => {
+        let temp = data['friends']
+        for(let i =0; i < temp.length; i++){
+            console.log(temp[i]['user_id'])
+            if (temp[i]['user_id'] == receiver_Id)
+
+            setFriends([userName, temp[i]['firstName'] + temp[i]['lastName']])
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+    },[]);
+  }
+
   useEffect(() => {
+
     try{
       if(ReactSession.get("firstName")== undefined){
         window.location.replace("/")
       }
       socket.emit("join", {userName:userName, groupID:groupID })
       fetchMessages()
+      fetchFriends()
+      console.log(friends)
 
   }
   catch(e){
@@ -78,15 +101,23 @@ const Chat = () => {
   }, []);
   
   useEffect(() => {  
+
     getMessages();
   }, [messages.length]);
 
-  //Plays join audio everytime new group memebers joins the chat
   useEffect(() => {
-    audio.play()
 
   }, [ReactSession.get("Group_Members").length]);
 
+  const get_receiver_Id = () => {
+    const temp = groupID.split("-")
+    if (ReactSession.get("user_id") == temp[0]){
+        return temp[1]
+    }
+    else{
+        return temp[0]
+    }
+  }
   const getMessages = () => {
 
     socket.on("message", msg => {
@@ -138,7 +169,7 @@ const Chat = () => {
 
     if (message !== "") {
       let date = getDate()
-      socket.emit("message",  {user:[userName, message, date, ReactSession.get("user_id")], groupID:groupID});
+      socket.emit("message",  {user:[userName, message, date, ReactSession.get("user_id"), receiver_Id], groupID:groupID});
       setMessage("");
       //getMessages();
     } else {
@@ -148,7 +179,7 @@ const Chat = () => {
   const handleKeyDown = (event) => {
       if (message !== "" && event.key === 'Enter') {
         let date = getDate()
-        socket.emit("message",  {user:[userName, message, date, ReactSession.get("user_id")], groupID:groupID});
+        socket.emit("message",  {user:[userName, message, date, ReactSession.get("user_id"), receiver_Id], groupID:groupID});
 
         setMessage("");
       } 
@@ -158,24 +189,12 @@ const Chat = () => {
       }
   };
   
-  function leaveGroup(e, group_id) {
-    e.preventDefault();
-    fetch("/leave_group/" + group_id, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    if(window.confirm('Are you sure you want to leave this group?')) {
-      window.location.replace("/home")
-    }
-      
-  }
+  
 
   return (
     
     <div>
-      <Navbar/>
+      <Navbar />
       <MDBContainer fluid className="py-5" style={{ backgroundColor: ""} }>
         <MDBRow>
           <MDBCol md="5" lg="4" xl="3" className="mb-4 mb-md-0">
@@ -185,8 +204,8 @@ const Chat = () => {
             <MDBCard style={{}}>
               <MDBCardBody>
                 <MDBTypography listUnStyled className="mb-0">
-                  {ReactSession.get("Group_Members").length > 0 &&
-                  ReactSession.get("Group_Members").map(User => (
+                  {friends.length > 0 &&
+                    friends.map(User => (
                     <li className="p-2 border-bottom">
                     <a href="#!" className="d-flex justify-content-between">
                       <div className="d-flex flex-row">
@@ -242,25 +261,12 @@ const Chat = () => {
           <MDBCol md="1" lg="1" xl="1">
           </MDBCol>
             <MDBCol md="2" lg="2" xl="2">
-            <div className=" sticky" style={{transform: "translateZ(0px)",  top:"0", position: "sticky"}}>
-
-              <button className="btn btn-secondary" onClick={handleClick}>Member List</button>
-
-              {/* 👇️ show elements on click */}
-              {isShown && (
-                <div>
-                </div>
-              )}
-
-              {/* 👇️ show component on click */}
-              {isShown && <Sidebar />}
-              </div>
-              <br/>
-              <button className="leave-bttn" onClick={(e)=> leaveGroup(e, groupID)}>Leave group</button>
             </MDBCol>
         </MDBRow>
       </MDBContainer>
     </div>
   );
 };
-export default Chat;
+export default Chat_friend;
+
+

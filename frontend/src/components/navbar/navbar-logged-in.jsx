@@ -24,7 +24,8 @@ const Navbar_Login = () => {
             ReactSession.remove("messages")
             ReactSession.remove("Group_Members")
             ReactSession.remove("GroupName")
-            ReactSession.remove("user_id");
+            ReactSession.remove("user_id")
+
             window.location.replace("/")
             
         })  

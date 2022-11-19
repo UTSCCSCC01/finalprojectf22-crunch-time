@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
+import { ReactSession } from 'react-client-session';
 import JoinGroupButton from "./joinGroupButton";
 import Navbar from "./navbar/navbar-logged-in.jsx";
 import FriendButton from "./friendButton";
 import defaultPic from "../media/default_group_pic.png";
+import './viewGroup.css';
 
 const skill_levels = {
   "-1": "",
@@ -22,6 +24,7 @@ function ViewGroup(props) {
   const [groupPic, setGroupPic] = useState();
   let { groupID } = useParams();
   const groupPicRef = useRef(null);
+  const[group_creator, setGroupCreator] = useState(0);
 
   function fetchInfo() {
     fetch("/view_group/" + groupID)
@@ -31,6 +34,7 @@ function ViewGroup(props) {
         setSkillLevel(data.skill_level);
         setMembers(data.members);
         setSize(data.size);
+        setGroupCreator(data.group_creator)
       });
     fetch("/user_in_group/" + groupID)
       .then((res) => res.json())
@@ -38,6 +42,18 @@ function ViewGroup(props) {
         setIsCreator(data.isCreator);
       });
   }
+
+  function leaveGroup(e, group_id) {
+    e.preventDefault();
+    fetch("/leave_group/" + group_id, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    if(window.confirm('Are you sure you want to leave this group?')) {
+      window.location.replace("/home")
+    }}
 
   /*function addfriend(e, friendID){
     e.preventDefault();
@@ -78,7 +94,19 @@ function ViewGroup(props) {
         console.error('Error:', error);
     },[]);
     }
-
+   
+   function kickUser(e, user_id, group_id){
+    e.preventDefault();
+    fetch("/kick_user/" + user_id + '/' + group_id,{
+        method: 'DELETE', 
+        headers: {
+            'Content-Type': 'application/json',
+        },   
+    })
+    alert("Kick User?")
+      window.location.reload()
+   } 
+  
   useEffect(fetchInfo, []);
 
   return (
@@ -107,6 +135,7 @@ function ViewGroup(props) {
               </Link>
               {/*<button onClick={(e)=> addfriend(e, user.user_id)}>Add friend</button>*/}
               <FriendButton friendID={user.user_id} />
+              {group_creator == ReactSession.get("user_id") ? <button className = "btn btn-secondary" onClick={(e)=> kickUser(e, user.user_id, groupID)}>Kick User</button> : null}
             </li>
           ))}
         </ul>
@@ -143,9 +172,17 @@ function ViewGroup(props) {
             </div>
           </div>
         )}
+        {members.map((user) => (
+        <ul className = "leave-list">
+          <li key={user.user_id}>
+            {user.user_id == ReactSession.get("user_id") ? <button className = "leave-bttn" onClick={(e)=> leaveGroup(e, groupID)}>Leave Group</button> : null}
+          </li>
+        </ul>
+        ))}
       </div>
     </div>
   );
-}
+
+  }
 
 export default ViewGroup;

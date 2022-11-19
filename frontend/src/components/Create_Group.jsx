@@ -162,6 +162,7 @@ class Create_Group extends Component {
   }
 
   render() {
+
     return (
       <div className = "create-group-content">
         <div className = "root">

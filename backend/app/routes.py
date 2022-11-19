@@ -90,6 +90,15 @@ def getGroupInfo():
     db.commit()
     return list(map(list, group_info))
 
+@app.route("/get_Friend_Message", methods=["GET",  'POST'])
+def get_Friend_Message():
+    db = get_db()
+    print(request.json)
+    group_info = db.execute('SELECT sender_user_name, context, time_stamp FROM friend_messages WHERE (sender_id = (?) and receiver_Id = (?)) OR (sender_id = (?) and receiver_Id = (?))',
+    [request.json['sender_Id'], request.json['receiver_Id'], request.json['receiver_Id'], request.json['sender_Id'] ]).fetchall()
+    db.commit()
+    print(list(map(list, group_info)))
+    return list(map(list, group_info))
 
 
 @app.route("/logout", methods=["POST"])
@@ -287,9 +296,18 @@ app.host = 'localhost'
 @socketIo.on("message")
 def handleMessage(msg):
     db = get_db()
-    db.execute('INSERT INTO messages (user_id, group_id, user_name, time_stamp, context) VALUES (?, ?, ?, ?, ?)', 
-            (msg["user"][3], msg['groupID'], msg['user'][0], msg['user'][2], msg['user'][1]))
-    db.commit()       
+    # between group messages
+    if(len(msg['user']) == 4):
+        
+        db.execute('INSERT INTO messages (user_id, group_id, user_name, time_stamp, context) VALUES (?, ?, ?, ?, ?)', 
+                (msg["user"][3], msg['groupID'], msg['user'][0], msg['user'][2], msg['user'][1]))
+        db.commit()     
+    # messages between friends
+    else:
+        print(msg)
+        db.execute('INSERT INTO friend_messages (sender_id, receiver_id, sender_user_name, time_stamp, context) VALUES (?, ?, ?, ?, ?)', 
+                (msg["user"][3], msg["user"][4], msg['user'][0], msg['user'][2], msg['user'][1]))
+        db.commit()   
     send(msg, broadcast=True, room=msg["groupID"])
     return None
 @socketIo.on('join')
@@ -299,7 +317,6 @@ def on_join(data):
     if data['userName'] not in users['username']:
         users['username'].append(data['userName'])
     join_room(data['groupID'])
-    print(data)
     send(users, broadcast=True, room=data['groupID'])
     return None
 @socketIo.on('leave')
@@ -465,6 +482,20 @@ def friend_list(user_id):
         friend_list.append(friend_info)
     return {'friends': friend_list}
 
+@app.route('/kick_user/<user_id>/<group_id>', methods=['DELETE'])
+def kick_user(user_id, group_id):
+    db = get_db()
+    current_user = session.get('user_id')
+    group_owner = db.execute('SELECT group_creator FROM Groups WHERE group_id = ?', (group_id,)).fetchone()
+    creator = group_owner['group_creator']
+    
+    if(creator == current_user):
+        db.execute('DELETE FROM User_in_group WHERE user_id = ? AND group_id = ?', (user_id, group_id,))
+        db.commit()
+    else:
+        return {'messages': 1}
+    return {'messages': 1}
+    
 @app.route('/is_friend/<user_id>', methods=['GET'])
 def is_friend(user_id):
     cur_user_id = session.get('user_id')
