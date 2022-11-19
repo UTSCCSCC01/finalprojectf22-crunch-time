@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom'
 import io from "socket.io-client";
 import Navbar from './navbar/navbar-logged-in.jsx';
 import Sidebar from './sidebar/sidebar.jsx';
-import './chat.css';
 import { ReactSession } from 'react-client-session';
 import {useParams} from "react-router-dom"
 import {
@@ -159,19 +158,7 @@ const Chat = () => {
       }
   };
   
-  function leaveGroup(e, group_id) {
-    e.preventDefault();
-    fetch("/leave_group/" + group_id, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    if(window.confirm('Are you sure you want to leave this group?')) {
-      window.location.replace("/home")
-    }
-      
-  }
+  
 
   return (
     
@@ -256,8 +243,6 @@ const Chat = () => {
               {/* 👇️ show component on click */}
               {isShown && <Sidebar />}
               </div>
-              <br/>
-              <button className="leave-bttn" onClick={(e)=> leaveGroup(e, groupID)}>Leave group</button>
             </MDBCol>
         </MDBRow>
       </MDBContainer>

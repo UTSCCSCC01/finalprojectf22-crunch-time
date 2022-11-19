@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
+import { ReactSession } from 'react-client-session';
 import JoinGroupButton from "./joinGroupButton";
 import Navbar from './navbar/navbar-logged-in.jsx';
 import FriendButton from "./friendButton";
-import { ReactSession } from 'react-client-session';
+import './viewGroup.css';
+
 
 const skill_levels = {
   '-1': '',
@@ -21,7 +23,6 @@ function ViewGroup(props) {
   let { groupID } = useParams();
   
 
-
   function fetchInfo() {
     fetch("/view_group/" + groupID)
       .then((res) => res.json())
@@ -33,7 +34,19 @@ function ViewGroup(props) {
         setGroupCreator(data.group_creator)
       });
   }
-  
+
+  function leaveGroup(e, group_id) {
+    e.preventDefault();
+    fetch("/leave_group/" + group_id, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    if(window.confirm('Are you sure you want to leave this group?')) {
+      window.location.replace("/home")
+    }}
+
   /*function addfriend(e, friendID){
     e.preventDefault();
     fetch("/add_friend/" + friendID,{
@@ -47,25 +60,20 @@ function ViewGroup(props) {
     alert("Add friend")
       window.location.reload()
    } */
+   
    function kickUser(e, user_id, group_id){
     e.preventDefault();
     fetch("/kick_user/" + user_id + '/' + group_id,{
         method: 'DELETE', 
         headers: {
             'Content-Type': 'application/json',
-        },
-        
-        
+        },   
     })
     alert("Kick User?")
       window.location.reload()
    } 
-   
   
   useEffect(fetchInfo, []);
-   
-  
-
 
   return (
     <div className="root">
@@ -87,6 +95,13 @@ function ViewGroup(props) {
         </ul>
         <h2>Actions</h2>
         <JoinGroupButton groupID={groupID} callback={fetchInfo} />
+        {members.map((user) => (
+        <ul className = "leave-list">
+          <li key={user.user_id}>
+            {user.user_id == ReactSession.get("user_id") ? <button className = "leave-bttn" onClick={(e)=> leaveGroup(e, groupID)}>Leave Group</button> : null}
+          </li>
+        </ul>
+        ))}
       </div>
     </div>
   );
