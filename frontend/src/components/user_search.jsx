@@ -19,6 +19,7 @@ class User_search extends Component {
     }
 
     componentDidMount() {
+        document.title = "User Search";
         try {
             if (ReactSession.get("firstName") === undefined | ReactSession.get("user_id") === undefined) {
                 window.location.replace("/")
@@ -114,28 +115,30 @@ class User_search extends Component {
 
     render() {
         return (
-            <div className="root">
+            <div className="root" class="row d-flex justify-content-center">
                 <Navbar />
-                <div className="container mt-3 mb-3">
-                    <h1>Search page</h1>
-                    <p><Link to="/home">Return to home</Link></p>
-                    <form onSubmit={this.sendTracking} className="mb-3">
-                        <div className="form-group mb-3">
+                <div class="container mt-3 mb-3 ce col-md-6 ">
+                    <div class="d-flex text-align-left">
+                        <p><Link to="/home">Return to home</Link></p>
+                    </div>
+                    <div class="row">
+                        <form onSubmit={this.sendTracking} className="col-12">
+                            <div class="form-group">
                             <label htmlFor="tracked_activities">Track activities:</label>
                             <ul class="checkbox" id="tracked_activities">
                             {this.state.activities.map((item) => {
                                 return (
                                 <li key={item.id}><input type="checkbox" onChange={this.handleTrackingChange} id={item.id}
-                                    value={item.id} checked={this.state.tracked_activities.some(v => v.id == item.id)}/><label for={item.id}>{item.name}</label></li>
+                                    value={item.id} checked={this.state.tracked_activities.some(v => v.id == item.id)}/><label class="px-1" for={item.id}>{item.name}</label></li>
                                 );
                             })}
                             </ul>
-                            <button className="btn btn-primary" type="submit">
-                                Save
-                            </button>
-                        </div>
-                    </form>
-                    <select id="activities" name="activities" onChange={this.handleActivityChange}>
+                            <button className="btn btn-primary" type="submit">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <select class="mb-3 px-3 py-1" id="activities" name="activities" onChange={this.handleActivityChange}>
                         <option key={0} value={"0,NULL"}> All activities </option>
                         {this.state.activities.map((option) => {
                             return (

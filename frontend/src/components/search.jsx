@@ -52,7 +52,7 @@ class Search extends Component {
   };
 
   componentDidMount() {
-
+    document.title = "Group Search";
     try{
       if(ReactSession.get("firstName")===undefined){
         window.location.replace("/")
@@ -111,18 +111,15 @@ class Search extends Component {
   render() {
     return (
 
-      <div className = "root">
+      <div className = "root" class="row d-flex justify-content-center">
         <Navbar/>
         
-        <div className="container mt-3 mb-3">
-          <h1>Search page</h1>
-          <p>
-            <Link to="/home">Return to home</Link>
-          </p>
+        <div class="container mt-3 mb-3 ce col-md-6 ">
+          <p><Link to="/home">Return to home</Link></p>
           <form onSubmit={this.sendMsg} className="mb-3">
           <div className="form-group mb-3">
-          <label htmlFor="activities">Activity</label>
-            <select id="activities" name="activities" onChange={this.handleActivityChange}>
+          <label htmlFor="activities">Activity:</label>
+            <select class="mx-1 px-2" id="activities" name="activities" onChange={this.handleActivityChange}>
                 <option key={0} value={"0,NULL"}>Any Activity</option>
               {this.state.activities.map((option) => {
                 return (
@@ -133,8 +130,8 @@ class Search extends Component {
               })}
             </select>
             </div>
-            <div className="form-group mb-3">
-              <label htmlFor="msg">Group:</label>
+            <div className="form-group my-4">
+              <label htmlFor="msg">Group name:</label>
               <input
                 type="text"
                 className="form-control"
@@ -142,12 +139,13 @@ class Search extends Component {
                 value={this.state.groupName}
                 onChange={this.handleChange}
               />
-            </div>
+            
             <input type="checkbox" name="loc" id="loc" checked={this.state.loc} onChange={this.handleLoc} />
-            <label htmlFor="loc"> Filter By distance</label>
+            <label class="px-1 my-1" htmlFor="loc"> Filter By distance</label>
 
             { this.state.loc?
-            <div>
+            <div class="mb-3" >
+              <div class="container col-md-8">
               <div className="form-group mb-3">
                 <label htmlFor="lat">Latitude:</label>
                 <input
@@ -178,6 +176,7 @@ class Search extends Component {
                   onChange={this.handleChange}
                 />
               </div>
+              </div>
             <button type="button" className="btn btn-primary" onClick={this.getLocation}>
               Use My Location
             </button>
@@ -188,8 +187,10 @@ class Search extends Component {
             <button className="btn btn-primary" type="submit">
               Find
             </button>
+            </div>
             <Link to={"/chat/"+ 1}></Link>
           </form>
+          
           <h2>List of found groups:</h2>
           <ul className="list-group">
             {this.state.messages.map((msg) => (
