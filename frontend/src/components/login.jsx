@@ -103,7 +103,7 @@ class Login extends Component {
                         
             <label for="Password">Password</label>
             <br/>
-            <input type="text" id="password" name="password" class="loginLabel" onChange={evt => this.updatePassword(evt)}/>
+            <input type="password" id="password" name="password" class="loginLabel" onChange={evt => this.updatePassword(evt)}/>
             <br/>
 
             <button onClick = {this.fetchMsgs} type= "login" class = "login-bttn">Login</button>

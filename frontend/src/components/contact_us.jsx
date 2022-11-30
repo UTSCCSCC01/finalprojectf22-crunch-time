@@ -71,8 +71,7 @@ class Contact_us extends Component {
       return (
         <div className = "root">
         <Navbar/>
-        <div 
-        class = "content"><center>
+        <div class = "content"><center>
             <h1>Contact us</h1>
             <h5>Have any questions or issues? Reach out to our team!</h5><br/>
             <form>
